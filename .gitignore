@@ -1,0 +1,7 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+/FCR_data_raw/
+.DS_Store
+FCR.csv
