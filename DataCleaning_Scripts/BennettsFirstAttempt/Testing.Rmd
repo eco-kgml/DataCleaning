@@ -1,0 +1,27 @@
+---
+title: "Testing"
+author: "Bennett McAfee"
+date: "2023-02-09"
+output: html_document
+---
+
+```{r}
+library(lubridate)
+
+strptime("923", format = "%H%M")
+```
+
+
+```{r}
+test <- c("1234", "123", "12","1")
+gsub("\\s", "0", format(test, width=max(nchar(test)), justify = "right"))
+
+TroutLakeTemp3$sample_time <- gsub("\\s", "0", format(TroutLakeTemp3$sample_time, width=max(nchar(test)), justify = "right"))
+
+TroutLakeTemp3$datetime <- paste(TroutLakeTemp3$sampledate, TroutLakeTemp3$sample_time)
+TroutLakeTemp3$datetime <- strptime(TroutLakeTemp3$datetime, format='%Y-%m-%d %H%M')
+
+typeof(MendotaTemp1$Sampledate[1])
+
+strptime(MendotaTemp1$Sampledate, format = '%Y-%m-%d %H:%M:%S')
+```
