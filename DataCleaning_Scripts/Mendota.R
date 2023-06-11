@@ -84,3 +84,24 @@ data_a <- data.frame("datetime" = strptime(data$Sampledate, format = '%Y-%m-%d %
                      "flag" = rep(NA, nrow(data)))
 Mendota <- rbind(Mendota, data_a)
 rm(data_a)
+
+####Magnuson, J.J., S.R. Carpenter, and E.H. Stanley. 2023. North Temperate 
+####Lakes LTER: Secchi Disk Depth; Other Auxiliary Base Crew Sample Data 1981 - 
+#### current ver 32. Environmental Data Initiative. 
+#### https://doi.org/10.6073/pasta/4c5b055143e8b7a5de695f4514e18142 (Accessed 2023-06-10).
+res <- read_data_entity_names(packageId = "knb-lter-ntl.31.32")
+raw <- read_data_entity(packageId = "knb-lter-ntl.31.32", entityId = res$entityId[1])
+data <- read_csv(raw)
+
+data$lake <- "Mendota"
+data_a <- data.frame("datetime" = ymd(data$sampledate),
+                     "lake" = data$lake,
+                     "depth" = 0,
+                     "variable" = rep("secview", nrow(data)),
+                     "unit" = rep("M", nrow(data)),
+                     "observation" = data$secview,
+                     "flag" = rep(NA, nrow(data))) %>%
+  drop_na(observation)
+
+Mendota <- rbind(Mendota, data_a)
+rm(data_a)
