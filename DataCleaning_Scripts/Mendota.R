@@ -105,3 +105,28 @@ data_a <- data.frame("datetime" = ymd(data$sampledate),
 
 Mendota <- rbind(Mendota, data_a)
 rm(data_a)
+
+####Magnuson, J., S. Carpenter, and E. Stanley. 2022. North Temperate Lakes LTER
+####:Chlorophyll - Madison Lakes Area 1995 - current ver 28. Environmental Data
+#### Initiative. https://doi.org/10.6073/pasta/f9c2e1059bcf92f138e140950a3632f2 
+#### (Accessed 2023-06-14).
+
+res <- read_data_entity_names(packageId = "knb-lter-ntl.38.28")
+
+raw <- read_data_entity(packageId = "knb-lter-ntl.38.28", entityId = res$entityId[1])
+
+data <- read_csv(raw)
+
+data$lake <- "Mendota"
+
+data_a <- data.frame("datetime" = ymd(data$sampledate),
+                     "lake" = data$lake,
+                     "depth" = 0,
+                     "variable" = rep("chla", nrow(data)),
+                     "unit" = rep("MicroGM-PER-L", nrow(data)),
+                     "observation" = data$correct_chl_fluor,
+                     "flag" = data$flag_spec)%>%
+  drop_na(observation)
+
+Mendota <- rbind(Mendota, data_a)
+rm(data_a)
