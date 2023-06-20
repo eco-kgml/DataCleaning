@@ -1,6 +1,7 @@
 library(EDIutils)
 library(tidyverse)
 library(lubridate)
+library(stringr)
 # library(data.table)
 
 # Creating data table
@@ -119,9 +120,21 @@ data <- read_csv(raw)
 
 data$lake <- "Mendota"
 
+data1 <- data %>%
+  filter(str_detect(data$depth_range_m,"-")) %>%
+  mutate(depth = as.integer(str_sub(new_data$depth_range_m,start=-1,end = -1))/2)
+
+
+data2 <- data %>%
+  filter(!str_detect(data$depth_range_m,"-")) %>%
+  mutate(depth = depth_range_m)
+
+
+data <- rbind(data1,data2)
+
 data_a <- data.frame("datetime" = ymd(data$sampledate),
                      "lake" = data$lake,
-                     "depth" = 0,
+                     "depth" = data$depth,
                      "variable" = rep("chla", nrow(data)),
                      "unit" = rep("MicroGM-PER-L", nrow(data)),
                      "observation" = data$correct_chl_fluor,
