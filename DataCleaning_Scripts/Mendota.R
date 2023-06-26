@@ -122,7 +122,7 @@ data$lake <- "Mendota"
 
 data1 <- data %>%
   filter(str_detect(data$depth_range_m,"-")) %>%
-  mutate(depth = as.integer(str_sub(new_data$depth_range_m,start=-1,end = -1))/2)
+  mutate(depth = as.integer(str_sub(depth_range_m,start=-1,end = -1))/2)
 
 
 data2 <- data %>%
