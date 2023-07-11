@@ -22,7 +22,7 @@ data <- readr::read_csv(file = raw)
 
 data_a <- data.frame("datetime" = data$sampledate,
                      "lake" = rep("Trout", nrow(data)),
-                     "depth" = rep(0, nrow(data)),
+                     "depth" = rep(0.5, nrow(data)),
                      "variable" = rep("do", nrow(data)),
                      "unit" = rep("MilliGM-PER-L", nrow(data)),
                      "observation" = data$do_raw,
@@ -31,3 +31,15 @@ data_a <- data.frame("datetime" = data$sampledate,
 
 Trout <- rbind(Trout, data_a)
 rm(data_a)
+
+data_b <- data.frame("datetime" = data$sampledate,
+                     "lake" = rep("Trout", nrow(data)),
+                     "depth" = rep(-2, nrow(data)),
+                     "variable" = rep("par", nrow(data)),
+                     "unit" = rep("MicroMOL-PER-M2-SEC", nrow(data)),
+                     "observation" = data$par,
+                     "flag" = data$flag_do_raw) %>%
+  drop_na(observation)
+
+Trout <- rbind(Trout, data_b)
+rm(data_b)
