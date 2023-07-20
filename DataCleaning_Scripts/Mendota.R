@@ -91,17 +91,18 @@ rm(data_a)
 #### current ver 32. Environmental Data Initiative. 
 #### https://doi.org/10.6073/pasta/4c5b055143e8b7a5de695f4514e18142 (Accessed 2023-06-10).
 res <- read_data_entity_names(packageId = "knb-lter-ntl.31.32")
-raw <- read_data_entity(packageId = "knb-lter-ntl.31.32", entityId = res$entityId[1])
+raw <- read_data_entity(packageId = "knb-lter-ntl.31.32.r", entityId = res$entityId[1])
 data <- read_csv(raw)
 
-data$lake <- "Mendota"
-data_a <- data.frame("datetime" = ymd(data$sampledate),
-                     "lake" = data$lake,
+mendota_data <- data %>% filter(lakeid == "ME")
+
+data_a <- data.frame("datetime" = ymd(mendota_data$sampledate),
+                     "lake" = rep("Mendota",nrow(mendota_data)),
                      "depth" = 0,
-                     "variable" = rep("secview", nrow(data)),
-                     "unit" = rep("M", nrow(data)),
-                     "observation" = data$secview,
-                     "flag" = rep(NA, nrow(data))) %>%
+                     "variable" = rep("secview", nrow(mendota_data)),
+                     "unit" = rep("M", nrow(mendota_data)),
+                     "observation" = mendota_data$secview,
+                     "flag" = rep(NA, nrow(mendota_data))) %>%
   drop_na(observation)
 
 Mendota <- rbind(Mendota, data_a)
