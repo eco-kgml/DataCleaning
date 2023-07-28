@@ -115,7 +115,7 @@ rm(data_a)
 
 res <- read_data_entity_names(packageId = "knb-lter-ntl.38.28")
 
-raw <- read_data_entity(packageId = "knb-lter-ntl.38.28", entityId = res$entityId[1])
+raw <- read_data_entity(packageId = "knb-lter-ntl.38.28.r", entityId = res$entityId[1])
 
 data <- read_csv(raw)
 
@@ -144,3 +144,39 @@ data_a <- data.frame("datetime" = ymd(data$sampledate),
 
 Mendota <- rbind(Mendota, data_a)
 rm(data_a)
+
+#Magnuson, J.J., S.R. Carpenter, and E.H. Stanley. 2023. North Temperate Lakes 
+#LTER: Physical Limnology of Primary Study Lakes 1981 - current ver 35. 
+#Environmental Data Initiative. 
+#https://doi.org/10.6073/pasta/be287e7772951024ec98d73fa94eec08
+res <- read_data_entity_names(packageId = "knb-lter-ntl.29.35")
+
+raw <- read_data_entity(packageId = "knb-lter-ntl.29.35.r", entityId = res$entityId[1])
+
+data <- read_csv(raw)
+
+mendota_data <- data %>% filter(lakeid == "ME")
+
+data_a <- data.frame("datetime" = ymd(mendota_data$sampledate),
+                     "lake" = rep("Mendota",nrow(mendota_data)),
+                     "depth" = mendota_data$depth,
+                     "variable" = rep("temp", nrow(mendota_data)),
+                     "unit" = rep("DEG_C", nrow(mendota_data)),
+                     "observation" = mendota_data$wtemp,
+                     "flag" = mendota_data$flagwtemp) %>% drop_na(observation)
+
+#The variable below is form the same data set as above
+data_b <- data.frame("datetime" = ymd(mendota_data$sampledate),
+              "lake" = rep("Mendota",nrow(mendota_data)),
+              "depth" = mendota_data$depth,
+              "variable" = rep("do", nrow(mendota_data)),
+              "unit" = rep("MilliGM-PER-L", nrow(mendota_data)),
+              "observation" = mendota_data$o2,
+              "flag" = mendota_data$flago2) %>% drop_na(observation)
+
+Mendota <- rbind(Mendota, data_a)
+Mendota <- rbind(Mendota, data_b)
+rm(data_a)
+rm(data_b)
+
+

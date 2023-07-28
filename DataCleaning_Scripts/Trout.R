@@ -93,4 +93,36 @@ data_a <- data.frame("datetime" = ymd(trout_data$sampledate),
 Trout <- rbind(Trout, data_a)
 rm(data_a)
 
+#Magnuson, J.J., S.R. Carpenter, and E.H. Stanley. 2023. North Temperate Lakes 
+#LTER: Physical Limnology of Primary Study Lakes 1981 - current ver 35. 
+#Environmental Data Initiative. 
+#https://doi.org/10.6073/pasta/be287e7772951024ec98d73fa94eec08
+res <- read_data_entity_names(packageId = "knb-lter-ntl.29.35")
 
+raw <- read_data_entity(packageId = "knb-lter-ntl.29.35.r", entityId = res$entityId[1])
+
+data <- read_csv(raw)
+
+trout_data <- data %>% filter(lakeid == "TR")
+
+data_a <- data.frame("datetime" = ymd(trout_data$sampledate),
+                     "lake" = rep("Trout",nrow(trout_data)),
+                     "depth" = trout_data$depth,
+                     "variable" = rep("temp", nrow(trout_data)),
+                     "unit" = rep("DEG_C", nrow(trout_data)),
+                     "observation" = trout_data$wtemp,
+                     "flag" = trout_data$flagwtemp) %>% drop_na(observation)
+
+#The variable below is from the same data set as above
+data_b <- data.frame("datetime" = ymd(trout_data$sampledate),
+                     "lake" = rep("Trout",nrow(trout_data)),
+                     "depth" = trout_data$depth,
+                     "variable" = rep("do", nrow(trout_data)),
+                     "unit" = rep("MilliGM-PER-L", nrow(trout_data)),
+                     "observation" = trout_data$o2,
+                     "flag" = trout_data$flago2) %>% drop_na(observation)
+
+Trout <- rbind(Trout, data_a)
+Trout <- rbind(Trout, data_b)
+rm(data_a)
+rm(data_b)

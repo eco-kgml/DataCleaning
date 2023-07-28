@@ -75,3 +75,58 @@ data_a <- data.frame("datetime" = ymd(sparkling_data$sampledate),
 
 Sparkling <- rbind(Sparkling, data_a)
 rm(data_a)
+
+#Magnuson, J.J., S.R. Carpenter, and E.H. Stanley. 2023. North Temperate Lakes 
+#LTER: Physical Limnology of Primary Study Lakes 1981 - current ver 35. 
+#Environmental Data Initiative. 
+#https://doi.org/10.6073/pasta/be287e7772951024ec98d73fa94eec08
+res <- read_data_entity_names(packageId = "knb-lter-ntl.29.35")
+
+raw <- read_data_entity(packageId = "knb-lter-ntl.29.35.r", entityId = res$entityId[1])
+
+data <- read_csv(raw)
+
+sparkling_data <- data %>% filter(lakeid == "SP")
+
+data_a <- data.frame("datetime" = ymd(sparkling_data$sampledate),
+                     "lake" = rep("Sparkling",nrow(sparkling_data)),
+                     "depth" = sparkling_data$depth,
+                     "variable" = rep("temp", nrow(sparkling_data)),
+                     "unit" = rep("DEG_C", nrow(sparkling_data)),
+                     "observation" = sparkling_data$wtemp,
+                     "flag" = sparkling_data$flagwtemp) %>% drop_na(observation)
+
+#The variable below is from the same data set as above
+data_b <- data.frame("datetime" = ymd(sparkling_data$sampledate),
+                     "lake" = rep("Sparkling",nrow(sparkling_data)),
+                     "depth" = sparkling_data$depth,
+                     "variable" = rep("do", nrow(sparkling_data)),
+                     "unit" = rep("MilliGM-PER-L", nrow(sparkling_data)),
+                     "observation" = sparkling_data$o2,
+                     "flag" = sparkling_data$flago2) %>% drop_na(observation)
+
+Sparkling <- rbind(Sparkling, data_a)
+Sparkling <- rbind(Sparkling, data_b)
+rm(data_a)
+rm(data_b)
+
+
+#This if for Dissolved Oxygen EXO but the variable name in the spreasheet is the
+#same for non-sensor DO
+
+res <- read_data_entity_names(packageId = "knb-lter-ntl.4.34")
+
+raw <- read_data_entity(packageId = "knb-lter-ntl.4.34.r", entityId = res$entityId[1])
+
+data <- read_csv(raw)
+
+data_a <- data.frame("datetime" = ymd(data$sampledate),
+                     "lake" = rep("Sparkling",nrow(data)),
+                     "depth" = rep(0,nrow(data)),
+                     "variable" = rep("do", nrow(data)),
+                     "unit" = rep("MilliGM-PER-L", nrow(data)),
+                     "observation" = data$avg_do_raw,
+                     "flag" = data$flag_avg_do_raw) %>% drop_na(observation)
+
+Sparkling <- rbind(Sparkling, data_a)
+rm(data_a)
