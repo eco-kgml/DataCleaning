@@ -1,8 +1,8 @@
+#Read in Sparkling Lake data from EDI
+#Author: Adi Tewari
+
 library(EDIutils)
 library(tidyverse)
-library(lubridate)
-library(stringr)
-library(data.table)
 
 # Creating data table
 Sparkling <- data.frame(matrix(ncol = 7, nrow = 0))

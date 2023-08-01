@@ -1,5 +1,5 @@
 #Read in FCR data from EDI
-#Author: Mary Lofton (data curation and formatting), Bennett McAfee (EDIutils loading)
+#Author: Mary Lofton
 #Date: 09JUN23
 
 #Purpose: Download and read in data from Falling Creek Reservoir stored in the 
@@ -19,42 +19,47 @@ options(timeout=10000)
 
 ##### READ IN DATA #####
 
-library(EDIutils)
-
 #1. CTD
-res <- read_data_entity_names(packageId = "edi.200.13")
-raw <- read_data_entity(packageId = "edi.200.13", entityId = res$entityId[1])
-ctd <- readr::read_csv(file = raw)
+inUrl1  <- "https://portal.edirepository.org/nis/dataviewer?packageid=edi.200.13&entityid=27ceda6bc7fdec2e7d79a6e4fe16ffdf" 
+infile1 <- paste0("./FCR_data_raw/CTD_2013_2022.csv")
+try(download.file(inUrl1,infile1,method="curl"))
+if (is.na(file.size(infile1))) download.file(inUrl1,infile1,method="auto")
 
 #2: inflow
-res <- read_data_entity_names(packageId = "edi.202.10") # original version came from ver. 9 on EDI
-raw <- read_data_entity(packageId = "edi.202.10", entityId = res$entityId[1])
-inflow <- readr::read_csv(file = raw)
+inUrl1  <- "https://pasta.lternet.edu/package/data/eml/edi/202/9/c065ff822e73c747f378efe47f5af12b" 
+infile1 <- paste0("./FCR_data_raw/Inflow_2013_2022.csv")
+try(download.file(inUrl1,infile1,method="curl"))
+if (is.na(file.size(infile1))) download.file(inUrl1,infile1,method="auto")
 
 #3. catwalk
-res <- read_data_entity_names(packageId = "edi.271.7")
-raw <- read_data_entity(packageId = "edi.271.7", entityId = res$entityId[1])
-catwalk <- readr::read_csv(file = raw)
+inUrl1  <- "https://pasta.lternet.edu/package/data/eml/edi/271/7/71e6b946b751aa1b966ab5653b01077f" 
+infile1 <- paste0("./FCR_data_raw/FCR_Catwalk_EDI_2018_2022.csv")
+try(download.file(inUrl1,infile1,method="curl"))
+if (is.na(file.size(infile1))) download.file(inUrl1,infile1,method="auto")
 
 #4. chemistry
-res <- read_data_entity_names(packageId = "edi.199.11")
-raw <- read_data_entity(packageId = "edi.199.11", entityId = res$entityId[1])
-chem <- readr::read_csv(file = raw)
+inUrl1  <- "https://portal.edirepository.org/nis/dataviewer?packageid=edi.199.11&entityid=509f39850b6f95628d10889d66885b76" 
+infile1 <- paste0("./FCR_data_raw/chemistry_2013_2022.csv")
+try(download.file(inUrl1,infile1,method="curl"))
+if (is.na(file.size(infile1))) download.file(inUrl1,infile1,method="auto")
 
 #5. Secchi
-res <- read_data_entity_names(packageId = "edi.198.11")
-raw <- read_data_entity(packageId = "edi.198.11", entityId = res$entityId[1])
-secchi <- readr::read_csv(file = raw)
+inUrl1  <- "https://portal.edirepository.org/nis/dataviewer?packageid=edi.198.11&entityid=81f396b3e910d3359907b7264e689052" 
+infile1 <- paste0("./FCR_data_raw/Secchi_depth_2013-2022.csv")
+try(download.file(inUrl1,infile1,method="curl"))
+if (is.na(file.size(infile1))) download.file(inUrl1,infile1,method="auto")
 
 #6. YSI
-res <- read_data_entity_names(packageId = "edi.198.11")
-raw <- read_data_entity(packageId = "edi.198.11", entityId = res$entityId[2])
-ysi <- readr::read_csv(file = raw)
+inUrl1  <- "https://portal.edirepository.org/nis/dataviewer?packageid=edi.198.11&entityid=6e5a0344231de7fcebbe6dc2bed0a1c3" 
+infile1 <- paste0("./FCR_data_raw/YSI_PAR_profiles_2013-2022.csv")
+try(download.file(inUrl1,infile1,method="curl"))
+if (is.na(file.size(infile1))) download.file(inUrl1,infile1,method="auto")
 
 #7. Filtered chl-a
-res <- read_data_entity_names(packageId = "edi.555.3")
-raw <- read_data_entity(packageId = "edi.555.3", entityId = res$entityId[1])
-chla <- readr::read_csv(file = raw)
+inUrl1  <- "https://portal.edirepository.org/nis/dataviewer?packageid=edi.555.3&entityid=2f670c8316af634c76effdd205623912" 
+infile1 <- paste0("./FCR_data_raw/manual_chlorophyll_2014-2022.csv")
+try(download.file(inUrl1,infile1,method="curl"))
+if (is.na(file.size(infile1))) download.file(inUrl1,infile1,method="auto")
 
 ##### REFORMAT DATA #####
 library(tidyverse)
@@ -66,6 +71,7 @@ library(data.table)
 #'3/31/2020 18:00	Mendota	 1	    temp_c		      3.553285384
 
 #1. CTD
+ctd <- fread("./FCR_data_raw/CTD_2013_2022.csv")
 colnames(ctd)
 
 ctd1 <- ctd %>%
@@ -112,6 +118,7 @@ ctd3 <- bind_cols(ctd1, ctd2$flag) %>%
 head(ctd3)
 
 #2. inflow
+inflow <- read_csv("./FCR_data_raw/Inflow_2013_2022.csv")
 colnames(inflow)
 inflow1 <- inflow %>%
   filter(Reservoir == "FCR" & Site == 100) %>%
@@ -127,6 +134,7 @@ inflow1 <- inflow %>%
 head(inflow1)
 
 #3. catwalk
+catwalk <- fread("./FCR_data_raw/FCR_Catwalk_EDI_2018_2022.csv")
 colnames(catwalk)
 catwalk1 <- catwalk %>%
   select(DateTime, Reservoir, ThermistorTemp_C_surface:ThermistorTemp_C_9, EXOTemp_C_1, RDOTemp_C_5, RDOTemp_C_9, EXODO_mgL_1, RDO_mgL_5, RDO_mgL_9,  EXOChla_ugL_1, EXOBGAPC_RFU_1, EXOfDOM_RFU_1, Flag_ThermistorTemp_C_surface:Flag_ThermistorTemp_C_9, Flag_RDO_mgL_5, Flag_RDOTemp_C_5, Flag_RDO_mgL_9, Flag_RDOTemp_C_9, Flag_EXOTemp_C_1, Flag_EXODO_mgL_1, Flag_EXOChla_ugL_1, Flag_EXOBGAPC_RFU_1, Flag_EXOfDOM_RFU_1) %>%
@@ -177,6 +185,7 @@ catwalk3 <- left_join(catwalk1, catwalk2, by = c("datetime","lake","depth","vari
 head(catwalk3)
 
 #'4. water chemistry 
+chem <- read_csv("./FCR_data_raw/chemistry_2013_2022.csv")
 colnames(chem)
 chem1 <- chem %>%
   filter(Reservoir == "FCR" & Site == 50) %>%
@@ -224,6 +233,7 @@ chem3 <- bind_cols(chem1, chem2$flag) %>%
 head(chem3)
 
 #5. Secchi
+secchi <- read_csv("./FCR_data_raw/Secchi_depth_2013-2022.csv")
 colnames(secchi)
 secchi1 <- secchi %>%
   filter(Reservoir == "FCR" & Site == 50) %>%
@@ -239,6 +249,7 @@ secchi1 <- secchi %>%
 head(secchi1)
 
 #6. YSI
+ysi <- read_csv("./FCR_data_raw/YSI_PAR_profiles_2013-2022.csv")
 colnames(ysi)
 
 ysi1 <- ysi %>%
@@ -285,6 +296,7 @@ ysi3 <- bind_cols(ysi1, ysi2$flag) %>%
 head(ysi3)
 
 #7. filtered chl-a
+chla <- read_csv("./FCR_data_raw/manual_chlorophyll_2014-2022.csv")
 colnames(chla)
 chla1 <- chla %>%
   filter(Reservoir == "FCR" & Site == 50) %>%
@@ -300,13 +312,10 @@ chla1 <- chla %>%
 head(chla1)
 
 #### MERGE DATA ####
-FCR <- bind_rows(ctd3, inflow1) %>%
+df <- bind_rows(ctd3, inflow1) %>%
   bind_rows(., catwalk3) %>%
   bind_rows(., chem3) %>%
   bind_rows(., secchi1) %>%
   bind_rows(., ysi3) %>%
   bind_rows(., chla1)
-
-rm(catwalk, catwalk1, catwalk2, catwalk3, chem, chem1, chem2, chem3, chla, chla1, ctd, ctd1, ctd2, ctd3, inflow, inflow1, secchi, secchi1, ysi, ysi1, ysi2, ysi3, res, raw)
-
-
+write.csv(df, "./FCR.csv", row.names = FALSE)

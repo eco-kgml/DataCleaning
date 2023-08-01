@@ -1,3 +1,8 @@
+#Control the collection of data from external sources
+#Author: Bennett McAfee
+
+start_time <- Sys.time()
+
 library(EDIutils)
 library(tidyverse)
 library(data.table)
@@ -44,4 +49,21 @@ source("DataCleaning_Scripts/Sparkling.R")
 write_parquet(x = Sparkling, sink = paste0(filepath, "/Sparkling.parquet"))
 rm(data, res, raw, Sparkling)
 gc()
+
+# FCR
+
+source("DataCleaning_Scripts/FCR.R")
+write_parquet(x = FCR, sink = paste0(filepath, "/FCR.parquet"))
+rm(FCR)
+gc()
+
+# Confirming Proper Data Collection
+end_time <- Sys.time()
+time_taken <- difftime(end_time, start_time)
+
+data <- arrow::open_dataset(sources = filepath)
+data
+
+
+print(paste(nrow(data), "observations collected in", round(as.numeric(time_taken),2), units(time_taken)))
 
