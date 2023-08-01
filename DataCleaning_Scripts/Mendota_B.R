@@ -1,8 +1,8 @@
+#Read in Mendota Under-Ice High Frequency data from EDI
+#Author: Bennett McAfee
+
 library(EDIutils)
 library(tidyverse)
-library(lubridate)
-library(stringr)
-# library(data.table)
 
 # Creating data table
 Mendota <- data.frame(matrix(ncol = 7, nrow = 0))
