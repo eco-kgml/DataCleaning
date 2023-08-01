@@ -130,3 +130,4 @@ data_a <- data.frame("datetime" = ymd(data$sampledate),
 
 Sparkling <- rbind(Sparkling, data_a)
 rm(data_a)
+rm(sparkling_data)
