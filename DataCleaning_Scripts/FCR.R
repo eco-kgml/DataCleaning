@@ -76,10 +76,10 @@ ctd1 <- ctd %>%
          depth = Depth_m) %>%
   pivot_longer(-c(datetime, lake, depth)) %>%
   mutate(variable = str_extract(name, 'Temp|DO|PAR')) %>%
-  mutate(variable = ifelse(variable == "Temp","temperature",
-                           ifelse(variable == "DO","do_mgl","par"))) %>%
-  mutate(unit = ifelse(variable == "temperature","DEG_C",
-                       ifelse(variable == "do_mgl","MilliGM-PER-L","MicroMOL-PER-M2-SEC"))) %>%
+  mutate(variable = ifelse(variable == "Temp","temp",
+                           ifelse(variable == "DO","do","par"))) %>%
+  mutate(unit = ifelse(variable == "temp","DEG_C",
+                       ifelse(variable == "do","MilliGM-PER-L","MicroMOL-PER-M2-SEC"))) %>%
   filter(!(variable == "par" & depth >= 0)) %>%
   rename(observation = value) %>%
   filter(!grepl("Flag",name)) %>%
@@ -94,10 +94,10 @@ ctd2 <- ctd %>%
          depth = Depth_m) %>%
   pivot_longer(-c(datetime, lake, depth)) %>%
   mutate(variable = str_extract(name, 'Temp|DO|PAR')) %>%
-  mutate(variable = ifelse(variable == "Temp","temperature",
-                           ifelse(variable == "DO","do_mgl","par"))) %>%
-  mutate(unit = ifelse(variable == "temperature","DEG_C",
-                       ifelse(variable == "do_mgl","MilliGM-PER-L","MicroMOL-PER-M2-SEC"))) %>%
+  mutate(variable = ifelse(variable == "Temp","temp",
+                           ifelse(variable == "DO","do","par"))) %>%
+  mutate(unit = ifelse(variable == "temp","DEG_C",
+                       ifelse(variable == "do","MilliGM-PER-L","MicroMOL-PER-M2-SEC"))) %>%
   filter(!(variable == "par" & depth >= 0)) %>%
   rename(flag = value) %>%
   filter(grepl("Flag",name)) %>%
@@ -137,13 +137,13 @@ catwalk1 <- catwalk %>%
          depth = str_extract(name, 'surface|1|2|3|4|5|6|7|8|9')) %>%
   mutate(depth = ifelse(grepl("EXO",name),1.6,
                         ifelse(depth == "surface",0.1,depth))) %>%
-  mutate(variable = ifelse(variable == "Temp","temperature",
-                           ifelse(variable == "DO","do_mgl",
-                                  ifelse(variable == "Chla","chlorophyll a",
-                                         ifelse(variable == "BGAPC","phyco_rfu","fdomrfu"))))) %>%
-  mutate(unit = ifelse(variable == "temperature","DEG_C",
-                           ifelse(variable == "do_mgl","MilliGM-PER-L",
-                                  ifelse(variable == "chlorophyll a","MicroGM-PER-L","RFU")))) %>%
+  mutate(variable = ifelse(variable == "Temp","temp",
+                           ifelse(variable == "DO","do",
+                                  ifelse(variable == "Chla","chla",
+                                         ifelse(variable == "BGAPC","phyco","fdom"))))) %>%
+  mutate(unit = ifelse(variable == "temp","DEG_C",
+                           ifelse(variable == "do","MilliGM-PER-L",
+                                  ifelse(variable == "chla","MicroGM-PER-L","RFU")))) %>%
   rename(observation = value) %>%
   filter(!grepl("Flag",name)) %>%
   select(datetime, lake, depth, variable, unit, observation, name)
@@ -158,13 +158,13 @@ catwalk2 <- catwalk %>%
          depth = str_extract(name, 'surface|1|2|3|4|5|6|7|8|9')) %>%
   mutate(depth = ifelse(grepl("EXO",name),1.6,
                         ifelse(depth == "surface",0.1,depth))) %>%
-  mutate(variable = ifelse(variable == "Temp","temperature",
-                           ifelse(variable == "DO","do_mgl",
-                                  ifelse(variable == "Chla","chlorophyll a",
-                                         ifelse(variable == "BGAPC","phyco_rfu","fdomrfu"))))) %>%
-  mutate(unit = ifelse(variable == "temperature","DEG_C",
-                       ifelse(variable == "do_mgl","MilliGM-PER-L",
-                              ifelse(variable == "chlorophyll a","MicroGM-PER-L","RFU")))) %>%
+  mutate(variable = ifelse(variable == "Temp","temp",
+                           ifelse(variable == "DO","do",
+                                  ifelse(variable == "Chla","chla",
+                                         ifelse(variable == "BGAPC","phyco","fdom"))))) %>%
+  mutate(unit = ifelse(variable == "temp","DEG_C",
+                       ifelse(variable == "do","MilliGM-PER-L",
+                              ifelse(variable == "chla","MicroGM-PER-L","RFU")))) %>%
   rename(flag = value) %>%
   filter(grepl("Flag",name)) %>%
   mutate(name = gsub("Flag_","",name)) %>%
@@ -186,12 +186,12 @@ chem1 <- chem %>%
          depth = Depth_m) %>%
   pivot_longer(-c(datetime, lake, depth)) %>%
   mutate(variable = str_extract(name, 'TP|TN|SRP|NH4|NO3NO2|DIC|DOC')) %>%
-  mutate(variable = ifelse(variable == "TP","tp_ugl",
-                           ifelse(variable == "TN","tn_ugl",
-                                  ifelse(variable == "SRP","drp_ugl",
-                                         ifelse(variable == "NO3NO2","no3_ugl",
-                                                ifelse(variable == "DIC","dic_mgl","doc_mgl")))))) %>%
-  mutate(unit = ifelse(variable %in% c("tp_ugl","tn_ugl","drp_ugl","no3_ugl"),"MicroGM-PER-L","MilliGM-PER-L")) %>%
+  mutate(variable = ifelse(variable == "TP","tp",
+                           ifelse(variable == "TN","tn",
+                                  ifelse(variable == "SRP","drp",
+                                         ifelse(variable == "NO3NO2","no3",
+                                                ifelse(variable == "DIC","dic","doc_mgl")))))) %>%
+  mutate(unit = ifelse(variable %in% c("tp","tn","drp","no3"),"MicroGM-PER-L","MilliGM-PER-L")) %>%
   rename(observation = value) %>%
   filter(!grepl("Flag",name)) %>%
   select(datetime, lake, depth, variable, unit, observation, name)
@@ -205,12 +205,12 @@ chem2 <- chem %>%
          depth = Depth_m) %>%
   pivot_longer(-c(datetime, lake, depth)) %>%
   mutate(variable = str_extract(name, 'TP|TN|SRP|NH4|NO3NO2|DIC|DOC')) %>%
-  mutate(variable = ifelse(variable == "TP","tp_ugl",
-                           ifelse(variable == "TN","tn_ugl",
-                                  ifelse(variable == "SRP","drp_ugl",
-                                         ifelse(variable == "NO3NO2","no3_ugl",
-                                                ifelse(variable == "DIC","dic_mgl","doc_mgl")))))) %>%
-  mutate(unit = ifelse(variable %in% c("tp_ugl","tn_ugl","drp_ugl","no3_ugl"),"MicroGM-PER-L","MilliGM-PER-L")) %>%
+  mutate(variable = ifelse(variable == "TP","tp",
+                           ifelse(variable == "TN","tn",
+                                  ifelse(variable == "SRP","drp",
+                                         ifelse(variable == "NO3NO2","no3",
+                                                ifelse(variable == "DIC","dic","doc_mgl")))))) %>%
+  mutate(unit = ifelse(variable %in% c("tp","tn","drp","no3"),"MicroGM-PER-L","MilliGM-PER-L")) %>%
   rename(flag = value) %>%
   filter(grepl("Flag",name)) %>%
   mutate(name = gsub("Flag_","",name)) %>%
@@ -249,10 +249,10 @@ ysi1 <- ysi %>%
          depth = Depth_m) %>%
   pivot_longer(-c(datetime, lake, depth)) %>%
   mutate(variable = str_extract(name, 'Temp|DO|PAR')) %>%
-  mutate(variable = ifelse(variable == "Temp","temperature",
-                           ifelse(variable == "DO","do_mgl","par"))) %>%
-  mutate(unit = ifelse(variable == "temperature","DEG_C",
-                       ifelse(variable == "do_mgl","MilliGM-PER-L","MicroMOL-PER-M2-SEC"))) %>%
+  mutate(variable = ifelse(variable == "Temp","temp",
+                           ifelse(variable == "DO","do","par"))) %>%
+  mutate(unit = ifelse(variable == "temp","DEG_C",
+                       ifelse(variable == "do","MilliGM-PER-L","MicroMOL-PER-M2-SEC"))) %>%
   filter(!(variable == "par" & depth >= 0)) %>%
   rename(observation = value) %>%
   filter(!grepl("Flag",name)) %>%
@@ -267,10 +267,10 @@ ysi2 <- ysi %>%
          depth = Depth_m) %>%
   pivot_longer(-c(datetime, lake, depth)) %>%
   mutate(variable = str_extract(name, 'Temp|DO|PAR')) %>%
-  mutate(variable = ifelse(variable == "Temp","temperature",
-                           ifelse(variable == "DO","do_mgl","par"))) %>%
-  mutate(unit = ifelse(variable == "temperature","DEG_C",
-                       ifelse(variable == "do_mgl","MilliGM-PER-L","MicroMOL-PER-M2-SEC"))) %>%
+  mutate(variable = ifelse(variable == "Temp","temp",
+                           ifelse(variable == "DO","do","par"))) %>%
+  mutate(unit = ifelse(variable == "temp","DEG_C",
+                       ifelse(variable == "do","MilliGM-PER-L","MicroMOL-PER-M2-SEC"))) %>%
   filter(!(variable == "par" & depth >= 0)) %>%
   rename(flag = value) %>%
   filter(grepl("Flag",name)) %>%
@@ -294,7 +294,7 @@ chla1 <- chla %>%
          observation = Chla_ugL,
          flag = Flag_Chla_ugL) %>%
   add_column(unit = "MicroGM-PER-L",
-             variable = "chla_mgl",
+             variable = "chla",
              depth = NA) %>%
   select(datetime, lake, depth, variable, unit, observation, flag)
 head(chla1)

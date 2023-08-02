@@ -3,10 +3,10 @@
 
 start_time <- Sys.time()
 
-library(EDIutils)
-library(tidyverse)
-library(data.table)
-library(arrow)
+library(EDIutils, quietly = TRUE)
+library(tidyverse, quietly = TRUE)
+library(data.table, quietly = TRUE)
+library(arrow, quietly = TRUE)
 
 filepath <- paste0(getwd(), "/DataCleaning_Scripts/data")
 
@@ -15,11 +15,8 @@ filepath <- paste0(getwd(), "/DataCleaning_Scripts/data")
 ## Mendota_A
 
 source("DataCleaning_Scripts/Mendota_A.R")
-for (i in unique(Mendota$variable)){
-  subset_Mendota <- Mendota["variable" == i,]
-  write_parquet(x = Mendota, sink = paste0(filepath, "/Mendota_A_", i, ".parquet"))
-}
-rm(data, res, raw, Mendota, subset_Mendota)
+write_dataset(Mendota, filepath, basename_template ="Mendota_A_{i}.parquet", max_rows_per_file = 1500000)
+rm(data, res, raw, Mendota)
 gc()
 
 ## Mendota_B
@@ -67,3 +64,6 @@ data
 
 print(paste(nrow(data), "observations collected in", round(as.numeric(time_taken),2), units(time_taken)))
 
+if ("beepr" %in% installed.packages()){ # Optional Notification of completion
+  beepr::beep(sound = 4)
+}
