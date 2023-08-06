@@ -16,7 +16,7 @@ colnames(Trout) <- c("datetime", "lake", "depth", "varbiable", "unit", "observat
 # (Accessed 2023-07-08).
 
 res <- read_data_entity_names(packageId = "knb-lter-ntl.117.41")
-raw <- read_data_entity(packageId = "knb-lter-ntl.117.41", entityId = res$entityId[3])
+raw <- read_data_entity(packageId = "knb-lter-ntl.117.41.r", entityId = res$entityId[3])
 data <- readr::read_csv(file = raw)
 
 
@@ -52,7 +52,7 @@ rm(data_b)
 #(Accessed 2023-07-20)
 
 res <- read_data_entity_names(packageId = "knb-lter-ntl.116.28")
-raw <- read_data_entity(packageId = "knb-lter-ntl.116.28", entityId = res$entityId[3])
+raw <- read_data_entity(packageId = "knb-lter-ntl.116.28.r", entityId = res$entityId[3])
 data <- readr::read_csv(file = raw)
 
 data_a <- data.frame("datetime" = data$sampledate,
