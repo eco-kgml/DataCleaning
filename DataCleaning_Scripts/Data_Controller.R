@@ -47,6 +47,12 @@ write_parquet(x = Sparkling, sink = paste0(filepath, "/Sparkling.parquet"))
 rm(data, res, raw, Sparkling)
 gc()
 
+# Trout Bog
+source("DataCleaning_Scripts/Trout_Bog.R")
+write_parquet(x = Trout_Bog, sink = paste0(filepath, "/Trout_Bog.parquet"))
+rm(data, res, raw, Trout_Bog)
+gc()
+
 # FCR
 
 source("DataCleaning_Scripts/FCR.R")
