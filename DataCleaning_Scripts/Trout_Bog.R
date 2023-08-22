@@ -19,7 +19,7 @@ data <- readr::read_csv(file = raw)
 
 data_a <- data.frame("datetime" = data$sampledate,
                      "lake" = rep("Trout Bog", nrow(data)),
-                     "depth" = rep(0, nrow(data)),
+                     "depth" = rep(0.5, nrow(data)),
                      "variable" = rep("do", nrow(data)),
                      "unit" = rep("MilliGM-PER-L", nrow(data)),
                      "observation" = data$opt_do_raw,

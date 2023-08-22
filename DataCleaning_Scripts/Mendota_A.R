@@ -12,8 +12,13 @@ colnames(Mendota) <- c("datetime", "lake", "depth", "varbiable", "unit", "observ
 #### Dissolved Oxygen, Chlorophyll, Phycocyanin - Lake Mendota Buoy 2006 - current ver 35. Environmental Data Initiative. 
 #### https://doi.org/10.6073/pasta/9dd19de5dad366b697b73d28674186fc (Accessed 2023-06-09).
 
-res <- read_data_entity_names(packageId = "knb-lter-ntl.129.35")
-raw <- read_data_entity(packageId = "knb-lter-ntl.129.35", entityId = res$entityId[3])
+scope = "knb-lter-ntl"
+identifier = 129
+revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
+packageId = paste0(scope, ".", identifier, ".", revision)
+
+res <- read_data_entity_names(packageId = packageId)
+raw <- read_data_entity(packageId = packageId, entityId = res$entityId[3])
 data <- readr::read_csv(file = raw)
 
 data <- subset(data, select = c("sampledate", "sampletime", "chlor_rfu", "flag_chlor_rfu", "phyco_rfu", "flag_phyco_rfu", "do_raw", "flag_do_raw", "do_wtemp", "flag_do_wtemp", "fdom", "flag_fdom"))
