@@ -12,9 +12,19 @@ colnames(Mendota) <- c("datetime", "lake", "depth", "varbiable", "unit", "observ
 ####Lakes LTER: Secchi Disk Depth; Other Auxiliary Base Crew Sample Data 1981 - 
 #### current ver 32. Environmental Data Initiative. 
 #### https://doi.org/10.6073/pasta/4c5b055143e8b7a5de695f4514e18142 (Accessed 2023-06-10).
-res <- read_data_entity_names(packageId = "knb-lter-ntl.31.32")
-raw <- read_data_entity(packageId = "knb-lter-ntl.31.32.r", entityId = res$entityId[1])
-data <- read_csv(raw)
+
+scope = "knb-lter-ntl"
+identifier = 31
+revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
+packageId = paste0(scope, ".", identifier, ".", revision)
+
+res <- read_data_entity_names(packageId = packageId)
+raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
+data <- readr::read_csv(file = raw)
+
+if (exists("provenance")){
+  provenance <- append(provenance, packageId)
+}
 
 mendota_data <- data %>% filter(lakeid == "ME")
 
@@ -35,11 +45,18 @@ rm(data_a)
 #### Initiative. https://doi.org/10.6073/pasta/f9c2e1059bcf92f138e140950a3632f2 
 #### (Accessed 2023-06-14).
 
-res <- read_data_entity_names(packageId = "knb-lter-ntl.38.28")
+scope = "knb-lter-ntl"
+identifier = 38
+revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
+packageId = paste0(scope, ".", identifier, ".", revision)
 
-raw <- read_data_entity(packageId = "knb-lter-ntl.38.28.r", entityId = res$entityId[1])
+res <- read_data_entity_names(packageId = packageId)
+raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
+data <- readr::read_csv(file = raw)
 
-data <- read_csv(raw)
+if (exists("provenance")){
+  provenance <- append(provenance, packageId)
+}
 
 data$lake <- "Mendota"
 
@@ -73,11 +90,15 @@ rm(data2)
 #LTER: Physical Limnology of Primary Study Lakes 1981 - current ver 35. 
 #Environmental Data Initiative. 
 #https://doi.org/10.6073/pasta/be287e7772951024ec98d73fa94eec08
-res <- read_data_entity_names(packageId = "knb-lter-ntl.29.35")
 
-raw <- read_data_entity(packageId = "knb-lter-ntl.29.35.r", entityId = res$entityId[1])
+scope = "knb-lter-ntl"
+identifier = 29
+revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
+packageId = paste0(scope, ".", identifier, ".", revision)
 
-data <- read_csv(raw)
+res <- read_data_entity_names(packageId = packageId)
+raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
+data <- readr::read_csv(file = raw)
 
 mendota_data <- data %>% filter(lakeid == "ME")
 

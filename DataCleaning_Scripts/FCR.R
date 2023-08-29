@@ -22,39 +22,102 @@ options(timeout=10000)
 library(EDIutils)
 
 #1. CTD
-res <- read_data_entity_names(packageId = "edi.200.13")
-raw <- read_data_entity(packageId = "edi.200.13", entityId = res$entityId[1])
+scope = "edi"
+identifier = 200
+revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
+packageId = paste0(scope, ".", identifier, ".", revision)
+
+res <- read_data_entity_names(packageId = packageId)
+raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
 ctd <- readr::read_csv(file = raw)
 
+if (exists("provenance")){
+  provenance <- append(provenance, packageId)
+}
+
 #2: inflow
-res <- read_data_entity_names(packageId = "edi.202.10") # original version came from ver. 9 on EDI
-raw <- read_data_entity(packageId = "edi.202.10", entityId = res$entityId[1])
+scope = "edi"
+identifier = 202
+revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
+packageId = paste0(scope, ".", identifier, ".", revision)
+
+res <- read_data_entity_names(packageId = packageId)
+raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
 inflow <- readr::read_csv(file = raw)
 
+if (exists("provenance")){
+  provenance <- append(provenance, packageId)
+}
+
 #3. catwalk
-res <- read_data_entity_names(packageId = "edi.271.7")
-raw <- read_data_entity(packageId = "edi.271.7", entityId = res$entityId[1])
+scope = "edi"
+identifier = 271
+revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
+packageId = paste0(scope, ".", identifier, ".", revision)
+
+res <- read_data_entity_names(packageId = packageId)
+raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
 catwalk <- readr::read_csv(file = raw)
 
+if (exists("provenance")){
+  provenance <- append(provenance, packageId)
+}
+
 #4. chemistry
-res <- read_data_entity_names(packageId = "edi.199.11")
-raw <- read_data_entity(packageId = "edi.199.11", entityId = res$entityId[1])
+scope = "edi"
+identifier = 199
+revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
+packageId = paste0(scope, ".", identifier, ".", revision)
+
+res <- read_data_entity_names(packageId = packageId)
+raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
 chem <- readr::read_csv(file = raw)
 
+if (exists("provenance")){
+  provenance <- append(provenance, packageId)
+}
+
 #5. Secchi
-res <- read_data_entity_names(packageId = "edi.198.11")
-raw <- read_data_entity(packageId = "edi.198.11", entityId = res$entityId[1])
+scope = "edi"
+identifier = 198
+revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
+packageId = paste0(scope, ".", identifier, ".", revision)
+
+res <- read_data_entity_names(packageId = packageId)
+raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
 secchi <- readr::read_csv(file = raw)
 
+if (exists("provenance")){
+  provenance <- append(provenance, packageId)
+}
+
 #6. YSI
-res <- read_data_entity_names(packageId = "edi.198.11")
-raw <- read_data_entity(packageId = "edi.198.11", entityId = res$entityId[2])
+scope = "edi"
+identifier = 198
+revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
+packageId = paste0(scope, ".", identifier, ".", revision)
+
+res <- read_data_entity_names(packageId = packageId)
+raw <- read_data_entity(packageId = packageId, entityId = res$entityId[2])
 ysi <- readr::read_csv(file = raw)
 
+if (exists("provenance")){
+  provenance <- append(provenance, packageId)
+}
+
 #7. Filtered chl-a
-res <- read_data_entity_names(packageId = "edi.555.3")
-raw <- read_data_entity(packageId = "edi.555.3", entityId = res$entityId[1])
+scope = "edi"
+identifier = 555
+revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
+packageId = paste0(scope, ".", identifier, ".", revision)
+
+res <- read_data_entity_names(packageId = packageId)
+raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
 chla <- readr::read_csv(file = raw)
+
+if (exists("provenance")){
+  provenance <- append(provenance, packageId)
+}
 
 ##### REFORMAT DATA #####
 library(tidyverse)

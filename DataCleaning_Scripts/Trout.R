@@ -15,10 +15,18 @@ colnames(Trout) <- c("datetime", "lake", "depth", "varbiable", "unit", "observat
 # https://doi.org/10.6073/pasta/77d0536191a56c7dc32dbf5f6ec567be 
 # (Accessed 2023-07-08).
 
-res <- read_data_entity_names(packageId = "knb-lter-ntl.117.41")
-raw <- read_data_entity(packageId = "knb-lter-ntl.117.41.r", entityId = res$entityId[3])
+scope = "knb-lter-ntl"
+identifier = 117
+revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
+packageId = paste0(scope, ".", identifier, ".", revision)
+
+res <- read_data_entity_names(packageId = packageId)
+raw <- read_data_entity(packageId = packageId, entityId = res$entityId[3])
 data <- readr::read_csv(file = raw)
 
+if (exists("provenance")){
+  provenance <- append(provenance, packageId)
+}
 
 data_a <- data.frame("datetime" = data$sampledate,
                      "lake" = rep("Trout", nrow(data)),
@@ -51,9 +59,18 @@ rm(data_b)
 #https://doi.org/10.6073/pasta/e1605901355d209dc588394312a4a38e 
 #(Accessed 2023-07-20)
 
-res <- read_data_entity_names(packageId = "knb-lter-ntl.116.28")
-raw <- read_data_entity(packageId = "knb-lter-ntl.116.28.r", entityId = res$entityId[3])
+scope = "knb-lter-ntl"
+identifier = 116
+revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
+packageId = paste0(scope, ".", identifier, ".", revision)
+
+res <- read_data_entity_names(packageId = packageId)
+raw <- read_data_entity(packageId = packageId, entityId = res$entityId[3])
 data <- readr::read_csv(file = raw)
+
+if (exists("provenance")){
+  provenance <- append(provenance, packageId)
+}
 
 data_a <- data.frame("datetime" = data$sampledate,
                      "lake" = rep("Trout", nrow(data)),
@@ -74,9 +91,18 @@ rm(data_a)
 #Base Crew Sample Data 1981 - current ver 32. Environmental Data Initiative.
 #https://doi.org/10.6073/pasta/4c5b055143e8b7a5de695f4514e18142 
 
-res <- read_data_entity_names(packageId = "knb-lter-ntl.31.32")
-raw <- read_data_entity(packageId = "knb-lter-ntl.31.32.r", entityId = res$entityId[1])
-data <- read_csv(raw)
+scope = "knb-lter-ntl"
+identifier = 31
+revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
+packageId = paste0(scope, ".", identifier, ".", revision)
+
+res <- read_data_entity_names(packageId = packageId)
+raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
+data <- readr::read_csv(file = raw)
+
+if (exists("provenance")){
+  provenance <- append(provenance, packageId)
+}
 
 trout_data <- data %>% filter(lakeid == "TR")
 
@@ -97,11 +123,19 @@ rm(data_a)
 #LTER: Physical Limnology of Primary Study Lakes 1981 - current ver 35. 
 #Environmental Data Initiative. 
 #https://doi.org/10.6073/pasta/be287e7772951024ec98d73fa94eec08
-res <- read_data_entity_names(packageId = "knb-lter-ntl.29.35")
 
-raw <- read_data_entity(packageId = "knb-lter-ntl.29.35.r", entityId = res$entityId[1])
+scope = "knb-lter-ntl"
+identifier = 29
+revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
+packageId = paste0(scope, ".", identifier, ".", revision)
 
-data <- read_csv(raw)
+res <- read_data_entity_names(packageId = packageId)
+raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
+data <- readr::read_csv(file = raw)
+
+if (exists("provenance")){
+  provenance <- append(provenance, packageId)
+}
 
 trout_data <- data %>% filter(lakeid == "TR")
 
