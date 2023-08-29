@@ -12,9 +12,19 @@ colnames(Sparkling) <- c("datetime", "lake", "depth", "varbiable", "unit", "obse
 #LTER: High Frequency Water Temperature Data - Sparkling Lake Raft 1989
 #- current ver 24. Environmental Data Initiative. 
 #https://doi.org/10.6073/pasta/52ceba5984c4497d158093f32b23b76d 
-res <- read_data_entity_names(packageId = "knb-lter-ntl.5.24")
-raw <- read_data_entity(packageId = "knb-lter-ntl.5.24.r", entityId = res$entityId[3])
+
+scope = "knb-lter-ntl"
+identifier = 5
+revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
+packageId = paste0(scope, ".", identifier, ".", revision)
+
+res <- read_data_entity_names(packageId = packageId)
+raw <- read_data_entity(packageId = packageId, entityId = res$entityId[3])
 data <- readr::read_csv(file = raw)
+
+if (exists("provenance")){
+  provenance <- append(provenance, packageId)
+}
 
 data_a <- data.frame("datetime" = data$sampledate,
                      "lake" = rep("Sparkling", nrow(data)),
@@ -34,12 +44,19 @@ rm(data_a)
 #LTER: High Frequency Meteorological and Dissolved Oxygen Data - Sparkling Lake
 #Raft 1989 - current ver 34. Environmental Data Initiative. 
 #https://doi.org/10.6073/pasta/9d054e35fb0b8d3a36b49b5e7a35f48f
-res <- read_data_entity_names(packageId = "knb-lter-ntl.4.34")
-raw <- read_data_entity(packageId = "knb-lter-ntl.4.34.r", entityId = res$entityId[3])
+
+scope = "knb-lter-ntl"
+identifier = 4
+revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
+packageId = paste0(scope, ".", identifier, ".", revision)
+
+res <- read_data_entity_names(packageId = packageId)
+raw <- read_data_entity(packageId = packageId, entityId = res$entityId[3])
 data <- readr::read_csv(file = raw)
 
-
-
+if (exists("provenance")){
+  provenance <- append(provenance, packageId)
+}
 
 data_a<- data.frame("datetime" = data$sampledate,
                      "lake" = rep("Sparkling", nrow(data)),
@@ -50,16 +67,35 @@ data_a<- data.frame("datetime" = data$sampledate,
                      "flag" = data$flag_do_raw) %>%
   drop_na(observation)
 
+data_b <- data.frame("datetime" = ymd(data$sampledate),
+                     "lake" = rep("Sparkling",nrow(data)),
+                     "depth" = rep(0,nrow(data)),
+                     "variable" = rep("do", nrow(data)),
+                     "unit" = rep("MilliGM-PER-L", nrow(data)),
+                     "observation" = data$do_raw,
+                     "flag" = data$flag_do_raw) %>% drop_na(observation)
+
 Sparkling <- rbind(Sparkling, data_a)
-rm(data_a)
+Sparkling <- rbind(Sparkling, data_b)
+rm(data_a, data_b)
 
 #Magnuson, J.J., S.R. Carpenter, and E.H. Stanley. 2023. 
 #North Temperate Lakes LTER: Secchi Disk Depth; Other Auxiliary 
 #Base Crew Sample Data 1981 - current ver 32. Environmental Data Initiative.
 #https://doi.org/10.6073/pasta/4c5b055143e8b7a5de695f4514e18142 
-res <- read_data_entity_names(packageId = "knb-lter-ntl.31.32")
-raw <- read_data_entity(packageId = "knb-lter-ntl.31.32.r", entityId = res$entityId[1])
-data <- read_csv(raw)
+
+scope = "knb-lter-ntl"
+identifier = 31
+revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
+packageId = paste0(scope, ".", identifier, ".", revision)
+
+res <- read_data_entity_names(packageId = packageId)
+raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
+data <- readr::read_csv(file = raw)
+
+if (exists("provenance")){
+  provenance <- append(provenance, packageId)
+}
 
 sparkling_data <- data %>% filter(lakeid == "SP")
 
@@ -80,11 +116,19 @@ rm(data_a)
 #LTER: Physical Limnology of Primary Study Lakes 1981 - current ver 35. 
 #Environmental Data Initiative. 
 #https://doi.org/10.6073/pasta/be287e7772951024ec98d73fa94eec08
-res <- read_data_entity_names(packageId = "knb-lter-ntl.29.35")
 
-raw <- read_data_entity(packageId = "knb-lter-ntl.29.35.r", entityId = res$entityId[1])
+scope = "knb-lter-ntl"
+identifier = 29
+revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
+packageId = paste0(scope, ".", identifier, ".", revision)
 
-data <- read_csv(raw)
+res <- read_data_entity_names(packageId = packageId)
+raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
+data <- readr::read_csv(file = raw)
+
+if (exists("provenance")){
+  provenance <- append(provenance, packageId)
+}
 
 sparkling_data <- data %>% filter(lakeid == "SP")
 
@@ -109,25 +153,4 @@ Sparkling <- rbind(Sparkling, data_a)
 Sparkling <- rbind(Sparkling, data_b)
 rm(data_a)
 rm(data_b)
-
-
-#This if for Dissolved Oxygen EXO but the variable name in the spreasheet is the
-#same for non-sensor DO
-
-res <- read_data_entity_names(packageId = "knb-lter-ntl.4.34")
-
-raw <- read_data_entity(packageId = "knb-lter-ntl.4.34.r", entityId = res$entityId[1])
-
-data <- read_csv(raw)
-
-data_a <- data.frame("datetime" = ymd(data$sampledate),
-                     "lake" = rep("Sparkling",nrow(data)),
-                     "depth" = rep(0,nrow(data)),
-                     "variable" = rep("do", nrow(data)),
-                     "unit" = rep("MilliGM-PER-L", nrow(data)),
-                     "observation" = data$avg_do_raw,
-                     "flag" = data$flag_avg_do_raw) %>% drop_na(observation)
-
-Sparkling <- rbind(Sparkling, data_a)
-rm(data_a)
 rm(sparkling_data)

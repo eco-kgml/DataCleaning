@@ -21,6 +21,10 @@ res <- read_data_entity_names(packageId = packageId)
 raw <- read_data_entity(packageId = packageId, entityId = res$entityId[3])
 data <- readr::read_csv(file = raw)
 
+if (exists("provenance")){
+  provenance <- append(provenance, packageId)
+}
+
 data <- subset(data, select = c("sampledate", "sampletime", "chlor_rfu", "flag_chlor_rfu", "phyco_rfu", "flag_phyco_rfu", "do_raw", "flag_do_raw", "do_wtemp", "flag_do_wtemp", "fdom", "flag_fdom"))
 data$datetime <- paste(data$sampledate, data$sampletime)
 data$datetime <- strptime(data$datetime, format = "%Y-%m-%d %H:%M:%S")

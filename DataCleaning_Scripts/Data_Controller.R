@@ -10,6 +10,8 @@ library(arrow, quietly = TRUE)
 
 filepath <- paste0(getwd(), "/DataCleaning_Scripts/data")
 
+provenance <- c()
+
 # Mendota
 
 ## Mendota_A
@@ -68,7 +70,8 @@ data <- arrow::open_dataset(sources = filepath)
 data
 
 
-print(paste(nrow(data), "observations collected in", round(as.numeric(time_taken),2), units(time_taken)))
+print(paste(nrow(data), "observations collected in", round(as.numeric(time_taken),2), units(time_taken), "from the following EDI data products:"))
+print(unique(provenance))
 
 if ("beepr" %in% installed.packages()){ # Optional Notification of completion
   beepr::beep(sound = 4)
