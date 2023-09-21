@@ -69,6 +69,11 @@ time_taken <- difftime(end_time, start_time)
 data <- arrow::open_dataset(sources = filepath)
 data
 
+# NEON
+source("DataCleaning_Scripts/NEON_Lakes.R")
+write_parquet(x = NEON_Lakes, sink = paste0(filepath, "/NEON_Lakes.parquet"))
+rm(NEON_Lakes)
+gc()
 
 print(paste(nrow(data), "observations collected in", round(as.numeric(time_taken),2), units(time_taken), "from the following EDI data products:"))
 print(unique(provenance))
