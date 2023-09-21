@@ -1,0 +1,33 @@
+---
+title: "Untitled"
+author: "Bennett McAfee"
+date: "2023-09-11"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(EDIutilsAddons)
+
+temp_data <- get_data("knb-lter-ntl.31.32")
+
+temp_data <- temp_data %>% mutate(max_depth = case_when(lakeid == "AL" ~ 8,
+                                                        lakeid == "TR" ~ 35.7,
+                                                        lakeid == "SP" ~ 20,
+                                                        lakeid == "BM" ~ 21.3,
+                                                        lakeid == "CR" ~ 20.4,
+                                                        lakeid == "CB" ~ 2.5,
+                                                        lakeid == "TB" ~ 7.9,
+                                                        lakeid == "FI" ~ 18.9,
+                                                        lakeid == "ME" ~ 25.3,
+                                                        lakeid == "WI" ~ 4.2,
+                                                        lakeid == "MO" ~ 22.5
+                                                        ))
+
+temp_data$diff <- temp_data$max_depth - temp_data$secnview
+
+temp_data_sub <- subset(temp_data, diff <= 0)
+
+ggplot(temp_data, aes(x = as.Date(sampledate), y = diff, color = lakeid))+
+  geom_point()
+```
