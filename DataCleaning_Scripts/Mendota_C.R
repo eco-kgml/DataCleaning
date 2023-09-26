@@ -233,3 +233,11 @@ Mendota <- rbind(Mendota, data_dic)
 Mendota <- rbind(Mendota, data_doc)
 rm(data_tp1, data_tp2, data_drp, data_tn1, data_tn2, data_no2, data_nh41, data_nh42, data_dic, data_doc)
 
+#trial area
+areas <- read_csv("/Users/aditewari/Desktop/DataCleaning/DataCleaning_Scripts/For Adi/LakeEnsemblR_bathymetry_standard.csv")
+
+trial <- new_mendota_data %>% filter(datetime == "1995-05-09")
+
+trial <- trial %>% left_join(areas,by=c("depth"))
+
+trial$Mass_meter_cubed <- trial$observation * trial$Area_meterSquared
