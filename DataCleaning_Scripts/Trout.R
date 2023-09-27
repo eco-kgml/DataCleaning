@@ -207,7 +207,7 @@ data_a <- data.frame("datetime" = ymd(trout_data$sampledate),
                      "depth" = trout_data$depth,
                      "variable" = rep("tp", nrow(trout_data)),
                      "unit" = rep("MicroGM-PER-L", nrow(trout_data)),
-                     "observation" = trout_data$totpuf,
+                     "observation" = trout_data$totpuf ,
                      "flag" = trout_data$flagtotpuf) %>% drop_na(observation)
 
 Trout <- rbind(Trout, data_a)
@@ -232,7 +232,7 @@ data_a <- data.frame("datetime" = ymd(trout_data$sampledate),
                      "lake" = rep("Trout",nrow(trout_data)),
                      "depth" = trout_data$depth,
                      "variable" = rep("dic", nrow(trout_data)),
-                     "unit" = rep("MicroGM-PER-L", nrow(trout_data)),
+                     "unit" = rep("MilliGM-PER-L", nrow(trout_data)),
                      "observation" = trout_data$dic,
                      "flag" = trout_data$flagdic) %>% drop_na(observation)
 
@@ -244,7 +244,7 @@ data_a <- data.frame("datetime" = ymd(trout_data$sampledate),
                      "lake" = rep("Trout",nrow(trout_data)),
                      "depth" = trout_data$depth,
                      "variable" = rep("doc", nrow(trout_data)),
-                     "unit" = rep("MicroGM-PER-L", nrow(trout_data)),
+                     "unit" = rep("MilliGM-PER-L", nrow(trout_data)),
                      "observation" = trout_data$doc,
                      "flag" = trout_data$flagdoc) %>% drop_na(observation)
 
