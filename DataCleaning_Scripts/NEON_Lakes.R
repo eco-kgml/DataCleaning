@@ -14,7 +14,7 @@ data_full <- loadByProduct(dpID=packageID, site=c("SUGG", "BARC", "CRAM", "LIRO"
                         check.size = F)
 
 if (exists("provenance")){
-  provenance <- append(provenance, packageId)
+  provenance <- append(provenance, packageID)
 }
 
 data <- data_full[[4]]
