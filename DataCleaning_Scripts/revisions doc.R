@@ -9,28 +9,28 @@ library(lubridate)
 #- current ver 59. Environmental Data Initiative. 
 #https://doi.org/10.6073/pasta/c923b8e044310f3f5612dab09c2cc6c2
 
-res <- read_data_entity_names(packageId = "knb-lter-ntl.1.60")
-raw <- read_data_entity(packageId = "knb-lter-ntl.1.60", entityId = res$entityId[1])
+res <- read_data_entity_names(packageId = "knb-lter-ntl.129.35")
+raw <- read_data_entity(packageId = "knb-lter-ntl.129.35", entityId = res$entityId[1])
 data <- readr::read_csv(file = raw) 
 
 mendota_data <- data %>%
-  filter( lakeid == "ME") %>%
-  filter(!is.na(totpuf_sloh)) %>%
-  select(daynum,sampledate,depth,totpuf_sloh,flagtotpuf_sloh) %>%
+  filter(lakeid == "ME") %>%
+  select(daynum,sampledate,depth,doc,flagdoc)%>%
   group_by(daynum) %>% 
-  filter(max(depth)>=20)
+  filter(max(depth)>=8)
 
 mendota_data <- data.frame("datetime" = ymd(mendota_data$sampledate),
-                     "lake" = rep("Mendota",nrow(mendota_data)),
-                     "depth" = mendota_data$depth,
-                     "variable" = rep("tp", nrow(mendota_data)),
-                     "unit" = rep("MilliGM-PER-L", nrow(mendota_data)),
-                     "observation" = mendota_data$totpuf_sloh,
-                     "flag" = mendota_data$flagtotpuf_sloh) %>% drop_na(observation)
+                           "lake" = rep("Mendota",nrow(mendota_data)),
+                           "depth" = mendota_data$depth,
+                           "variable" = rep("doc", nrow(mendota_data)),
+                           "unit" = rep("MilliGM-PER-L", nrow(mendota_data)),
+                           "observation" = mendota_data$doc,
+                           "flag" = mendota_data$flagdoc) %>% drop_na(observation)
 
 
 interpolate <- function(sample){
   check <- approx(sample$depth,sample$observation,method="linear",n=max(sample$depth)+1)
+  check$x <- round(check$x)
   
   missing_depths <- c((max(check$x)+1):25)
   
@@ -41,12 +41,13 @@ interpolate <- function(sample){
   new_tibble <- data.frame("datetime" = rep(unique(sample$datetime)),
                            "lake" = rep("Mendota"),
                            "depth" = check$x,
-                           "variable" = rep("tp"),
+                           "variable" = rep("doc"),
                            "unit" = rep("MilliGM-PER-L"),
                            "observation" = check$y,
                            "flag" = NA)
   return (new_tibble)
 }
+
 
 new_mendota_data <- data.frame("datetime" = NULL,"lake" = NULL,"depth" = NULL,"variable" = NULL,"unit" = NULL,
                                "observation" = NULL, "flag" = NULL)
@@ -55,7 +56,7 @@ for (unique_date in unique(mendota_data$datetime)) {
   current_df <- mendota_data %>%
     filter(datetime == unique_date) %>%
     interpolate()
-
+  
   new_mendota_data <- rbind(new_mendota_data,current_df)
 }
 
@@ -78,7 +79,6 @@ thermocline <- thermocline %>%
 new_mendota_data <- new_mendota_data %>% 
   left_join(thermocline,by=c("datetime"))
 
-
 new_mendota_data_exists <- new_mendota_data %>%
   filter(ThermoclineDepth>0) %>%
   mutate("type" = ifelse(depth<ThermoclineDepth,"epi","hypo")) %>% 
@@ -93,10 +93,7 @@ new_mendota_data_all <- new_mendota_data %>%
   group_by(datetime,lake,variable,unit,ThermoclineDepth,type) %>%
   summarise(concentration_mg_per_L = sum(mass_in_mg)/sum(volume_in_l))
 
-revision_v1 <- rbind(new_mendota_data_exists,new_mendota_data_all) %>% 
+revision_v2 <- rbind(new_mendota_data_exists,new_mendota_data_all) %>% 
   arrange(datetime,type)
-
-write.csv(revision_v1,"/Users/aditewari/Desktop/DataCleaning/DataCleaning_Scripts/revision_v1.csv",row.names = FALSE)
-
 
 
