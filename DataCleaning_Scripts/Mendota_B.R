@@ -29,7 +29,7 @@ data <- data[data$lake == "Mendota",]
 data_a <- data.frame("datetime" = strptime(data$Sampledate, format = '%Y-%m-%d %H:%M:%S'),
                      "lake" = data$lake,
                      "depth" = data$depth_m,
-                     "variable" = rep("temp_C", nrow(data)),
+                     "variable" = rep("temp", nrow(data)),
                      "unit" = rep("DEG_C", nrow(data)),
                      "observation" = data$temperature,
                      "flag" = rep(NA, nrow(data)))

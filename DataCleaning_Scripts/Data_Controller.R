@@ -17,41 +17,41 @@ provenance <- c()
 ## Mendota_A
 
 source("DataCleaning_Scripts/Mendota_A.R")
-write_dataset(Mendota, filepath, basename_template ="Mendota_A_{i}.parquet", max_rows_per_file = 1500000)
+write_dataset(Mendota, paste0(filepath, "/HighFrequency"), basename_template ="Mendota_A_{i}.parquet", max_rows_per_file = 1500000)
 rm(data, res, raw, Mendota)
 gc()
 
 ## Mendota_B
 
 source("DataCleaning_Scripts/Mendota_B.R")
-write_parquet(x = Mendota, sink = paste0(filepath, "/Mendota_B.parquet"))
+write_parquet(x = Mendota, sink = paste0(filepath, "/HighFrequency", "/Mendota_B.parquet"))
 rm(data, res, raw, Mendota)
 gc()
 
-## Mendota_C
+## NTL Low Frequency
 
-source("DataCleaning_Scripts/Mendota_C.R")
-write_parquet(x = Mendota, sink = paste0(filepath, "/Mendota_C.parquet"))
-rm(data, res, raw, Mendota)
+source("DataCleaning_Scripts/NTL.R")
+write_parquet(x = NTL, sink = paste0(filepath, "/LowFrequency", "/NTL.parquet"))
+rm(data, res, raw, NTL)
 gc()
 
 # Trout
 
 source("DataCleaning_Scripts/Trout.R")
-write_parquet(x = Trout, sink = paste0(filepath, "/Trout.parquet"))
+write_parquet(x = Trout, sink = paste0(filepath, "/HighFrequency", "/Trout.parquet"))
 rm(data, res, raw, Trout)
 gc()
 
 # Sparkling
 
 source("DataCleaning_Scripts/Sparkling.R")
-write_parquet(x = Sparkling, sink = paste0(filepath, "/Sparkling.parquet"))
+write_parquet(x = Sparkling, sink = paste0(filepath, "/HighFrequency", "/Sparkling.parquet"))
 rm(data, res, raw, Sparkling)
 gc()
 
 # Trout Bog
 source("DataCleaning_Scripts/Trout_Bog.R")
-write_parquet(x = Trout_Bog, sink = paste0(filepath, "/Trout_Bog.parquet"))
+write_parquet(x = Trout_Bog, sink = paste0(filepath, "/HighFrequency", "/Trout_Bog.parquet"))
 rm(data, res, raw, Trout_Bog)
 gc()
 
@@ -62,18 +62,18 @@ write_parquet(x = FCR, sink = paste0(filepath, "/FCR.parquet"))
 rm(FCR)
 gc()
 
+# NEON
+source("DataCleaning_Scripts/NEON_Lakes.R")
+write_parquet(x = NEON_Lakes, sink = paste0(filepath, "/NEON_Lakes.parquet"))
+rm(NEON_Lakes)
+gc()
+
 # Confirming Proper Data Collection
 end_time <- Sys.time()
 time_taken <- difftime(end_time, start_time)
 
 data <- arrow::open_dataset(sources = filepath)
 data
-
-# NEON
-source("DataCleaning_Scripts/NEON_Lakes.R")
-write_parquet(x = NEON_Lakes, sink = paste0(filepath, "/NEON_Lakes.parquet"))
-rm(NEON_Lakes)
-gc()
 
 print(paste(nrow(data), "observations collected in", round(as.numeric(time_taken),2), units(time_taken), "from the following EDI data products:"))
 print(unique(provenance))
