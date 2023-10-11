@@ -27,7 +27,7 @@ if (exists("provenance")){
 }
 
 data_a <- data.frame("datetime" = data$sampledate,
-                     "lake" = rep("Sparkling", nrow(data)),
+                     "lake" = rep("SP", nrow(data)),
                      "depth" = data$depth,
                      "variable" = rep("temp", nrow(data)),
                      "unit" = rep("DEG_C", nrow(data)),
@@ -59,7 +59,7 @@ if (exists("provenance")){
 }
 
 data_a<- data.frame("datetime" = data$sampledate,
-                     "lake" = rep("Sparkling", nrow(data)),
+                     "lake" = rep("SP", nrow(data)),
                      "depth" = rep(-2, nrow(data)),
                      "variable" = rep("par", nrow(data)),
                      "unit" = rep("MicroMOL-PER-M2-SEC", nrow(data)),
@@ -68,7 +68,7 @@ data_a<- data.frame("datetime" = data$sampledate,
   drop_na(observation)
 
 data_b <- data.frame("datetime" = ymd(data$sampledate),
-                     "lake" = rep("Sparkling",nrow(data)),
+                     "lake" = rep("SP",nrow(data)),
                      "depth" = rep(0,nrow(data)),
                      "variable" = rep("do", nrow(data)),
                      "unit" = rep("MilliGM-PER-L", nrow(data)),

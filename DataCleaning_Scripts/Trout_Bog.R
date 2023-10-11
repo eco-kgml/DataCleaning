@@ -27,7 +27,7 @@ if (exists("provenance")){
 }
 
 data_a <- data.frame("datetime" = data$sampledate,
-                     "lake" = rep("Trout Bog", nrow(data)),
+                     "lake" = rep("TB", nrow(data)),
                      "depth" = rep(0.5, nrow(data)),
                      "variable" = rep("do", nrow(data)),
                      "unit" = rep("MilliGM-PER-L", nrow(data)),
@@ -57,7 +57,7 @@ if (exists("provenance")){
 }
 
 data_a <- data.frame("datetime" = data$sampledate,
-                     "lake" = rep("Trout Bog", nrow(data)),
+                     "lake" = rep("TB", nrow(data)),
                      "depth" = data$depth,
                      "variable" = rep("temp", nrow(data)),
                      "unit" = rep("DEG_C", nrow(data)),

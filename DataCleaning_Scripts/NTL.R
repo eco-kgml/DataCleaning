@@ -169,8 +169,24 @@ data_tn2 <- data.frame("datetime" = ymd(data$sampledate),
                        "depth" = data$depth,
                        "variable" = rep("tn", nrow(data)),
                        "unit" = rep("MicroGM-PER-L", nrow(data)),
-                       "observation" = data$totnuf_sloh * 1000,
+                       "observation" = data$totnuf_sloh * 1000, # *1000 converts mg/L to ug/L
                        "flag" = data$flagtotnuf_sloh)%>% 
+  drop_na(observation)
+data_no3no2 <- data.frame("datetime" = ymd(data$sampledate),
+                          "lake" = data$lakeid,
+                          "depth" = data$depth,
+                          "variable" = rep("no3no2", nrow(data)),
+                          "unit" = rep("MicroGM-PER-L", nrow(data)),
+                          "observation" = data$no3no2,
+                          "flag" = data$flagno3no2)%>% 
+  drop_na(observation)
+data_no3no2_2 <- data.frame("datetime" = ymd(data$sampledate),
+                            "lake" = data$lakeid,
+                            "depth" = data$depth,
+                            "variable" = rep("no3no2", nrow(data)),
+                            "unit" = rep("MicroGM-PER-L", nrow(data)),
+                            "observation" = data$no3no2_sloh * 1000, # *1000 converts mg/L to ug/L
+                            "flag" = data$flagno3no2_sloh)%>% 
   drop_na(observation)
 data_no2 <- data.frame("datetime" = ymd(data$sampledate),
                        "lake" = data$lakeid,
@@ -218,11 +234,59 @@ NTL <- rbind(NTL, data_tp2)
 NTL <- rbind(NTL, data_drp)
 NTL <- rbind(NTL, data_tn1)
 NTL <- rbind(NTL, data_tn2)
+NTL <- rbind(NTL, data_no3no2)
+NTL <- rbind(NTL, data_no3no2_2)
 NTL <- rbind(NTL, data_no2)
 NTL <- rbind(NTL, data_nh41)
 NTL <- rbind(NTL, data_nh42)
 NTL <- rbind(NTL, data_dic)
 NTL <- rbind(NTL, data_doc)
-rm(data_tp1, data_tp2, data_drp, data_tn1, data_tn2, data_no2, data_nh41, data_nh42, data_dic, data_doc)
+rm(data_tp1, data_tp2, data_drp, data_tn1, data_tn2, data_no3no2, data_no3no2_2, data_no2, data_nh41, data_nh42, data_dic, data_doc)
+
+# Hart, J., H. Dugan, C. Carey, E. Stanley, and P. Hanson. 2022. 
+# Lake Mendota Carbon and Greenhouse Gas Measurements at North Temperate Lakes LTER 2016 ver 22. 
+# Environmental Data Initiative. https://doi.org/10.6073/pasta/a2b38bc23fb0061e64ae76bbdec656fd (Accessed 2023-10-11).
+
+scope = "knb-lter-ntl"
+identifier = 339
+revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
+packageId = paste0(scope, ".", identifier, ".", revision)
+
+res <- read_data_entity_names(packageId = packageId)
+raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
+data <- readr::read_csv(file = raw)
+
+data <- data %>% filter(sample_site == "Deep Hole")
+
+data_poc <- data.frame("datetime" = ymd(data$sampledate),
+                       "lake" = rep("ME", nrow(data)),
+                       "depth" = data$water_depth,
+                       "variable" = rep("poc", nrow(data)),
+                       "unit" = rep("MilliGM-PER-L", nrow(data)),
+                       "observation" = data$poc,
+                       "flag" = rep(NA, nrow(data)))%>% 
+  drop_na(observation)
+data_doc <- data.frame("datetime" = ymd(data$sampledate),
+                       "lake" = rep("ME", nrow(data)),
+                       "depth" = data$water_depth,
+                       "variable" = rep("doc", nrow(data)),
+                       "unit" = rep("MilliGM-PER-L", nrow(data)),
+                       "observation" = data$doc,
+                       "flag" = rep(NA, nrow(data)))%>% 
+  drop_na(observation)
+data_dic <- data.frame("datetime" = ymd(data$sampledate),
+                       "lake" = rep("ME", nrow(data)),
+                       "depth" = data$water_depth,
+                       "variable" = rep("dic", nrow(data)),
+                       "unit" = rep("MilliGM-PER-L", nrow(data)),
+                       "observation" = data$dic,
+                       "flag" = rep(NA, nrow(data)))%>% 
+  drop_na(observation)
+
+NTL <- rbind(NTL, data_poc)
+NTL <- rbind(NTL, data_dic)
+NTL <- rbind(NTL, data_doc)
+rm(data_poc, data_dic, data_doc)
+
 
 
