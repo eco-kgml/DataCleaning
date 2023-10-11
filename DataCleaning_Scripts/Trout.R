@@ -5,8 +5,8 @@ library(EDIutils)
 library(tidyverse)
 
 # Creating data table
-Trout <- data.frame(matrix(ncol = 7, nrow = 0))
-colnames(Trout) <- c("datetime", "lake", "depth", "varbiable", "unit", "observation", "flag")
+Trout <- data.frame(matrix(ncol = 8, nrow = 0))
+colnames(Trout) <- c("source", "datetime", "lake", "depth", "varbiable", "unit", "observation", "flag")
 
 
 # Magnuson, J.J., S.R. Carpenter, and E.H. Stanley. 2023. North Temperate Lakes 
@@ -28,7 +28,8 @@ if (exists("provenance")){
   provenance <- append(provenance, packageId)
 }
 
-data_a <- data.frame("datetime" = data$sampledate,
+data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                     "datetime" = data$sampledate,
                      "lake" = rep("TR", nrow(data)),
                      "depth" = rep(0.5, nrow(data)),
                      "variable" = rep("do", nrow(data)),
@@ -40,7 +41,8 @@ data_a <- data.frame("datetime" = data$sampledate,
 Trout <- rbind(Trout, data_a)
 rm(data_a)
 
-data_b <- data.frame("datetime" = data$sampledate,
+data_b <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                     "datetime" = data$sampledate,
                      "lake" = rep("TR", nrow(data)),
                      "depth" = rep(-2, nrow(data)),
                      "variable" = rep("par", nrow(data)),
@@ -72,7 +74,8 @@ if (exists("provenance")){
   provenance <- append(provenance, packageId)
 }
 
-data_a <- data.frame("datetime" = data$sampledate,
+data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                     "datetime" = data$sampledate,
                      "lake" = rep("TR", nrow(data)),
                      "depth" = data$depth,
                      "variable" = rep("temp", nrow(data)),

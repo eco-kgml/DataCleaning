@@ -5,8 +5,8 @@ library(EDIutils)
 library(tidyverse)
 
 # Creating data table
-Mendota <- data.frame(matrix(ncol = 7, nrow = 0))
-colnames(Mendota) <- c("datetime", "lake", "depth", "varbiable", "unit", "observation", "flag")
+Mendota <- data.frame(matrix(ncol = 8, nrow = 0))
+colnames(Mendota) <- c("source", "datetime", "lake", "depth", "varbiable", "unit", "observation", "flag")
 
 #### Magnuson, J.J., S.R. Carpenter, and E.H. Stanley. 2023. North Temperate Lakes LTER: High Frequency Data: Meteorological, 
 #### Dissolved Oxygen, Chlorophyll, Phycocyanin - Lake Mendota Buoy 2006 - current ver 35. Environmental Data Initiative. 
@@ -28,7 +28,8 @@ if (exists("provenance")){
 data <- subset(data, select = c("sampledate", "sampletime", "chlor_rfu", "flag_chlor_rfu", "phyco_rfu", "flag_phyco_rfu", "do_raw", "flag_do_raw", "do_wtemp", "flag_do_wtemp", "fdom", "flag_fdom"))
 data$datetime <- paste(data$sampledate, data$sampletime)
 data$datetime <- strptime(data$datetime, format = "%Y-%m-%d %H:%M:%S")
-data_a <- data.frame("datetime" = data$datetime,
+data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                     "datetime" = data$datetime,
                      "lake" = rep("ME", nrow(data)),
                      "depth" = rep(0, nrow(data)),
                      "variable" = rep("chla", nrow(data)),
@@ -37,7 +38,8 @@ data_a <- data.frame("datetime" = data$datetime,
                      "flag" = data$flag_chlor_rfu)
 Mendota <- rbind(Mendota, data_a)
 rm(data_a)
-data_b <- data.frame("datetime" = data$datetime,
+data_b <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                     "datetime" = data$datetime,
                      "lake" = rep("ME", nrow(data)),
                      "depth" = rep(0, nrow(data)),
                      "variable" = rep("phyco", nrow(data)),
@@ -46,7 +48,8 @@ data_b <- data.frame("datetime" = data$datetime,
                      "flag" = data$phyco_rfu)
 Mendota <- rbind(Mendota, data_b)
 rm(data_b)
-data_c <- data.frame("datetime" = data$datetime,
+data_c <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                     "datetime" = data$datetime,
                      "lake" = rep("ME", nrow(data)),
                      "depth" = rep(0, nrow(data)),
                      "variable" = rep("do", nrow(data)),
@@ -55,7 +58,8 @@ data_c <- data.frame("datetime" = data$datetime,
                      "flag" = data$flag_do_raw)
 Mendota <- rbind(Mendota, data_c)
 rm(data_c)
-data_d <- data.frame("datetime" = data$datetime,
+data_d <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                     "datetime" = data$datetime,
                      "lake" = rep("ME", nrow(data)),
                      "depth" = rep(0, nrow(data)),
                      "variable" = rep("temp", nrow(data)),
@@ -64,7 +68,8 @@ data_d <- data.frame("datetime" = data$datetime,
                      "flag" = data$flag_do_wtemp)
 Mendota <- rbind(Mendota, data_d)
 rm(data_d)
-data_e <- data.frame("datetime" = data$datetime,
+data_e <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                     "datetime" = data$datetime,
                      "lake" = rep("ME", nrow(data)),
                      "depth" = rep(0, nrow(data)),
                      "variable" = rep("fdom", nrow(data)),

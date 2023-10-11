@@ -5,8 +5,8 @@ library(EDIutils)
 library(tidyverse)
 
 # Creating data table
-Sparkling <- data.frame(matrix(ncol = 7, nrow = 0))
-colnames(Sparkling) <- c("datetime", "lake", "depth", "varbiable", "unit", "observation", "flag")
+Sparkling <- data.frame(matrix(ncol = 8, nrow = 0))
+colnames(Sparkling) <- c("source", "datetime", "lake", "depth", "varbiable", "unit", "observation", "flag")
 
 #Magnuson, J.J., S.R. Carpenter, and E.H. Stanley. 2023. North Temperate Lakes
 #LTER: High Frequency Water Temperature Data - Sparkling Lake Raft 1989
@@ -26,7 +26,8 @@ if (exists("provenance")){
   provenance <- append(provenance, packageId)
 }
 
-data_a <- data.frame("datetime" = data$sampledate,
+data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                     "datetime" = data$sampledate,
                      "lake" = rep("SP", nrow(data)),
                      "depth" = data$depth,
                      "variable" = rep("temp", nrow(data)),
@@ -58,7 +59,8 @@ if (exists("provenance")){
   provenance <- append(provenance, packageId)
 }
 
-data_a<- data.frame("datetime" = data$sampledate,
+data_a<- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                    "datetime" = data$sampledate,
                      "lake" = rep("SP", nrow(data)),
                      "depth" = rep(-2, nrow(data)),
                      "variable" = rep("par", nrow(data)),
@@ -67,7 +69,8 @@ data_a<- data.frame("datetime" = data$sampledate,
                      "flag" = data$flag_do_raw) %>%
   drop_na(observation)
 
-data_b <- data.frame("datetime" = ymd(data$sampledate),
+data_b <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                     "datetime" = ymd(data$sampledate),
                      "lake" = rep("SP",nrow(data)),
                      "depth" = rep(0,nrow(data)),
                      "variable" = rep("do", nrow(data)),
