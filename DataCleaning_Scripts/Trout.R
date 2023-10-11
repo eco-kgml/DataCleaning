@@ -29,7 +29,7 @@ if (exists("provenance")){
 }
 
 data_a <- data.frame("datetime" = data$sampledate,
-                     "lake" = rep("Trout", nrow(data)),
+                     "lake" = rep("TR", nrow(data)),
                      "depth" = rep(0.5, nrow(data)),
                      "variable" = rep("do", nrow(data)),
                      "unit" = rep("MilliGM-PER-L", nrow(data)),
@@ -41,7 +41,7 @@ Trout <- rbind(Trout, data_a)
 rm(data_a)
 
 data_b <- data.frame("datetime" = data$sampledate,
-                     "lake" = rep("Trout", nrow(data)),
+                     "lake" = rep("TR", nrow(data)),
                      "depth" = rep(-2, nrow(data)),
                      "variable" = rep("par", nrow(data)),
                      "unit" = rep("MicroMOL-PER-M2-SEC", nrow(data)),
@@ -73,7 +73,7 @@ if (exists("provenance")){
 }
 
 data_a <- data.frame("datetime" = data$sampledate,
-                     "lake" = rep("Trout", nrow(data)),
+                     "lake" = rep("TR", nrow(data)),
                      "depth" = data$depth,
                      "variable" = rep("temp", nrow(data)),
                      "unit" = rep("DEG_C", nrow(data)),

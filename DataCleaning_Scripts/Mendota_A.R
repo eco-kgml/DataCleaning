@@ -29,7 +29,7 @@ data <- subset(data, select = c("sampledate", "sampletime", "chlor_rfu", "flag_c
 data$datetime <- paste(data$sampledate, data$sampletime)
 data$datetime <- strptime(data$datetime, format = "%Y-%m-%d %H:%M:%S")
 data_a <- data.frame("datetime" = data$datetime,
-                     "lake" = rep("Mendota", nrow(data)),
+                     "lake" = rep("ME", nrow(data)),
                      "depth" = rep(0, nrow(data)),
                      "variable" = rep("chla", nrow(data)),
                      "unit" = rep("RFU", nrow(data)),
@@ -38,7 +38,7 @@ data_a <- data.frame("datetime" = data$datetime,
 Mendota <- rbind(Mendota, data_a)
 rm(data_a)
 data_b <- data.frame("datetime" = data$datetime,
-                     "lake" = rep("Mendota", nrow(data)),
+                     "lake" = rep("ME", nrow(data)),
                      "depth" = rep(0, nrow(data)),
                      "variable" = rep("phyco", nrow(data)),
                      "unit" = rep("RFU", nrow(data)),
@@ -47,7 +47,7 @@ data_b <- data.frame("datetime" = data$datetime,
 Mendota <- rbind(Mendota, data_b)
 rm(data_b)
 data_c <- data.frame("datetime" = data$datetime,
-                     "lake" = rep("Mendota", nrow(data)),
+                     "lake" = rep("ME", nrow(data)),
                      "depth" = rep(0, nrow(data)),
                      "variable" = rep("do", nrow(data)),
                      "unit" = rep("MilliGM-PER-L", nrow(data)),
@@ -56,7 +56,7 @@ data_c <- data.frame("datetime" = data$datetime,
 Mendota <- rbind(Mendota, data_c)
 rm(data_c)
 data_d <- data.frame("datetime" = data$datetime,
-                     "lake" = rep("Mendota", nrow(data)),
+                     "lake" = rep("ME", nrow(data)),
                      "depth" = rep(0, nrow(data)),
                      "variable" = rep("temp", nrow(data)),
                      "unit" = rep("DEG_C", nrow(data)),
@@ -65,7 +65,7 @@ data_d <- data.frame("datetime" = data$datetime,
 Mendota <- rbind(Mendota, data_d)
 rm(data_d)
 data_e <- data.frame("datetime" = data$datetime,
-                     "lake" = rep("Mendota", nrow(data)),
+                     "lake" = rep("ME", nrow(data)),
                      "depth" = rep(0, nrow(data)),
                      "variable" = rep("fdom", nrow(data)),
                      "unit" = rep("RFU", nrow(data)),

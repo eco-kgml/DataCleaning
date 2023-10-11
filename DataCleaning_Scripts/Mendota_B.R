@@ -25,7 +25,7 @@ if (exists("provenance")){
   provenance <- append(provenance, packageId)
 }
 
-data <- data[data$lake == "Mendota",]
+data <- data[data$lake == "ME",]
 data_a <- data.frame("datetime" = strptime(data$Sampledate, format = '%Y-%m-%d %H:%M:%S'),
                      "lake" = data$lake,
                      "depth" = data$depth_m,
