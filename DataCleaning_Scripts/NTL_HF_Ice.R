@@ -5,8 +5,8 @@ library(EDIutils)
 library(tidyverse)
 
 # Creating data table
-Mendota <- data.frame(matrix(ncol = 7, nrow = 0))
-colnames(Mendota) <- c("datetime", "lake", "depth", "varbiable", "unit", "observation", "flag")
+NTL <- data.frame(matrix(ncol = 8, nrow = 0))
+colnames(NTL) <- c("source", "datetime", "lake", "depth", "varbiable", "unit", "observation", "flag")
 
 #### Lottig, N. 2022. High Frequency Under-Ice Water Temperature Buoy Data - 
 #### Crystal Bog, Trout Bog, and Lake Mendota, Wisconsin, USA 2016-2020 ver 3. 
@@ -25,13 +25,19 @@ if (exists("provenance")){
   provenance <- append(provenance, packageId)
 }
 
-data <- data[data$lake == "ME",]
-data_a <- data.frame("datetime" = strptime(data$Sampledate, format = '%Y-%m-%d %H:%M:%S'),
+
+
+data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                     "datetime" = data$Sampledate,
                      "lake" = data$lake,
                      "depth" = data$depth_m,
                      "variable" = rep("temp", nrow(data)),
                      "unit" = rep("DEG_C", nrow(data)),
                      "observation" = data$temperature,
                      "flag" = rep(NA, nrow(data)))
-Mendota <- rbind(Mendota, data_a)
+
+data_a$lake[data_a$lake == "Mendota"] <- "ME"
+data_a$lake[data_a$lake == "Crystal Bog"] <- "CB"
+data_a$lake[data_a$lake == "Trout Bog"] <- "TB"
+NTL <- rbind(NTL, data_a)
 rm(data_a)

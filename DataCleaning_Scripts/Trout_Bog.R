@@ -5,8 +5,8 @@ library(EDIutils)
 library(tidyverse)
 
 # Creating data table
-Trout_Bog <- data.frame(matrix(ncol = 7, nrow = 0))
-colnames(Trout_Bog) <- c("datetime", "lake", "depth", "varbiable", "unit", "observation", "flag")
+Trout_Bog <- data.frame(matrix(ncol = 8, nrow = 0))
+colnames(Trout_Bog) <- c("source", "datetime", "lake", "depth", "varbiable", "unit", "observation", "flag")
 
 #Magnuson, J., S. Carpenter, and E. Stanley. 2022. North Temperate Lakes LTER:
 #High Frequency Meteorological and Dissolved Oxygen Data - Trout Bog Buoy 2003 
@@ -26,7 +26,8 @@ if (exists("provenance")){
   provenance <- append(provenance, packageId)
 }
 
-data_a <- data.frame("datetime" = data$sampledate,
+data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                     "datetime" = data$sampledate,
                      "lake" = rep("TB", nrow(data)),
                      "depth" = rep(0.5, nrow(data)),
                      "variable" = rep("do", nrow(data)),
@@ -56,7 +57,8 @@ if (exists("provenance")){
   provenance <- append(provenance, packageId)
 }
 
-data_a <- data.frame("datetime" = data$sampledate,
+data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                     "datetime" = data$sampledate,
                      "lake" = rep("TB", nrow(data)),
                      "depth" = data$depth,
                      "variable" = rep("temp", nrow(data)),

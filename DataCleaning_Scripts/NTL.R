@@ -5,11 +5,11 @@ library(EDIutils)
 library(tidyverse)
 
 # Creating data table
-NTL <- data.frame(matrix(ncol = 7, nrow = 0))
-colnames(NTL) <- c("datetime", "lake", "depth", "varbiable", "unit", "observation", "flag")
+NTL <- data.frame(matrix(ncol = 8, nrow = 0))
+colnames(NTL) <- c("source", "datetime", "lake", "depth", "varbiable", "unit", "observation", "flag")
 
-####Magnuson, J.J., S.R. Carpenter, and E.H. Stanley. 2023. North Temperate 
-####Lakes LTER: Secchi Disk Depth; Other Auxiliary Base Crew Sample Data 1981 - 
+#### Magnuson, J.J., S.R. Carpenter, and E.H. Stanley. 2023. North Temperate 
+#### Lakes LTER: Secchi Disk Depth; Other Auxiliary Base Crew Sample Data 1981 - 
 #### current ver 32. Environmental Data Initiative. 
 #### https://doi.org/10.6073/pasta/4c5b055143e8b7a5de695f4514e18142 (Accessed 2023-06-10).
 
@@ -26,7 +26,8 @@ if (exists("provenance")){
   provenance <- append(provenance, packageId)
 }
 
-data_a <- data.frame("datetime" = ymd(data$sampledate),
+data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                     "datetime" = ymd(data$sampledate),
                      "lake" = data$lakeid,
                      "depth" = 0,
                      "variable" = rep("secview", nrow(data)),
@@ -68,7 +69,8 @@ data2 <- data %>%
 
 data <- rbind(data1,data2)
 
-data_a <- data.frame("datetime" = ymd(data$sampledate),
+data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                     "datetime" = ymd(data$sampledate),
                      "lake" = data$lakeid,
                      "depth" = data$depth,
                      "variable" = rep("chla", nrow(data)),
@@ -96,16 +98,16 @@ res <- read_data_entity_names(packageId = packageId)
 raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
 data <- readr::read_csv(file = raw)
 
-data_a <- data.frame("datetime" = ymd(data$sampledate),
+data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                     "datetime" = ymd(data$sampledate),
                      "lake" = rep("Mendota",nrow(data)),
                      "depth" = data$depth,
                      "variable" = rep("temp", nrow(data)),
                      "unit" = rep("DEG_C", nrow(data)),
                      "observation" = data$wtemp,
                      "flag" = data$flagwtemp) %>% drop_na(observation)
-
-#The variable below is form the same data set as above
-data_b <- data.frame("datetime" = ymd(data$sampledate),
+data_b <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                     "datetime" = ymd(data$sampledate),
                      "lake" = rep("Mendota",nrow(data)),
                      "depth" = data$depth,
                      "variable" = rep("do", nrow(data)),
@@ -132,7 +134,8 @@ res <- read_data_entity_names(packageId = packageId)
 raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
 data <- readr::read_csv(file = raw)
 
-data_tp1 <- data.frame("datetime" = ymd(data$sampledate),
+data_tp1 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                       "datetime" = ymd(data$sampledate),
                        "lake" = data$lakeid,
                        "depth" = data$depth,
                        "variable" = rep("tp", nrow(data)),
@@ -140,7 +143,8 @@ data_tp1 <- data.frame("datetime" = ymd(data$sampledate),
                        "observation" = data$totpuf,
                        "flag" = data$flagtotpuf)%>% 
   drop_na(observation)
-data_tp2 <- data.frame("datetime" = ymd(data$sampledate),
+data_tp2 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                       "datetime" = ymd(data$sampledate),
                        "lake" = data$lakeid,
                        "depth" = data$depth,
                        "variable" = rep("tp", nrow(data)),
@@ -148,7 +152,8 @@ data_tp2 <- data.frame("datetime" = ymd(data$sampledate),
                        "observation" = data$totpuf_sloh,
                        "flag" = data$flagtotpuf_sloh)%>% 
   drop_na(observation)
-data_drp <- data.frame("datetime" = ymd(data$sampledate),
+data_drp <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                       "datetime" = ymd(data$sampledate),
                        "lake" = data$lakeid,
                        "depth" = data$depth,
                        "variable" = rep("drp", nrow(data)),
@@ -156,7 +161,8 @@ data_drp <- data.frame("datetime" = ymd(data$sampledate),
                        "observation" = data$drp_sloh,
                        "flag" = data$flagdrp_sloh)%>% 
   drop_na(observation)
-data_tn1 <- data.frame("datetime" = ymd(data$sampledate),
+data_tn1 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                       "datetime" = ymd(data$sampledate),
                        "lake" = data$lakeid,
                        "depth" = data$depth,
                        "variable" = rep("tn", nrow(data)),
@@ -164,7 +170,8 @@ data_tn1 <- data.frame("datetime" = ymd(data$sampledate),
                        "observation" = data$totnuf,
                        "flag" = data$flagtotnuf)%>% 
   drop_na(observation)
-data_tn2 <- data.frame("datetime" = ymd(data$sampledate),
+data_tn2 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                       "datetime" = ymd(data$sampledate),
                        "lake" = data$lakeid,
                        "depth" = data$depth,
                        "variable" = rep("tn", nrow(data)),
@@ -172,7 +179,8 @@ data_tn2 <- data.frame("datetime" = ymd(data$sampledate),
                        "observation" = data$totnuf_sloh * 1000, # *1000 converts mg/L to ug/L
                        "flag" = data$flagtotnuf_sloh)%>% 
   drop_na(observation)
-data_no3no2 <- data.frame("datetime" = ymd(data$sampledate),
+data_no3no2 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                          "datetime" = ymd(data$sampledate),
                           "lake" = data$lakeid,
                           "depth" = data$depth,
                           "variable" = rep("no3no2", nrow(data)),
@@ -180,7 +188,8 @@ data_no3no2 <- data.frame("datetime" = ymd(data$sampledate),
                           "observation" = data$no3no2,
                           "flag" = data$flagno3no2)%>% 
   drop_na(observation)
-data_no3no2_2 <- data.frame("datetime" = ymd(data$sampledate),
+data_no3no2_2 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                            "datetime" = ymd(data$sampledate),
                             "lake" = data$lakeid,
                             "depth" = data$depth,
                             "variable" = rep("no3no2", nrow(data)),
@@ -188,7 +197,8 @@ data_no3no2_2 <- data.frame("datetime" = ymd(data$sampledate),
                             "observation" = data$no3no2_sloh * 1000, # *1000 converts mg/L to ug/L
                             "flag" = data$flagno3no2_sloh)%>% 
   drop_na(observation)
-data_no2 <- data.frame("datetime" = ymd(data$sampledate),
+data_no2 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                       "datetime" = ymd(data$sampledate),
                        "lake" = data$lakeid,
                        "depth" = data$depth,
                        "variable" = rep("no2", nrow(data)),
@@ -196,7 +206,8 @@ data_no2 <- data.frame("datetime" = ymd(data$sampledate),
                        "observation" = data$no2,
                        "flag" = data$flagno2)%>% 
   drop_na(observation)
-data_nh41 <- data.frame("datetime" = ymd(data$sampledate),
+data_nh41 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                        "datetime" = ymd(data$sampledate),
                         "lake" = data$lakeid,
                         "depth" = data$depth,
                         "variable" = rep("nh4", nrow(data)),
@@ -204,7 +215,8 @@ data_nh41 <- data.frame("datetime" = ymd(data$sampledate),
                         "observation" = data$nh4,
                         "flag" = data$flagnh4)%>% 
   drop_na(observation)
-data_nh42 <- data.frame("datetime" = ymd(data$sampledate),
+data_nh42 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                        "datetime" = ymd(data$sampledate),
                         "lake" = data$lakeid,
                         "depth" = data$depth,
                         "variable" = rep("nh4", nrow(data)),
@@ -212,7 +224,8 @@ data_nh42 <- data.frame("datetime" = ymd(data$sampledate),
                         "observation" = data$nh4_sloh,
                         "flag" = data$flagnh4_sloh)%>% 
   drop_na(observation)
-data_dic <- data.frame("datetime" = ymd(data$sampledate),
+data_dic <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                       "datetime" = ymd(data$sampledate),
                        "lake" = data$lakeid,
                        "depth" = data$depth,
                        "variable" = rep("dic", nrow(data)),
@@ -220,7 +233,8 @@ data_dic <- data.frame("datetime" = ymd(data$sampledate),
                        "observation" = data$dic,
                        "flag" = data$flagdic)%>% 
   drop_na(observation)
-data_doc <- data.frame("datetime" = ymd(data$sampledate),
+data_doc <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                       "datetime" = ymd(data$sampledate),
                        "lake" = data$lakeid,
                        "depth" = data$depth,
                        "variable" = rep("doc", nrow(data)),
@@ -258,7 +272,8 @@ data <- readr::read_csv(file = raw)
 
 data <- data %>% filter(sample_site == "Deep Hole")
 
-data_poc <- data.frame("datetime" = ymd(data$sampledate),
+data_poc <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                       "datetime" = ymd(data$sampledate),
                        "lake" = rep("ME", nrow(data)),
                        "depth" = data$water_depth,
                        "variable" = rep("poc", nrow(data)),
@@ -266,7 +281,8 @@ data_poc <- data.frame("datetime" = ymd(data$sampledate),
                        "observation" = data$poc,
                        "flag" = rep(NA, nrow(data)))%>% 
   drop_na(observation)
-data_doc <- data.frame("datetime" = ymd(data$sampledate),
+data_doc <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                       "datetime" = ymd(data$sampledate),
                        "lake" = rep("ME", nrow(data)),
                        "depth" = data$water_depth,
                        "variable" = rep("doc", nrow(data)),
@@ -274,7 +290,8 @@ data_doc <- data.frame("datetime" = ymd(data$sampledate),
                        "observation" = data$doc,
                        "flag" = rep(NA, nrow(data)))%>% 
   drop_na(observation)
-data_dic <- data.frame("datetime" = ymd(data$sampledate),
+data_dic <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                       "datetime" = ymd(data$sampledate),
                        "lake" = rep("ME", nrow(data)),
                        "depth" = data$water_depth,
                        "variable" = rep("dic", nrow(data)),

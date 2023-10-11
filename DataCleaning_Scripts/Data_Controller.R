@@ -14,18 +14,18 @@ provenance <- c()
 
 # Mendota
 
-## Mendota_A
+## Mendota
 
-source("DataCleaning_Scripts/Mendota_A.R")
+source("DataCleaning_Scripts/Mendota.R")
 write_dataset(Mendota, paste0(filepath, "/HighFrequency"), basename_template ="Mendota_A_{i}.parquet", max_rows_per_file = 1500000)
 rm(data, res, raw, Mendota)
 gc()
 
-## Mendota_B
+## NTL_HF_Ice
 
-source("DataCleaning_Scripts/Mendota_B.R")
-write_parquet(x = Mendota, sink = paste0(filepath, "/HighFrequency", "/Mendota_B.parquet"))
-rm(data, res, raw, Mendota)
+source("DataCleaning_Scripts/NTL_HF_Ice.R")
+write_parquet(x = NTL, sink = paste0(filepath, "/HighFrequency", "/Mendota_B.parquet"))
+rm(data, res, raw, NTL)
 gc()
 
 ## NTL Low Frequency
