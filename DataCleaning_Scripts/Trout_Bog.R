@@ -20,7 +20,7 @@ packageId = paste0(scope, ".", identifier, ".", revision)
 
 res <- read_data_entity_names(packageId = packageId)
 raw <- read_data_entity(packageId = packageId, entityId = res$entityId[3])
-data <- readr::read_csv(file = raw)
+data <- readr::read_csv(file = raw, show_col_types = FALSE)
 
 if (exists("provenance")){
   provenance <- append(provenance, packageId)
@@ -51,7 +51,7 @@ packageId = paste0(scope, ".", identifier, ".", revision)
 
 res <- read_data_entity_names(packageId = packageId)
 raw <- read_data_entity(packageId = packageId, entityId = res$entityId[3])
-data <- readr::read_csv(file = raw)
+data <- readr::read_csv(file = raw, show_col_types = FALSE)
 
 if (exists("provenance")){
   provenance <- append(provenance, packageId)

@@ -20,7 +20,7 @@ packageId = paste0(scope, ".", identifier, ".", revision)
 
 res <- read_data_entity_names(packageId = packageId)
 raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
-data <- readr::read_csv(file = raw)
+data <- readr::read_csv(file = raw, show_col_types = FALSE)
 
 if (exists("provenance")){
   provenance <- append(provenance, packageId)
@@ -51,7 +51,7 @@ packageId = paste0(scope, ".", identifier, ".", revision)
 
 res <- read_data_entity_names(packageId = packageId)
 raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
-data <- readr::read_csv(file = raw)
+data <- readr::read_csv(file = raw, show_col_types = FALSE)
 
 if (exists("provenance")){
   provenance <- append(provenance, packageId)
@@ -96,7 +96,7 @@ packageId = paste0(scope, ".", identifier, ".", revision)
 
 res <- read_data_entity_names(packageId = packageId)
 raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
-data <- readr::read_csv(file = raw)
+data <- readr::read_csv(file = raw, show_col_types = FALSE)
 
 data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = ymd(data$sampledate),
@@ -132,7 +132,7 @@ packageId = paste0(scope, ".", identifier, ".", revision)
 
 res <- read_data_entity_names(packageId = packageId)
 raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
-data <- readr::read_csv(file = raw)
+data <- readr::read_csv(file = raw, show_col_types = FALSE)
 
 data_tp1 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                        "datetime" = ymd(data$sampledate),
@@ -268,7 +268,7 @@ packageId = paste0(scope, ".", identifier, ".", revision)
 
 res <- read_data_entity_names(packageId = packageId)
 raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
-data <- readr::read_csv(file = raw)
+data <- readr::read_csv(file = raw, show_col_types = FALSE)
 
 data <- data %>% filter(sample_site == "Deep Hole")
 
