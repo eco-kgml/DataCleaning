@@ -98,6 +98,10 @@ res <- read_data_entity_names(packageId = packageId)
 raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
 data <- readr::read_csv(file = raw, show_col_types = FALSE)
 
+if (exists("provenance")){
+  provenance <- append(provenance, packageId)
+}
+
 data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = ymd(data$sampledate),
                      "lake" = rep("Mendota",nrow(data)),
@@ -133,6 +137,10 @@ packageId = paste0(scope, ".", identifier, ".", revision)
 res <- read_data_entity_names(packageId = packageId)
 raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
 data <- readr::read_csv(file = raw, show_col_types = FALSE)
+
+if (exists("provenance")){
+  provenance <- append(provenance, packageId)
+}
 
 data_tp1 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                        "datetime" = ymd(data$sampledate),
@@ -265,6 +273,10 @@ scope = "knb-lter-ntl"
 identifier = 339
 revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
 packageId = paste0(scope, ".", identifier, ".", revision)
+
+if (exists("provenance")){
+  provenance <- append(provenance, packageId)
+}
 
 res <- read_data_entity_names(packageId = packageId)
 raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
