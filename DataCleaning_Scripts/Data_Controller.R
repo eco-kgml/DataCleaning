@@ -86,12 +86,12 @@ file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
 
 # FCR
 
-# print(paste("Gathering FCR data at", Sys.time()))
-# source("DataCleaning_Scripts/FCR.R")
-# write_parquet(x = FCR, sink = paste0(filepath, "/FCR.parquet"))
-# rm(FCR)
-# gc()
-# file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
+print(paste("Gathering FCR data at", Sys.time()))
+source("DataCleaning_Scripts/FCR.R")
+write_parquet(x = FCR, sink = paste0(filepath, "/FCR.parquet"))
+rm(FCR)
+gc()
+file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
 
 # NEON
 
@@ -101,6 +101,11 @@ file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
 # rm(NEON_Lakes)
 # gc()
 # file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
+
+# Provenace
+provenance <- unique(provenance)
+
+write.csv(provenance, file = paste0(filepath, "/provenance.csv"), row.names = FALSE)
 
 # Confirming Proper Data Collection
 end_time <- Sys.time()
