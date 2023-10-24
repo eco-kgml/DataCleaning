@@ -29,10 +29,10 @@ if (exists("provenance")){
 data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = ymd(data$sampledate),
                      "lake" = data$lakeid,
-                     "depth" = 0,
-                     "variable" = rep("secview", nrow(data)),
+                     "depth" = NA,
+                     "variable" = rep("secchi", nrow(data)),
                      "unit" = rep("M", nrow(data)),
-                     "observation" = data$secview,
+                     "observation" = data$secnview,
                      "flag" = rep(NA, nrow(data))) %>%
   drop_na(observation)
 
@@ -104,7 +104,7 @@ if (exists("provenance")){
 
 data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = ymd(data$sampledate),
-                     "lake" = rep("Mendota",nrow(data)),
+                     "lake" = data$lakeid,
                      "depth" = data$depth,
                      "variable" = rep("temp", nrow(data)),
                      "unit" = rep("DEG_C", nrow(data)),
@@ -112,7 +112,7 @@ data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "flag" = data$flagwtemp) %>% drop_na(observation)
 data_b <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = ymd(data$sampledate),
-                     "lake" = rep("Mendota",nrow(data)),
+                     "lake" = data$lakeid,
                      "depth" = data$depth,
                      "variable" = rep("do", nrow(data)),
                      "unit" = rep("MilliGM-PER-L", nrow(data)),
