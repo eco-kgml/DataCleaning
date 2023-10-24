@@ -251,7 +251,7 @@ chem1 <- chem %>%
   mutate(variable = ifelse(variable == "TP","tp",
                            ifelse(variable == "TN","tn",
                                   ifelse(variable == "SRP","drp",
-                                         ifelse(variable == "NO3NO2","no3",
+                                         ifelse(variable == "NO3NO2","no3no2",
                                                 ifelse(variable == "DIC","dic","doc_mgl")))))) %>%
   mutate(unit = ifelse(variable %in% c("tp","tn","drp","no3"),"MicroGM-PER-L","MilliGM-PER-L")) %>%
   rename(observation = value) %>%
@@ -278,6 +278,9 @@ chem2 <- chem %>%
   mutate(name = gsub("Flag_","",name)) %>%
   select(datetime, lake, depth, variable, unit, flag, name)
 head(chem2)
+
+chem1$variable <- replace(chem1$variable, chem2$variable == "doc_mgl", "doc")
+chem1$variable <- replace(chem1$variable, chem2$variable == "DIC", "dic")
 
 chem2$variable <- replace(chem2$variable, chem2$variable == "doc_mgl", "doc")
 chem2$variable <- replace(chem2$variable, chem2$variable == "DIC", "dic")
