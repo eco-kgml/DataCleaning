@@ -251,7 +251,7 @@ chem1 <- chem %>%
   mutate(variable = ifelse(variable == "TP","tp",
                            ifelse(variable == "TN","tn",
                                   ifelse(variable == "SRP","drp",
-                                         ifelse(variable == "NO3NO2","no3",
+                                         ifelse(variable == "NO3NO2","no3no2",
                                                 ifelse(variable == "DIC","dic","doc_mgl")))))) %>%
   mutate(unit = ifelse(variable %in% c("tp","tn","drp","no3"),"MicroGM-PER-L","MilliGM-PER-L")) %>%
   rename(observation = value) %>%
