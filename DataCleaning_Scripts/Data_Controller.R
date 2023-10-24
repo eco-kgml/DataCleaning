@@ -84,6 +84,15 @@ rm(data, res, raw, Trout_Bog)
 gc()
 file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
 
+# Crystal Bog
+
+print(paste("Gathering Crystal Bog high frequency data at", Sys.time()))
+source("DataCleaning_Scripts/Crystal_Bog.R")
+write_parquet(x = Crystal_Bog, sink = paste0(filepath, "/HighFrequency", "/Crystal_Bog.parquet"))
+rm(data, res, raw, Crystal_Bog)
+gc()
+file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
+
 # FCR
 
 print(paste("Gathering FCR data at", Sys.time()))
