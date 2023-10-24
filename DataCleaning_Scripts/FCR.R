@@ -279,6 +279,9 @@ chem2 <- chem %>%
   select(datetime, lake, depth, variable, unit, flag, name)
 head(chem2)
 
+chem1$variable <- replace(chem1$variable, chem2$variable == "doc_mgl", "doc")
+chem1$variable <- replace(chem1$variable, chem2$variable == "DIC", "dic")
+
 chem2$variable <- replace(chem2$variable, chem2$variable == "doc_mgl", "doc")
 chem2$variable <- replace(chem2$variable, chem2$variable == "DIC", "dic")
 
