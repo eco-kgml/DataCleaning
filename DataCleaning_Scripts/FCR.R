@@ -25,108 +25,104 @@ library(EDIutils)
 scope = "edi"
 identifier = 200
 revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
-packageId = paste0(scope, ".", identifier, ".", revision)
+packageId_ctd = paste0(scope, ".", identifier, ".", revision)
 
-res <- read_data_entity_names(packageId = packageId)
-raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
+res <- read_data_entity_names(packageId = packageId_ctd)
+raw <- read_data_entity(packageId = packageId_ctd, entityId = res$entityId[1])
 ctd <- readr::read_csv(file = raw, show_col_types = FALSE)
 
 if (exists("provenance")){
-  provenance <- append(provenance, packageId)
+  provenance <- append(provenance, packageId_ctd)
 }
 
 #2: inflow
 scope = "edi"
 identifier = 202
 revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
-packageId = paste0(scope, ".", identifier, ".", revision)
+packageId_inflow = paste0(scope, ".", identifier, ".", revision)
 
-res <- read_data_entity_names(packageId = packageId)
-raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
+res <- read_data_entity_names(packageId = packageId_inflow)
+raw <- read_data_entity(packageId = packageId_inflow, entityId = res$entityId[1])
 inflow <- readr::read_csv(file = raw, show_col_types = FALSE)
 
 if (exists("provenance")){
-  provenance <- append(provenance, packageId)
+  provenance <- append(provenance, packageId_inflow)
 }
 
 #3. catwalk
 scope = "edi"
 identifier = 271
 revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
-packageId = paste0(scope, ".", identifier, ".", revision)
+packageId_catwalk = paste0(scope, ".", identifier, ".", revision)
 
-res <- read_data_entity_names(packageId = packageId)
-raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
+res <- read_data_entity_names(packageId = packageId_catwalk)
+raw <- read_data_entity(packageId = packageId_catwalk, entityId = res$entityId[1])
 catwalk <- readr::read_csv(file = raw, show_col_types = FALSE)
 
 if (exists("provenance")){
-  provenance <- append(provenance, packageId)
+  provenance <- append(provenance, packageId_catwalk)
 }
 
 #4. chemistry
 scope = "edi"
 identifier = 199
 revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
-packageId = paste0(scope, ".", identifier, ".", revision)
+packageId_chemistry = paste0(scope, ".", identifier, ".", revision)
 
-res <- read_data_entity_names(packageId = packageId)
-raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
+res <- read_data_entity_names(packageId = packageId_chemistry)
+raw <- read_data_entity(packageId = packageId_chemistry, entityId = res$entityId[1])
 chem <- readr::read_csv(file = raw, show_col_types = FALSE)
 
 if (exists("provenance")){
-  provenance <- append(provenance, packageId)
+  provenance <- append(provenance, packageId_chemistry)
 }
 
 #5. Secchi
 scope = "edi"
 identifier = 198
 revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
-packageId = paste0(scope, ".", identifier, ".", revision)
+packageId_secchi = paste0(scope, ".", identifier, ".", revision)
 
-res <- read_data_entity_names(packageId = packageId)
-raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
+res <- read_data_entity_names(packageId = packageId_secchi)
+raw <- read_data_entity(packageId = packageId_secchi, entityId = res$entityId[1])
 secchi <- readr::read_csv(file = raw, show_col_types = FALSE)
 
 if (exists("provenance")){
-  provenance <- append(provenance, packageId)
+  provenance <- append(provenance, packageId_secchi)
 }
 
 #6. YSI
 scope = "edi"
 identifier = 198
 revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
-packageId = paste0(scope, ".", identifier, ".", revision)
+packageId_ysi = paste0(scope, ".", identifier, ".", revision)
 
-res <- read_data_entity_names(packageId = packageId)
-raw <- read_data_entity(packageId = packageId, entityId = res$entityId[2])
+res <- read_data_entity_names(packageId = packageId_ysi)
+raw <- read_data_entity(packageId = packageId_ysi, entityId = res$entityId[2])
 ysi <- readr::read_csv(file = raw, show_col_types = FALSE)
 
 if (exists("provenance")){
-  provenance <- append(provenance, packageId)
+  provenance <- append(provenance, packageId_ysi)
 }
 
 #7. Filtered chl-a
 scope = "edi"
 identifier = 555
 revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
-packageId = paste0(scope, ".", identifier, ".", revision)
+packageId_chla = paste0(scope, ".", identifier, ".", revision)
 
-res <- read_data_entity_names(packageId = packageId)
-raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
+res <- read_data_entity_names(packageId = packageId_chla)
+raw <- read_data_entity(packageId = packageId_chla, entityId = res$entityId[1])
 chla <- readr::read_csv(file = raw, show_col_types = FALSE)
 
 if (exists("provenance")){
-  provenance <- append(provenance, packageId)
+  provenance <- append(provenance, packageId_chla)
 }
 
 ##### REFORMAT DATA #####
 library(tidyverse)
 library(lubridate)
 library(data.table)
-
-#'Example data format:
-#'datetime	      lake	   depth	variable	unit	observation	  flag
-#'3/31/2020 18:00	Mendota	 1	    temp_c		      3.553285384
 
 #1. CTD
 colnames(ctd)
@@ -171,7 +167,8 @@ head(ctd2)
 ctd3 <- bind_cols(ctd1, ctd2$flag) %>%
   rename(flag = `...8`) %>%
   select(-name) %>%
-  mutate(depth = as.double(depth))
+  mutate(depth = as.double(depth), source = paste("EDI", packageId_ctd))%>%
+  select(source, datetime, lake, depth, variable, unit, observation, flag)
 head(ctd3)
 
 #2. inflow
@@ -186,7 +183,8 @@ inflow1 <- inflow %>%
   add_column(unit = "cms",
              variable = "inflow",
              depth = NA) %>%
-  select(datetime, lake, depth, variable, unit, observation, flag)
+  mutate(source = paste("EDI", packageId_inflow)) %>%
+  select(source, datetime, lake, depth, variable, unit, observation, flag)
 head(inflow1)
 
 #3. catwalk
@@ -236,7 +234,8 @@ head(catwalk2)
 
 catwalk3 <- left_join(catwalk1, catwalk2, by = c("datetime","lake","depth","variable","unit","name")) %>%
   select(-name) %>%
-  mutate(depth = as.double(depth))
+  mutate(depth = as.double(depth), source = paste("EDI", packageId_catwalk))%>%
+  select(source, datetime, lake, depth, variable, unit, observation, flag)
 head(catwalk3)
 
 #'4. water chemistry 
@@ -271,7 +270,7 @@ chem2 <- chem %>%
   mutate(variable = ifelse(variable == "TP","tp",
                            ifelse(variable == "TN","tn",
                                   ifelse(variable == "SRP","drp",
-                                         ifelse(variable == "NO3NO2","no3",
+                                         ifelse(variable == "NO3NO2","no3no2",
                                                 ifelse(variable == "DIC","dic","doc_mgl")))))) %>%
   mutate(unit = ifelse(variable %in% c("tp","tn","drp","no3"),"MicroGM-PER-L","MilliGM-PER-L")) %>%
   rename(flag = value) %>%
@@ -280,10 +279,14 @@ chem2 <- chem %>%
   select(datetime, lake, depth, variable, unit, flag, name)
 head(chem2)
 
+chem2$variable <- replace(chem2$variable, chem2$variable == "doc_mgl", "doc")
+chem2$variable <- replace(chem2$variable, chem2$variable == "DIC", "dic")
+
 chem3 <- bind_cols(chem1, chem2$flag) %>%
   rename(flag = `...8`) %>%
   select(-name) %>%
-  mutate(depth = as.double(depth))
+  mutate(depth = as.double(depth), source = paste("EDI", packageId_chemistry))%>%
+  select(source, datetime, lake, depth, variable, unit, observation, flag)
 head(chem3)
 
 #5. Secchi
@@ -298,7 +301,8 @@ secchi1 <- secchi %>%
   add_column(unit = "M",
              variable = "secchi",
              depth = NA) %>%
-  select(datetime, lake, depth, variable, unit, observation, flag)
+  mutate(source = paste("EDI", packageId_secchi)) %>%
+  select(source, datetime, lake, depth, variable, unit, observation, flag)
 head(secchi1)
 
 #6. YSI
@@ -344,32 +348,43 @@ head(ysi2)
 ysi3 <- bind_cols(ysi1, ysi2$flag) %>%
   rename(flag = `...8`) %>%
   select(-name) %>%
-  mutate(depth = as.double(depth))
+  mutate(depth = as.double(depth), source = paste("EDI", packageId_ysi))%>%
+  select(source, datetime, lake, depth, variable, unit, observation, flag)
 head(ysi3)
 
 #7. filtered chl-a
 colnames(chla)
 chla1 <- chla %>%
   filter(Reservoir == "FCR" & Site == 50) %>%
-  select(DateTime, Reservoir, Chla_ugL, Flag_Chla_ugL) %>%
+  select(DateTime, Depth_m, Reservoir, Chla_ugL, Flag_Chla_ugL) %>%
   rename(datetime = DateTime,
          lake = Reservoir,
+         depth = Depth_m,
          observation = Chla_ugL,
          flag = Flag_Chla_ugL) %>%
   add_column(unit = "MicroGM-PER-L",
-             variable = "chla",
-             depth = NA) %>%
-  select(datetime, lake, depth, variable, unit, observation, flag)
+             variable = "chla") %>%
+  mutate(source = paste("EDI", packageId_chla)) %>%
+  select(source, datetime, lake, depth, variable, unit, observation, flag)
 head(chla1)
 
 #### MERGE DATA ####
-FCR <- bind_rows(ctd3, inflow1) %>%
-  bind_rows(., catwalk3) %>%
-  bind_rows(., chem3) %>%
-  bind_rows(., secchi1) %>%
-  bind_rows(., ysi3) %>%
-  bind_rows(., chla1)
+# FCR <- bind_rows(ctd3, inflow1) %>% 
+#   bind_rows(., catwalk3) %>% 
+#   bind_rows(., chem3) %>% 
+#   bind_rows(., secchi1) %>% 
+#   bind_rows(., ysi3) %>% 
+#   bind_rows(., chla1) 
 
-rm(catwalk, catwalk1, catwalk2, catwalk3, chem, chem1, chem2, chem3, chla, chla1, ctd, ctd1, ctd2, ctd3, inflow, inflow1, secchi, secchi1, ysi, ysi1, ysi2, ysi3, res, raw)
+FCR_LF <- rbind(chem3, secchi1) %>% rbind(ysi3) %>% rbind(chla1)
+FCR_LF <- drop_na(FCR_LF, observation)
+
+FCR_HF <- rbind(ctd3, inflow1) %>% rbind(catwalk3)
+FCR_HF <- drop_na(FCR_HF, observation)
+
+rm(catwalk, catwalk1, catwalk2, catwalk3, chem, chem1, chem2, chem3, chla, chla1, 
+   ctd, ctd1, ctd2, ctd3, inflow, inflow1, secchi, secchi1, ysi, ysi1, ysi2, ysi3, 
+   res, raw, packageId_catwalk, packageId_chemistry, packageId_chla, packageId_ctd, 
+   packageId_inflow, packageId_secchi, packageId_ysi, identifier, revision, scope)
 
 

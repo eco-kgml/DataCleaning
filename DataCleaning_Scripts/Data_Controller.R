@@ -88,8 +88,9 @@ file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
 
 print(paste("Gathering FCR data at", Sys.time()))
 source("DataCleaning_Scripts/FCR.R")
-write_parquet(x = FCR, sink = paste0(filepath, "/FCR.parquet"))
-rm(FCR)
+write_parquet(x = FCR_HF, sink = paste0(filepath, "/HighFrequency", "/FCR_HF.parquet"))
+write_parquet(x = FCR_LF, sink = paste0(filepath, "/LowFrequency", "/FCR_LF.parquet"))
+rm(FCR_LF, FCR_HF)
 gc()
 file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
 
