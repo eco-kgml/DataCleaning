@@ -84,6 +84,36 @@ rm(data_a)
 rm(data1)
 rm(data2)
 
+# Magnuson, J.J., S.R. Carpenter, and E.H. Stanley. 2023. North Temperate Lakes LTER: 
+# Chlorophyll - Trout Lake Area 1981 - current ver 32. Environmental Data Initiative. 
+# https://doi.org/10.6073/pasta/4a110bd6534525f96aa90348a1871f86 (Accessed 2023-10-24).
+
+scope = "knb-lter-ntl"
+identifier = 35
+revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
+packageId = paste0(scope, ".", identifier, ".", revision)
+
+res <- read_data_entity_names(packageId = packageId)
+raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
+data <- readr::read_csv(file = raw, show_col_types = FALSE)
+
+if (exists("provenance")){
+  provenance <- append(provenance, packageId)
+}
+
+data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                     "datetime" = ymd(data$sampledate),
+                     "lake" = data$lakeid,
+                     "depth" = data$depth,
+                     "variable" = rep("chla", nrow(data)),
+                     "unit" = rep("MicroGM-PER-L", nrow(data)),
+                     "observation" = data$chlor,
+                     "flag" = data$flagchlor)%>%
+  drop_na(observation)
+
+NTL <- rbind(NTL, data_a)
+rm(data_a)
+
 #Magnuson, J.J., S.R. Carpenter, and E.H. Stanley. 2023. North Temperate Lakes 
 #LTER: Physical Limnology of Primary Study Lakes 1981 - current ver 35. 
 #Environmental Data Initiative. 
