@@ -103,14 +103,14 @@ rm(FCR_LF, FCR_HF)
 gc()
 file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
 
-# NEON
+# NEON LF
 
-# print(paste("Gathering NEON data at", Sys.time()))
-# source("DataCleaning_Scripts/NEON_Lakes.R")
-# write_parquet(x = NEON_Lakes, sink = paste0(filepath, "/NEON_Lakes.parquet"))
-# rm(NEON_Lakes)
-# gc()
-# file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
+print(paste("Gathering NEON data at", Sys.time()))
+source("DataCleaning_Scripts/NEON.R")
+write_parquet(x = NEON_Lakes, sink = paste0(filepath, "/LowFrequency", "/NEON_LF.parquet"))
+rm(NEON_Lakes)
+gc()
+file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
 
 # Provenace
 provenance <- unique(provenance)
