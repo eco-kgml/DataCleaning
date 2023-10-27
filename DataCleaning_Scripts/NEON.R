@@ -4,6 +4,8 @@
 library(neonUtilities)
 library(tidyverse)
 
+sites <- c("SUGG", "BARC", "CRAM", "LIRO", "TOOL", "PRLA", "PRPO")
+
 # view(data_full[[length(data_full)]])
 
 NEON_Lakes <- data.frame(matrix(ncol = 8, nrow = 0))
@@ -29,7 +31,7 @@ data <- data %>% mutate(secchiDepth = case_when(is.na(secchiMeanDepth) & clearTo
 data_a <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
                      "datetime" = strptime(data$date, format = '%Y-%m-%d %H:%M:%S'),
                      "lake" = data$siteID,
-                     "depth" = 0,
+                     "depth" = NA,
                      "variable" = rep("secchi", nrow(data)),
                      "unit" = rep("M", nrow(data)),
                      "observation" = data$secchiDepth,
@@ -41,7 +43,7 @@ rm(data, data_a, data_full, packageID)
 
 # Depth profile at specific depths
 packageID = "DP1.20254.001"
-data_full <- loadByProduct(dpID=packageID, site=c("SUGG", "BARC", "CRAM", "LIRO", "TOOL", "PRLA", "PRPO"),
+data_full <- loadByProduct(dpID=packageID, site=sites,
                            package="expanded",
                            check.size = F)
 
@@ -75,7 +77,7 @@ rm(data, data_a, data_b, data_full, packageID)
 
 # Chemical properties of surface water
 packageID = "DP1.20093.001"
-data_full <- loadByProduct(dpID=packageID, site=c("SUGG", "BARC", "CRAM", "LIRO", "TOOL", "PRLA", "PRPO"),
+data_full <- loadByProduct(dpID=packageID, site=sites,
                            package="expanded",
                            check.size = F)
 
@@ -88,7 +90,7 @@ data <- data %>%
   filter(analyte %in% c("TP", "TN", "NO3+NO2 - N", "NH4 - N", "DIC", "NO2 - N", "DOC") & grepl('buoy', namedLocation)) %>%
   mutate(analyte_new_name = case_when(analyte == "TP" ~ "tp",
                                       analyte == "TN" ~ "tn",
-                                      analyte == "NO3+NO2 - N" ~ "no3+no2",
+                                      analyte == "NO3+NO2 - N" ~ "no3no2",
                                       analyte == "NH4 - N" ~ "nh4",
                                       analyte == "DIC" ~ "dic",
                                       analyte == "NO2 - N" ~ "no2",
@@ -125,7 +127,7 @@ rm(data, data_a, data_full, packageID)
 
 # Periphyton, seston, and phytoplankton chemical properties
 packageID = "DP1.20163.001"
-data_full <- loadByProduct(dpID=packageID, site=c("SUGG", "BARC", "CRAM", "LIRO", "TOOL", "PRLA", "PRPO"), 
+data_full <- loadByProduct(dpID=packageID, site=sites, 
                            package="expanded", 
                            check.size = F)
 
@@ -133,5 +135,30 @@ if (exists("provenance")){
   provenance <- append(provenance, packageID)
 }
 
-data <- data_full[[1]]
+data_a <- data_full[[1]] %>% filter(grepl('buoy', namedLocation))
+data_b <- data_full[[4]] %>% filter(grepl('buoy', namedLocation))
 
+names(data_b)[names(data_b) == 'parentSampleID'] <- 'sampleID'
+
+data <- merge(data_b, data_a, by = "sampleID", all = TRUE)
+
+data$meandepth <- rowMeans(data[,c("phytoDepth1", "phytoDepth2", "phytoDepth3")], na.rm=TRUE)
+data$n_depth <- rowSums(is.na(data[,c("phytoDepth1", "phytoDepth2", "phytoDepth3")]))
+
+data <- data %>% mutate(integrated_flag = case_when(n_depth < 2 ~ 1,
+                                     n_depth == 2 ~ NA)) %>%
+  filter(analyte == "chlorophyll a") %>%
+  select(sampleID, collectDate.x, collectDate.y, siteID.x, siteID.y, phytoDepth1, phytoDepth2, phytoDepth3, meandepth, analyte, analyteConcentration, integrated_flag)
+
+data_c <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
+                     "datetime" = data$collectDate.y,
+                     "lake" = data$siteID.y,
+                     "depth" = data$meandepth,
+                     "variable" = rep("chla", nrow(data)),
+                     "unit" = rep("MicroGM-PER-L", nrow(data)),
+                     "observation" = data$analyteConcentration,
+                     "flag" = data$integrated_flag) # flag will need to be adjusted
+data_c <- data_c[is.na(data_c$observation) == FALSE,]
+
+NEON_Lakes <- rbind(NEON_Lakes, data_c)
+rm(data, data_a, data_b, data_c, data_full, packageID)

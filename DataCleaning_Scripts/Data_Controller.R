@@ -25,14 +25,14 @@ file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
 
 ## Mendota Temperature
 
-print(paste("Gathering Mendota high frequency temperature data at", Sys.time()))
+print(paste("Gathering Mendota high frequency temperature data (1/2) at", Sys.time()))
 source("DataCleaning_Scripts/Mendota_B.R")
 write_dataset(Mendota, paste0(filepath, "/HighFrequency"), basename_template ="Mendota_B_{i}.parquet", max_rows_per_file = 1500000)
 rm(data, res, raw, Mendota)
 gc()
 file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
 
-print(paste("Gathering Mendota high frequency temperature data at", Sys.time()))
+print(paste("Gathering Mendota high frequency temperature data (2/2) at", Sys.time()))
 source("DataCleaning_Scripts/Mendota_C.R")
 write_dataset(Mendota, paste0(filepath, "/HighFrequency"), basename_template ="Mendota_C_{i}.parquet", max_rows_per_file = 1500000)
 rm(data, res, raw, Mendota)
@@ -59,18 +59,46 @@ file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
 
 # Trout
 
-print(paste("Gathering Trout Lake high frequency data at", Sys.time()))
+print(paste("Gathering Trout Lake high frequency data (1/3) at", Sys.time()))
 source("DataCleaning_Scripts/Trout.R")
 write_parquet(x = Trout, sink = paste0(filepath, "/HighFrequency", "/Trout.parquet"))
 rm(data, res, raw, Trout)
 gc()
 file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
 
+print(paste("Gathering Trout Lake high frequency data (2/3) at", Sys.time()))
+source("DataCleaning_Scripts/Trout_B.R")
+write_parquet(x = Trout, sink = paste0(filepath, "/HighFrequency", "/Trout_B.parquet"))
+rm(data, res, raw, Trout)
+gc()
+file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
+
+print(paste("Gathering Trout Lake high frequency data (3/3) at", Sys.time()))
+source("DataCleaning_Scripts/Trout_C.R")
+write_parquet(x = Trout, sink = paste0(filepath, "/HighFrequency", "/Trout_C.parquet"))
+rm(data, res, raw, Trout)
+gc()
+file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
+
 # Sparkling
 
-print(paste("Gathering Sparkling Lake high frequency data at", Sys.time()))
+print(paste("Gathering Sparkling Lake high frequency data (1/3) at", Sys.time()))
 source("DataCleaning_Scripts/Sparkling.R")
 write_parquet(x = Sparkling, sink = paste0(filepath, "/HighFrequency", "/Sparkling.parquet"))
+rm(data, res, raw, Sparkling)
+gc()
+file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
+
+print(paste("Gathering Sparkling Lake high frequency data (2/3) at", Sys.time()))
+source("DataCleaning_Scripts/Sparkling_B.R")
+write_parquet(x = Sparkling, sink = paste0(filepath, "/HighFrequency", "/Sparkling_B.parquet"))
+rm(data, res, raw, Sparkling)
+gc()
+file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
+
+print(paste("Gathering Sparkling Lake high frequency data (3/3) at", Sys.time()))
+source("DataCleaning_Scripts/Sparkling_C.R")
+write_parquet(x = Sparkling, sink = paste0(filepath, "/HighFrequency", "/Sparkling_C.parquet"))
 rm(data, res, raw, Sparkling)
 gc()
 file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
@@ -103,14 +131,32 @@ rm(FCR_LF, FCR_HF)
 gc()
 file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
 
-# NEON
+# NWT Low Frequency
 
-# print(paste("Gathering NEON data at", Sys.time()))
-# source("DataCleaning_Scripts/NEON_Lakes.R")
-# write_parquet(x = NEON_Lakes, sink = paste0(filepath, "/NEON_Lakes.parquet"))
-# rm(NEON_Lakes)
-# gc()
-# file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
+print(paste("Gathering NWT-LTER Low frequency data at", Sys.time()))
+source("DataCleaning_Scripts/NWT.R")
+write_parquet(x = NWT, sink = paste0(filepath, "/LowFrequency", "/NWT_LF.parquet"))
+rm(data, res, raw, NWT)
+gc()
+file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
+
+# NWT High Frequency
+
+print(paste("Gathering NWT-LTER Low frequency data at", Sys.time()))
+source("DataCleaning_Scripts/NWT_HF.R")
+write_parquet(x = NWT, sink = paste0(filepath, "/HighFrequency", "/NWT_HF.parquet"))
+rm(data, res, raw, NWT)
+gc()
+file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
+
+# NEON LF
+
+print(paste("Gathering NEON data at", Sys.time()))
+source("DataCleaning_Scripts/NEON.R")
+write_parquet(x = NEON_Lakes, sink = paste0(filepath, "/LowFrequency", "/NEON_LF.parquet"))
+rm(NEON_Lakes)
+gc()
+file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
 
 # Provenace
 provenance <- unique(provenance)

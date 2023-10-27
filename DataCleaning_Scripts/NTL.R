@@ -1,4 +1,4 @@
-#Read in Sparkling Lake data from EDI
+#Read in NTL-LTER Lake data from EDI
 #Author: Bennett McAfee & Adi Tewari
 
 library(EDIutils)
@@ -148,11 +148,22 @@ data_b <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "unit" = rep("MilliGM-PER-L", nrow(data)),
                      "observation" = data$o2,
                      "flag" = data$flago2) %>% drop_na(observation)
+data_c <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                     "datetime" = ymd(data$sampledate),
+                     "lake" = data$lakeid,
+                     "depth" = data$depth,
+                     "variable" = rep("par", nrow(data)),
+                     "unit" = rep("MicroMOL-PER-M2-SEC", nrow(data)),
+                     "observation" = data$light,
+                     "flag" = NA) %>% 
+  drop_na(observation)
 
 NTL <- rbind(NTL, data_a)
 NTL <- rbind(NTL, data_b)
+NTL <- rbind(NTL, data_c)
 rm(data_a)
 rm(data_b)
+rm(data_c)
 rm(data)
 
 # Magnuson, J.J., S.R. Carpenter, and E.H. Stanley. 2023. North Temperate Lakes LTER: Chemical Limnology of Primary Study Lakes: 
