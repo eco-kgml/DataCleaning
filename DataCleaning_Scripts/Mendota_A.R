@@ -25,13 +25,13 @@ if (exists("provenance")){
   provenance <- append(provenance, packageId)
 }
 
-data <- subset(data, select = c("sampledate", "sampletime", "chlor_rfu", "flag_chlor_rfu", "phyco_rfu", "flag_phyco_rfu", "do_raw", "flag_do_raw", "do_wtemp", "flag_do_wtemp", "fdom", "flag_fdom"))
+data <- subset(data, select = c("sampledate", "sampletime", "chlor_rfu", "flag_chlor_rfu", "phyco_rfu", "flag_phyco_rfu", "do_raw", "flag_do_raw", "do_wtemp", "flag_do_wtemp", "fdom", "flag_fdom", "par", "flag_par", "par_below", "flag_par_below"))
 data$datetime <- paste(data$sampledate, data$sampletime)
 data$datetime <- strptime(data$datetime, format = "%Y-%m-%d %H:%M:%S")
 data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = data$datetime,
                      "lake" = rep("ME", nrow(data)),
-                     "depth" = rep(0, nrow(data)),
+                     "depth" = rep(1, nrow(data)),
                      "variable" = rep("chla", nrow(data)),
                      "unit" = rep("RFU", nrow(data)),
                      "observation" = data$chlor_rfu,
@@ -41,7 +41,7 @@ rm(data_a)
 data_b <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = data$datetime,
                      "lake" = rep("ME", nrow(data)),
-                     "depth" = rep(0, nrow(data)),
+                     "depth" = rep(1, nrow(data)),
                      "variable" = rep("phyco", nrow(data)),
                      "unit" = rep("RFU", nrow(data)),
                      "observation" = data$phyco_rfu,
@@ -51,7 +51,7 @@ rm(data_b)
 data_c <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = data$datetime,
                      "lake" = rep("ME", nrow(data)),
-                     "depth" = rep(0, nrow(data)),
+                     "depth" = rep(1, nrow(data)),
                      "variable" = rep("do", nrow(data)),
                      "unit" = rep("MilliGM-PER-L", nrow(data)),
                      "observation" = data$do_raw,
@@ -61,7 +61,7 @@ rm(data_c)
 data_d <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = data$datetime,
                      "lake" = rep("ME", nrow(data)),
-                     "depth" = rep(0, nrow(data)),
+                     "depth" = rep(1, nrow(data)),
                      "variable" = rep("temp", nrow(data)),
                      "unit" = rep("DEG_C", nrow(data)),
                      "observation" = data$do_wtemp,
@@ -71,12 +71,32 @@ rm(data_d)
 data_e <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = data$datetime,
                      "lake" = rep("ME", nrow(data)),
-                     "depth" = rep(0, nrow(data)),
+                     "depth" = rep(1, nrow(data)),
                      "variable" = rep("fdom", nrow(data)),
                      "unit" = rep("RFU", nrow(data)),
                      "observation" = data$fdom,
                      "flag" = data$flag_fdom)
 Mendota <- rbind(Mendota, data_e)
 rm(data_e)
+data_f <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                     "datetime" = data$datetime,
+                     "lake" = rep("ME", nrow(data)),
+                     "depth" = rep(1, nrow(data)),
+                     "variable" = rep("par", nrow(data)),
+                     "unit" = rep("MicroMOL-PER-M2-SEC", nrow(data)),
+                     "observation" = data$par_below,
+                     "flag" = data$flag_par_below)
+Mendota <- rbind(Mendota, data_f)
+rm(data_f)
+data_g <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                     "datetime" = data$datetime,
+                     "lake" = rep("ME", nrow(data)),
+                     "depth" = rep(-2, nrow(data)),
+                     "variable" = rep("par", nrow(data)),
+                     "unit" = rep("MicroMOL-PER-M2-SEC", nrow(data)),
+                     "observation" = data$par,
+                     "flag" = data$flag_par)
+Mendota <- rbind(Mendota, data_g)
+rm(data_g)
 
 Mendota <- Mendota[!is.na(Mendota$observation),]

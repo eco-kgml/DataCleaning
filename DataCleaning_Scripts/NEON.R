@@ -90,7 +90,7 @@ data <- data %>%
   filter(analyte %in% c("TP", "TN", "NO3+NO2 - N", "NH4 - N", "DIC", "NO2 - N", "DOC") & grepl('buoy', namedLocation)) %>%
   mutate(analyte_new_name = case_when(analyte == "TP" ~ "tp",
                                       analyte == "TN" ~ "tn",
-                                      analyte == "NO3+NO2 - N" ~ "no3+no2",
+                                      analyte == "NO3+NO2 - N" ~ "no3no2",
                                       analyte == "NH4 - N" ~ "nh4",
                                       analyte == "DIC" ~ "dic",
                                       analyte == "NO2 - N" ~ "no2",
@@ -151,7 +151,7 @@ data <- data %>% mutate(integrated_flag = case_when(n_depth < 2 ~ 1,
   select(sampleID, collectDate.x, collectDate.y, siteID.x, siteID.y, phytoDepth1, phytoDepth2, phytoDepth3, meandepth, analyte, analyteConcentration, integrated_flag)
 
 data_c <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
-                     "datetime" = strptime(data$collectDate.y, format = '%Y-%m-%d %H:%M:%S'),
+                     "datetime" = data$collectDate.y,
                      "lake" = data$siteID.y,
                      "depth" = data$meandepth,
                      "variable" = rep("chla", nrow(data)),

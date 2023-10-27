@@ -1,4 +1,4 @@
-#Read in Sparkling Lake data from EDI
+#Read in NTL-LTER Lake data from EDI
 #Author: Bennett McAfee & Adi Tewari
 
 library(EDIutils)
