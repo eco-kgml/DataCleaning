@@ -69,3 +69,12 @@ data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
 
 Trout_Bog <- rbind(Trout_Bog,data_a)
 rm(data_a)
+
+
+Trout_Bog$flag <- replace(Trout_Bog$flag, Trout_Bog$flag == "H", 8)
+Trout_Bog$flag <- replace(Trout_Bog$flag, Trout_Bog$flag == "J", 25)
+Trout_Bog$flag <- replace(Trout_Bog$flag, Trout_Bog$flag == "A", 26)
+Trout_Bog$flag <- replace(Trout_Bog$flag, Trout_Bog$flag == "C", 27)
+Trout_Bog$flag <- replace(Trout_Bog$flag, Trout_Bog$flag == "E", 28)
+Trout_Bog$flag <- replace(Trout_Bog$flag, Trout_Bog$flag == "F", 29)
+Trout_Bog$flag <- replace(Trout_Bog$flag, Trout_Bog$flag == "G", 30)
