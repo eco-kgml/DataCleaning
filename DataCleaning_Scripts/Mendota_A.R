@@ -45,7 +45,7 @@ data_b <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "variable" = rep("phyco", nrow(data)),
                      "unit" = rep("RFU", nrow(data)),
                      "observation" = data$phyco_rfu,
-                     "flag" = data$phyco_rfu)
+                     "flag" = data$flag_phyco_rfu)
 Mendota <- rbind(Mendota, data_b)
 rm(data_b)
 data_c <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
@@ -100,3 +100,11 @@ Mendota <- rbind(Mendota, data_g)
 rm(data_g)
 
 Mendota <- Mendota[!is.na(Mendota$observation),]
+
+Mendota$flag <- replace(Mendota$flag, Mendota$flag == "H", 8)
+Mendota$flag <- replace(Mendota$flag, Mendota$flag == "J", 25)
+Mendota$flag <- replace(Mendota$flag, Mendota$flag == "A", 26)
+Mendota$flag <- replace(Mendota$flag, Mendota$flag == "C", 27)
+Mendota$flag <- replace(Mendota$flag, Mendota$flag == "E", 28)
+Mendota$flag <- replace(Mendota$flag, Mendota$flag == "F", 29)
+Mendota$flag <- replace(Mendota$flag, Mendota$flag == "G", 30)

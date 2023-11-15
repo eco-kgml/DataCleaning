@@ -148,3 +148,11 @@ data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
 Trout <- rbind(Trout, data_a)
 rm(data_a)
 gc()
+
+Trout$flag <- replace(Trout$flag, Trout$flag == "H", 8)
+Trout$flag <- replace(Trout$flag, Trout$flag == "J", 25)
+Trout$flag <- replace(Trout$flag, Trout$flag == "A", 26)
+Trout$flag <- replace(Trout$flag, Trout$flag == "C", 27)
+Trout$flag <- replace(Trout$flag, Trout$flag == "E", 28)
+Trout$flag <- replace(Trout$flag, Trout$flag == "F", 29)
+Trout$flag <- replace(Trout$flag, Trout$flag == "G", 30)

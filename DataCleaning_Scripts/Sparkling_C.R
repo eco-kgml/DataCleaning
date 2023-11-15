@@ -130,3 +130,12 @@ data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
 Sparkling <- rbind(Sparkling, data_a)
 rm(data_a)
 gc()
+
+
+Sparkling$flag <- replace(Sparkling$flag, Sparkling$flag == "H", 8)
+Sparkling$flag <- replace(Sparkling$flag, Sparkling$flag == "J", 25)
+Sparkling$flag <- replace(Sparkling$flag, Sparkling$flag == "A", 26)
+Sparkling$flag <- replace(Sparkling$flag, Sparkling$flag == "C", 27)
+Sparkling$flag <- replace(Sparkling$flag, Sparkling$flag == "E", 28)
+Sparkling$flag <- replace(Sparkling$flag, Sparkling$flag == "F", 29)
+Sparkling$flag <- replace(Sparkling$flag, Sparkling$flag == "G", 30)

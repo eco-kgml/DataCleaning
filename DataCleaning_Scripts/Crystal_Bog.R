@@ -67,3 +67,12 @@ data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
 
 Crystal_Bog <- rbind(Crystal_Bog, data_a)
 rm(data_a)
+
+
+Crystal_Bog$flag <- replace(Crystal_Bog$flag, Crystal_Bog$flag == "H", 8)
+Crystal_Bog$flag <- replace(Crystal_Bog$flag, Crystal_Bog$flag == "J", 25)
+Crystal_Bog$flag <- replace(Crystal_Bog$flag, Crystal_Bog$flag == "A", 26)
+Crystal_Bog$flag <- replace(Crystal_Bog$flag, Crystal_Bog$flag == "C", 27)
+Crystal_Bog$flag <- replace(Crystal_Bog$flag, Crystal_Bog$flag == "E", 28)
+Crystal_Bog$flag <- replace(Crystal_Bog$flag, Crystal_Bog$flag == "F", 29)
+Crystal_Bog$flag <- replace(Crystal_Bog$flag, Crystal_Bog$flag == "G", 30)

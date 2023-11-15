@@ -170,3 +170,11 @@ data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
 Mendota <- rbind(Mendota, data_a)
 rm(data_a)
 gc()
+
+Mendota$flag <- replace(Mendota$flag, Mendota$flag == "H", 8)
+Mendota$flag <- replace(Mendota$flag, Mendota$flag == "J", 25)
+Mendota$flag <- replace(Mendota$flag, Mendota$flag == "A", 26)
+Mendota$flag <- replace(Mendota$flag, Mendota$flag == "C", 27)
+Mendota$flag <- replace(Mendota$flag, Mendota$flag == "E", 28)
+Mendota$flag <- replace(Mendota$flag, Mendota$flag == "F", 29)
+Mendota$flag <- replace(Mendota$flag, Mendota$flag == "G", 30)
