@@ -57,22 +57,24 @@ if (exists("provenance")){
   provenance <- append(provenance, packageId)
 }
 
-data1 <- data %>%
-  filter(str_detect(data$depth_range_m,"-")) %>%
-  mutate(depth = as.integer(str_sub(depth_range_m,start=-1,end = -1))/2)
+# data1 <- data %>%
+#   filter(str_detect(data$depth_range_m,"-")) %>%
+#   mutate(depth = as.integer(str_sub(depth_range_m,start=-1,end = -1))/2)
+# 
+# 
+# data2 <- data %>%
+#   filter(!str_detect(data$depth_range_m,"-")) %>%
+#   mutate(depth = depth_range_m)
+# 
+# 
+# data <- rbind(data1,data2)
 
-
-data2 <- data %>%
-  filter(!str_detect(data$depth_range_m,"-")) %>%
-  mutate(depth = depth_range_m)
-
-
-data <- rbind(data1,data2)
+data$depth_range_m <- replace(data$depth_range_m, str_detect(data$depth_range_m, "-"), -99)
 
 data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = ymd(data$sampledate),
                      "lake" = data$lakeid,
-                     "depth" = data$depth,
+                     "depth" = data$depth_range_m,
                      "variable" = rep("chla", nrow(data)),
                      "unit" = rep("MicroGM-PER-L", nrow(data)),
                      "observation" = data$correct_chl_fluor,
