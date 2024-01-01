@@ -142,21 +142,41 @@ file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
 
 # NWT High Frequency
 
-print(paste("Gathering NWT-LTER Low frequency data at", Sys.time()))
+print(paste("Gathering NWT-LTER high frequency data at", Sys.time()))
 source("DataCleaning_Scripts/NWT_HF.R")
 write_parquet(x = NWT, sink = paste0(filepath, "/HighFrequency", "/NWT_HF.parquet"))
 rm(data, res, raw, NWT)
 gc()
 file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
 
-# NEON LF
+# NEON Low Frequency
 
-print(paste("Gathering NEON data at", Sys.time()))
+print(paste("Gathering NEON low frequency data at", Sys.time()))
 source("DataCleaning_Scripts/NEON.R")
 write_parquet(x = NEON_Lakes, sink = paste0(filepath, "/LowFrequency", "/NEON_LF.parquet"))
 rm(NEON_Lakes)
 gc()
-file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
+
+# NEON High Frequency
+
+print(paste("Gathering NEON high frequency data at", Sys.time()))
+source("DataCleaning_Scripts/NEON_HF.R")
+write_dataset(NEON_Lakes, paste0(filepath, "/HighFrequency"), basename_template ="NEON_A_{i}.parquet", max_rows_per_file = 1500000)
+rm(NEON_Lakes)
+gc()
+
+# NEON very High Frequency
+
+print(paste("Gathering NEON very high frequency data at", Sys.time()))
+source("DataCleaning_Scripts/NEON_HF_B.R")
+write_dataset(NEON_Lakes, paste0(filepath, "/HighFrequency"), basename_template ="NEON_B_{i}.parquet", max_rows_per_file = 1500000)
+rm(NEON_Lakes)
+gc()
+
+source("DataCleaning_Scripts/NEON_HF_C.R")
+write_dataset(NEON_Lakes, paste0(filepath, "/HighFrequency"), basename_template ="NEON_C_{i}.parquet", max_rows_per_file = 1500000)
+rm(NEON_Lakes)
+gc()
 
 # Provenace
 provenance <- unique(provenance)

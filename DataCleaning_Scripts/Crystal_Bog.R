@@ -18,21 +18,49 @@ revision = list_data_package_revisions(scope = scope,identifier = identifier, fi
 packageId = paste0(scope, ".", identifier, ".", revision)
 
 res <- read_data_entity_names(packageId = packageId)
-raw <- read_data_entity(packageId = packageId, entityId = res$entityId[3])
+raw <- read_data_entity(packageId = packageId, entityId = res$entityId[4])
 data <- readr::read_csv(file = raw, show_col_types = FALSE)
 
 if (exists("provenance")){
   provenance <- append(provenance, packageId)
 }
 
+data$datetime <- as_datetime(paste(data$sampledate, data$sampletime))
+
 data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
-                     "datetime" = data$sampledate,
+                     "datetime" = data$datetime,
                      "lake" = rep("CB", nrow(data)),
-                     "depth" = rep(0.5, nrow(data)),
+                     "depth" = data$do_depth,
                      "variable" = rep("do", nrow(data)),
                      "unit" = rep("MilliGM-PER-L", nrow(data)),
-                     "observation" = data$opt_do_raw,
-                     "flag" = data$flag_opt_do_raw) %>%
+                     "observation" = data$do_raw,
+                     "flag" = data$flag_do_raw) %>%
+  drop_na(observation)
+
+Crystal_Bog <- rbind(Crystal_Bog,data_a)
+rm(data_a)
+
+raw <- read_data_entity(packageId = packageId, entityId = res$entityId[6])
+data <- readr::read_csv(file = raw, show_col_types = FALSE)
+
+data$datetime <- as_datetime(paste(data$sampledate, data$sampletime))
+data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                     "datetime" = data$datetime,
+                     "lake" = rep("CB", nrow(data)),
+                     "depth" = data$hobo_depth,
+                     "variable" = rep("par", nrow(data)),
+                     "unit" = rep("MicroMOL-PER-M2-SEC", nrow(data)),
+                     "observation" = data$hobo_lux * 0.0185, #0.0185 is the conversion factor for lux to PPFD
+                     "flag" = data$flag_hobo_lux) %>%
+  drop_na(observation)
+data_b <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                     "datetime" = data$datetime,
+                     "lake" = rep("CB", nrow(data)),
+                     "depth" = data$hobo_depth,
+                     "variable" = rep("temp", nrow(data)),
+                     "unit" = rep("DEG_C", nrow(data)),
+                     "observation" = data$hobo_wtemp,
+                     "flag" = data$flag_hobo_lux) %>%
   drop_na(observation)
 
 Crystal_Bog <- rbind(Crystal_Bog, data_a)
@@ -55,8 +83,26 @@ if (exists("provenance")){
   provenance <- append(provenance, packageId)
 }
 
+data$datetime <- as_datetime(paste(data$sampledate, data$sampletime))
 data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
-                     "datetime" = data$sampledate,
+                     "datetime" = data$datetime,
+                     "lake" = rep("CB", nrow(data)),
+                     "depth" = data$depth,
+                     "variable" = rep("temp", nrow(data)),
+                     "unit" = rep("DEG_C", nrow(data)),
+                     "observation" = data$wtemp,
+                     "flag" = data$flag_wtemp) %>%
+  drop_na(observation)
+
+Crystal_Bog <- rbind(Crystal_Bog,data_a)
+rm(data_a)
+
+raw <- read_data_entity(packageId = packageId, entityId = res$entityId[4])
+data <- readr::read_csv(file = raw, show_col_types = FALSE)
+
+data$datetime <- as_datetime(paste(data$sampledate, data$sampletime))
+data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                     "datetime" = data$datetime,
                      "lake" = rep("CB", nrow(data)),
                      "depth" = data$depth,
                      "variable" = rep("temp", nrow(data)),
