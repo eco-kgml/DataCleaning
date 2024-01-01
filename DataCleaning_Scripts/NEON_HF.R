@@ -21,7 +21,7 @@ if (exists("provenance")){
   provenance <- append(provenance, packageID)
 }
 
-data <- data_full[[7]]
+data <- data_full[["NSW_15_minute"]]
 
 data_a <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
                      "datetime" = strptime(data$startDateTime, format = '%Y-%m-%d %H:%M:%S'),
@@ -46,8 +46,8 @@ if (exists("provenance")){
   provenance <- append(provenance, packageID)
 }
 
-data_vert <- data_full[[10]] %>% select(siteID, zOffset) %>% distinct()
-data <- data_full[[5]] %>% mutate(sensorheight = case_when(siteID == "SUGG" ~ -data_vert[which(data_vert$siteID == "SUGG"), zOffset],
+data_vert <- data_full[["sensor_positions_20042"]] %>% select(siteID, zOffset) %>% distinct()
+data <- data_full[["PARWS_1min"]] %>% mutate(sensorheight = case_when(siteID == "SUGG" ~ -data_vert[which(data_vert$siteID == "SUGG"), zOffset],
                                                            siteID == "BARC" ~ -data_vert[which(data_vert$siteID == "BARC"), zOffset],
                                                            siteID == "CRAM" ~ -data_vert[which(data_vert$siteID == "CRAM"), zOffset],
                                                            siteID == "LIRO" ~ -data_vert[which(data_vert$siteID == "LIRO"), zOffset],
@@ -78,6 +78,8 @@ data_full <- loadByProduct(dpID=packageID, site=sites,
 if (exists("provenance")){
   provenance <- append(provenance, packageID)
 }
+
+data <- data_full[["waq_instantaneous"]]
 
 # data_vert <- data_full[["sensor_positions_20288"]]
 
@@ -110,65 +112,6 @@ data_chla <- data_chla[is.na(data_chla$observation) == FALSE,]
 data_do <- data_do[is.na(data_do$observation) == FALSE,]
 data_fdom <- data_fdom[is.na(data_fdom$observation) == FALSE,]
 NEON_Lakes <- rbind(NEON_Lakes, data_chla) %>% rbind(data_do) %>% rbind(data_fdom)
+NEON_Lakes$flag <- replace(NEON_Lakes$flag, NEON_Lakes$flag == 0, NA)
 rm(data, data_chla, data_do, data_fdom, data_full, packageID)
 gc()
-
-# Temperature at specific depth in surface water
-packageID = "DP1.20264.001"
-data_full <- loadByProduct(dpID=packageID, site=sites, 
-                           package="expanded", 
-                           check.size = F)
-
-if (exists("provenance")){
-  provenance <- append(provenance, packageID)
-}
-
-data <- data_full[[7]]
-
-data_a <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
-                     "datetime" = strptime(data$startDateTime, format = '%Y-%m-%d %H:%M:%S'),
-                     "lake" = data$siteID,
-                     "depth" = rep(0, nrow(data)), #double check
-                     "variable" = rep("no3", nrow(data)),
-                     "unit" = rep("MicroGM-PER-L", nrow(data)),
-                     "observation" = data$surfWaterNitrateMean * (1/0.016128), #conversion from umol to ug
-                     "flag" = NA)
-
-data_a <- data_a[is.na(data_a$observation) == FALSE,]
-NEON_Lakes <- rbind(NEON_Lakes, data_a)
-rm(data, data_a, data_full, packageID)
-
-
-# HF Subsurface PAR
-# packageID = "DP1.20261.001"
-# # data_full <- loadByProduct(dpID=packageID, site=c("SUGG", "BARC", "CRAM", "LIRO", "TOOL", "PRLA", "PRPO"),
-# #                            package="expanded",
-# #                            check.size = F)
-# temppath <- paste0(getwd(), "/zips", format(Sys.time(), "%Y%m%d%H%M%S"))
-# dir.create(temppath, showWarnings = FALSE)
-# zipsByProduct(dpID=packageID, site=c("SUGG", "BARC", "CRAM", "LIRO", "TOOL", "PRLA", "PRPO"), package="expanded",
-#               check.size=F,
-#               savepath=temppath, load = TRUE)
-# data_full <- stackByTable(filepath=paste(temppath, "/filesToStack", substr(packageID, 5, 9), sep=""),
-#                     savepath=temppath, folder=TRUE,
-#                     saveUnzippedFiles=FALSE)
-# #unlink(temppath, recursive=T)
-#
-# if (exists("provenance")){
-#   provenance <- append(provenance, packageID)
-# }
-
-# data <- data_full[[7]]
-#
-# data_a <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
-#                      "datetime" = strptime(data$startDateTime, format = '%Y-%m-%d %H:%M:%S'),
-#                      "lake" = data$siteID,
-#                      "depth" = rep(0, nrow(data)), #double check
-#                      "variable" = rep("no3", nrow(data)),
-#                      "unit" = rep("MicroGM-PER-L", nrow(data)),
-#                      "observation" = data$surfWaterNitrateMean * (1/0.016128), #conversion from umol to ug
-#                      "flag" = NA)
-#
-# data_a <- data_a[is.na(data_a$observation) == FALSE,]
-# NEON_Lakes <- rbind(NEON_Lakes, data_a)
-# rm(data, data_a, data_full, packageID)
