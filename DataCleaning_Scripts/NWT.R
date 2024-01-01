@@ -121,7 +121,7 @@ data_nh4 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                        "variable" = rep("nh4", nrow(data)),
                        "unit" = rep("MicroGM-PER-L", nrow(data)),
                        "observation" = as.numeric(data$`NH4+`) * 18.04, # convert microequivalents to micrograms
-                       "flag" = data$comments) %>%
+                       "flag" = rep(NA, nrow(data))) %>%
   drop_na(observation)
 data_no3 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                        "datetime" = ymd(data$date),
@@ -130,7 +130,7 @@ data_no3 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                        "variable" = rep("no3", nrow(data)),
                        "unit" = rep("MicroGM-PER-L", nrow(data)),
                        "observation" = as.numeric(data$`NO3-`) * 62, # convert microequivalents to micrograms
-                       "flag" = data$comments) %>%
+                       "flag" = rep(NA, nrow(data))) %>%
   drop_na(observation)
 data_tn <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                        "datetime" = ymd(data$date),
@@ -139,7 +139,7 @@ data_tn <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                        "variable" = rep("tn", nrow(data)),
                        "unit" = rep("MicroGM-PER-L", nrow(data)),
                        "observation" = as.numeric(data$TN) * (1/0.071394), # convert micromoles to micrograms
-                       "flag" = data$comments) %>%
+                       "flag" = rep(NA, nrow(data))) %>%
   drop_na(observation)
 data_tp <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                       "datetime" = ymd(data$date),
@@ -148,7 +148,7 @@ data_tp <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                       "variable" = rep("tp", nrow(data)),
                       "unit" = rep("MicroGM-PER-L", nrow(data)),
                       "observation" = as.numeric(data$TP) * (1/0.032285), # convert micromoles to micrograms
-                      "flag" = data$comments) %>%
+                      "flag" = rep(NA, nrow(data))) %>%
   drop_na(observation)
 data_doc <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                       "datetime" = ymd(data$date),
@@ -157,7 +157,7 @@ data_doc <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                       "variable" = rep("doc", nrow(data)),
                       "unit" = rep("MilliGM-PER-L", nrow(data)),
                       "observation" = as.numeric(data$DOC), # convert micromoles to micrograms
-                      "flag" = data$comments) %>%
+                      "flag" = rep(NA, nrow(data))) %>%
   drop_na(observation)
 data_poc <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                        "datetime" = ymd(data$date),
@@ -166,7 +166,7 @@ data_poc <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                        "variable" = rep("poc", nrow(data)),
                        "unit" = rep("MilliGM-PER-L", nrow(data)),
                        "observation" = as.numeric(data$POC), # convert micromoles to micrograms
-                       "flag" = data$comments) %>%
+                       "flag" = rep(NA, nrow(data))) %>%
   drop_na(observation)
 
 NWT <- rbind(NWT, data_nh4) %>% 
@@ -177,7 +177,13 @@ NWT <- rbind(NWT, data_nh4) %>%
   rbind(data_poc)
 rm(data_nh4, data_no3, data_tn, data_tp, data_doc, data_poc)
 
-# Still need to handle flags and "<0.33" style values for this one
+NWT$flag <- replace(NWT$flag, NWT$flag == "NaN" | NWT$flag == "Q(conduct)" | NWT$flag == "Q(std_conduct)" | NWT$flag == "pH_out_of_range Q(std_conduct)", NA)
+NWT$flag <- replace(NWT$flag, NWT$flag == "pH_out_of_range", 8)
+NWT$flag <- replace(NWT$flag, NWT$flag == "Q(NO3)", 29)
+NWT$flag <- replace(NWT$flag, NWT$flag == "duplicate", 44)
+
+NWT$flag <- replace(NWT$flag, grepl("<", NWT$observation), 19)
+NWT$observation <- replace(NWT$observation, grepl("<", NWT$observation), 0)
 
 
 

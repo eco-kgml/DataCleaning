@@ -171,6 +171,17 @@ ctd3 <- bind_cols(ctd1, ctd2$flag) %>%
   select(source, datetime, lake, depth, variable, unit, observation, flag)
 head(ctd3)
 
+ctd3$flag <- replace(ctd3$flag, nchar(ctd3$flag) >= 2, 46)
+ctd3$flag <- replace(ctd3$flag, ctd3$flag == 0, NA)
+ctd3$flag <- replace(ctd3$flag, ctd3$flag == 1, 3)
+ctd3$flag <- replace(ctd3$flag, ctd3$flag == 2, 21)
+ctd3$flag <- replace(ctd3$flag, ctd3$flag == 3, 24)
+ctd3$flag <- replace(ctd3$flag, ctd3$flag == 4, 23)
+ctd3$flag <- replace(ctd3$flag, ctd3$flag == 5, 27)
+ctd3$flag <- replace(ctd3$flag, ctd3$flag == 6, 31)
+ctd3$flag <- replace(ctd3$flag, ctd3$flag == 7, 32)
+ctd3$flag <- replace(ctd3$flag, ctd3$flag == 8, 8)
+
 #2. inflow
 colnames(inflow)
 inflow1 <- inflow %>%
@@ -186,6 +197,20 @@ inflow1 <- inflow %>%
   mutate(source = paste("EDI", packageId_inflow)) %>%
   select(source, datetime, lake, depth, variable, unit, observation, flag)
 head(inflow1)
+
+inflow1$flag <- replace(inflow1$flag, nchar(inflow1$flag) >= 2, 46)
+inflow1$flag <- replace(inflow1$flag, inflow1$flag == 0, NA)
+inflow1$flag <- replace(inflow1$flag, inflow1$flag == 1, 33)
+inflow1$flag <- replace(inflow1$flag, inflow1$flag == 2, 28)
+inflow1$flag <- replace(inflow1$flag, inflow1$flag == 3, 34)
+inflow1$flag <- replace(inflow1$flag, inflow1$flag == 4, 35)
+inflow1$flag <- replace(inflow1$flag, inflow1$flag == 5, 36)
+inflow1$flag <- replace(inflow1$flag, inflow1$flag == 6, 37)
+inflow1$flag <- replace(inflow1$flag, inflow1$flag == 7, 38)
+inflow1$flag <- replace(inflow1$flag, inflow1$flag == 8, 39)
+inflow1$flag <- replace(inflow1$flag, inflow1$flag == 13, 40)
+inflow1$flag <- replace(inflow1$flag, inflow1$flag == 16, 41)
+inflow1$flag <- replace(inflow1$flag, inflow1$flag == 24, 42)
 
 #3. catwalk
 colnames(catwalk)
@@ -237,6 +262,17 @@ catwalk3 <- left_join(catwalk1, catwalk2, by = c("datetime","lake","depth","vari
   mutate(depth = as.double(depth), source = paste("EDI", packageId_catwalk))%>%
   select(source, datetime, lake, depth, variable, unit, observation, flag)
 head(catwalk3)
+
+catwalk3$flag <- replace(catwalk3$flag, nchar(catwalk3$flag) >= 2, 46)
+catwalk3$flag <- replace(catwalk3$flag, catwalk3$flag == 0, NA)
+catwalk3$flag <- replace(catwalk3$flag, catwalk3$flag == 1, 39)
+catwalk3$flag <- replace(catwalk3$flag, catwalk3$flag == 2, 49)
+catwalk3$flag <- replace(catwalk3$flag, catwalk3$flag == 3, 47)
+catwalk3$flag <- replace(catwalk3$flag, catwalk3$flag == 4, 47)
+catwalk3$flag <- replace(catwalk3$flag, catwalk3$flag == 5, 30)
+catwalk3$flag <- replace(catwalk3$flag, catwalk3$flag == 6, 30)
+catwalk3$flag <- replace(catwalk3$flag, catwalk3$flag == 7, 11)
+catwalk3$flag <- replace(catwalk3$flag, catwalk3$flag == 8, 48)
 
 #'4. water chemistry 
 colnames(chem)
@@ -292,6 +328,18 @@ chem3 <- bind_cols(chem1, chem2$flag) %>%
   select(source, datetime, lake, depth, variable, unit, observation, flag)
 head(chem3)
 
+chem3$flag <- replace(chem3$flag, nchar(chem3$flag) >= 2, 46)
+chem3$flag <- replace(chem3$flag, chem3$flag == 0, NA)
+chem3$flag <- replace(chem3$flag, chem3$flag == 1, 3)
+chem3$flag <- replace(chem3$flag, chem3$flag == 2, 21)
+chem3$flag <- replace(chem3$flag, chem3$flag == 3, 24)
+chem3$flag <- replace(chem3$flag, chem3$flag == 4, 23)
+chem3$flag <- replace(chem3$flag, chem3$flag == 5, 35)
+chem3$flag <- replace(chem3$flag, chem3$flag == 6, 10)
+chem3$flag <- replace(chem3$flag, chem3$flag == 7, 5)
+chem3$flag <- replace(chem3$flag, chem3$flag == 8, 43)
+chem3$flag <- replace(chem3$flag, chem3$flag == 9, 1)
+
 #5. Secchi
 colnames(secchi)
 secchi1 <- secchi %>%
@@ -307,6 +355,9 @@ secchi1 <- secchi %>%
   mutate(source = paste("EDI", packageId_secchi)) %>%
   select(source, datetime, lake, depth, variable, unit, observation, flag)
 head(secchi1)
+
+secchi1$flag <- replace(secchi1$flag, secchi1$flag == 0, NA)
+secchi1$flag <- replace(secchi1$flag, secchi1$flag == 1, 32)
 
 #6. YSI
 colnames(ysi)
@@ -355,6 +406,14 @@ ysi3 <- bind_cols(ysi1, ysi2$flag) %>%
   select(source, datetime, lake, depth, variable, unit, observation, flag)
 head(ysi3)
 
+ysi3$flag <- replace(ysi3$flag, nchar(ysi3$flag) >= 2, 46)
+ysi3$flag <- replace(ysi3$flag, ysi3$flag == 0, NA)
+ysi3$flag <- replace(ysi3$flag, ysi3$flag == 1, 3)
+ysi3$flag <- replace(ysi3$flag, ysi3$flag == 2, 21)
+ysi3$flag <- replace(ysi3$flag, ysi3$flag == 3, 24)
+ysi3$flag <- replace(ysi3$flag, ysi3$flag == 4, 23)
+ysi3$flag <- replace(ysi3$flag, ysi3$flag == 5, 1)
+
 #7. filtered chl-a
 colnames(chla)
 chla1 <- chla %>%
@@ -371,6 +430,14 @@ chla1 <- chla %>%
   select(source, datetime, lake, depth, variable, unit, observation, flag)
 head(chla1)
 
+chla1$flag <- replace(chla1$flag, nchar(chla1$flag) >= 2, 46)
+chla1$flag <- replace(chla1$flag, chla1$flag == 0, NA)
+chla1$flag <- replace(chla1$flag, chla1$flag == 1, 24)
+chla1$flag <- replace(chla1$flag, chla1$flag == 2, 3)
+chla1$flag <- replace(chla1$flag, chla1$flag == 3, 44)
+chla1$flag <- replace(chla1$flag, chla1$flag == 4, 45)
+chla1$flag <- replace(chla1$flag, chla1$flag == 5, 5)
+
 #### MERGE DATA ####
 # FCR <- bind_rows(ctd3, inflow1) %>% 
 #   bind_rows(., catwalk3) %>% 
@@ -385,9 +452,9 @@ FCR_LF <- drop_na(FCR_LF, observation)
 FCR_HF <- rbind(ctd3, inflow1) %>% rbind(catwalk3)
 FCR_HF <- drop_na(FCR_HF, observation)
 
-rm(catwalk, catwalk1, catwalk2, catwalk3, chem, chem1, chem2, chem3, chla, chla1, 
-   ctd, ctd1, ctd2, ctd3, inflow, inflow1, secchi, secchi1, ysi, ysi1, ysi2, ysi3, 
-   res, raw, packageId_catwalk, packageId_chemistry, packageId_chla, packageId_ctd, 
+rm(catwalk, catwalk1, catwalk2, catwalk3, chem, chem1, chem2, chem3, chla, chla1,
+   ctd, ctd1, ctd2, ctd3, inflow, inflow1, secchi, secchi1, ysi, ysi1, ysi2, ysi3,
+   res, raw, packageId_catwalk, packageId_chemistry, packageId_chla, packageId_ctd,
    packageId_inflow, packageId_secchi, packageId_ysi, identifier, revision, scope)
 
 

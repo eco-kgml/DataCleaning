@@ -57,22 +57,24 @@ if (exists("provenance")){
   provenance <- append(provenance, packageId)
 }
 
-data1 <- data %>%
-  filter(str_detect(data$depth_range_m,"-")) %>%
-  mutate(depth = as.integer(str_sub(depth_range_m,start=-1,end = -1))/2)
+# data1 <- data %>%
+#   filter(str_detect(data$depth_range_m,"-")) %>%
+#   mutate(depth = as.integer(str_sub(depth_range_m,start=-1,end = -1))/2)
+# 
+# 
+# data2 <- data %>%
+#   filter(!str_detect(data$depth_range_m,"-")) %>%
+#   mutate(depth = depth_range_m)
+# 
+# 
+# data <- rbind(data1,data2)
 
-
-data2 <- data %>%
-  filter(!str_detect(data$depth_range_m,"-")) %>%
-  mutate(depth = depth_range_m)
-
-
-data <- rbind(data1,data2)
+data$depth_range_m <- replace(data$depth_range_m, str_detect(data$depth_range_m, "-"), -99)
 
 data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = ymd(data$sampledate),
                      "lake" = data$lakeid,
-                     "depth" = data$depth,
+                     "depth" = data$depth_range_m,
                      "variable" = rep("chla", nrow(data)),
                      "unit" = rep("MicroGM-PER-L", nrow(data)),
                      "observation" = data$correct_chl_fluor,
@@ -362,7 +364,7 @@ NTL$flag <- replace(NTL$flag, NTL$flag == "A", 1)
 NTL$flag <- replace(NTL$flag, NTL$flag == "B", 2)
 NTL$flag <- replace(NTL$flag, NTL$flag == "C", 3)
 NTL$flag <- replace(NTL$flag, NTL$flag == "D", 4)
-NTL$flag <- replace(NTL$flag, NTL$flag == "E", 5)
+NTL$flag <- replace(NTL$flag, NTL$flag == "E" | NTL$flag == "e", 5)
 NTL$flag <- replace(NTL$flag, NTL$flag == "F", 6)
 NTL$flag <- replace(NTL$flag, NTL$flag == "G", 7)
 NTL$flag <- replace(NTL$flag, NTL$flag == "H", 8)
@@ -379,9 +381,11 @@ NTL$flag <- replace(NTL$flag, NTL$flag == "R", 18)
 NTL$flag <- replace(NTL$flag, NTL$flag == "S", 19)
 NTL$flag <- replace(NTL$flag, NTL$flag == "T", 20)
 NTL$flag <- replace(NTL$flag, NTL$flag == "U", 21)
-NTL$flag <- replace(NTL$flag, NTL$flag == "V", 22)
+NTL$flag <- replace(NTL$flag, NTL$flag == "V" | NTL$flag == "v", 22)
 NTL$flag <- replace(NTL$flag, NTL$flag == "W", 23)
 NTL$flag <- replace(NTL$flag, NTL$flag == "X", 24)
+NTL$flag <- replace(NTL$flag, NTL$flag == "Y", 47)
+NTL$flag <- replace(NTL$flag, nchar(NTL$flag) >= 2 & NTL$flag != "NA", 46)
 
 
 

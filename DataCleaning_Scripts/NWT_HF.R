@@ -157,6 +157,11 @@ rm(data_a, data_b)
 NWT <- distinct(NWT)
 NWT$flag[NWT$flag == "n"] <- NA
 
+NWT$flag <- replace(NWT$flag, NWT$flag == "o", 8)
+NWT$flag <- replace(NWT$flag, NWT$flag == "q", 11)
+NWT$flag <- replace(NWT$flag, NWT$flag == "m", 38)
+NWT$flag <- replace(NWT$flag, NWT$flag == "q=sink" | NWT$flag == "q-sink", 50)
+
 
 
 
