@@ -9,7 +9,7 @@ library(tidyverse)
 sites <- c("SUGG", "BARC", "CRAM", "LIRO", "TOOK", "PRLA", "PRPO")
 
 NEON_Lakes <- data.frame(matrix(ncol = 8, nrow = 0))
-colnames(NEON_Lakes) <- c("source", "datetime", "lake", "depth", "varbiable", "unit", "observation", "flag")
+colnames(NEON_Lakes) <- c("source", "datetime", "lake_id", "depth", "varbiable", "unit", "observation", "flag")
 
 # HF Nitrate in surface water
 packageID = "DP1.20033.001"
@@ -25,7 +25,7 @@ data <- data_full[["NSW_15_minute"]]
 
 data_a <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
                      "datetime" = strptime(data$startDateTime, format = '%Y-%m-%d %H:%M:%S'),
-                     "lake" = data$siteID,
+                     "lake_id" = data$siteID,
                      "depth" = rep(0, nrow(data)), #double check
                      "variable" = rep("no3", nrow(data)),
                      "unit" = rep("MicroGM-PER-L", nrow(data)),
@@ -57,7 +57,7 @@ data <- data_full[["PARWS_1min"]] %>% mutate(sensorheight = case_when(siteID == 
 
 data_a <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
                      "datetime" = strptime(data$startDateTime, format = '%Y-%m-%d %H:%M:%S'),
-                     "lake" = data$siteID,
+                     "lake_id" = data$siteID,
                      "depth" = data$sensorheight,
                      "variable" = rep("par", nrow(data)),
                      "unit" = rep("MicroMOL-PER-M2-SEC", nrow(data)),
@@ -85,7 +85,7 @@ data <- data_full[["waq_instantaneous"]]
 
 data_chla <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
                      "datetime" = strptime(data$startDateTime, format = '%Y-%m-%d %H:%M:%S'),
-                     "lake" = data$siteID,
+                     "lake_id" = data$siteID,
                      "depth" = data$sensorDepth,
                      "variable" = rep("chla", nrow(data)),
                      "unit" = rep("MicroGM-PER-L", nrow(data)),
@@ -93,7 +93,7 @@ data_chla <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
                      "flag" = data$chlorophyllFinalQF) # 1 = fail, 0 = Pass
 data_do <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
                         "datetime" = strptime(data$startDateTime, format = '%Y-%m-%d %H:%M:%S'),
-                        "lake" = data$siteID,
+                        "lake_id" = data$siteID,
                         "depth" = data$sensorDepth,
                         "variable" = rep("do", nrow(data)),
                         "unit" = rep("MilliGM-PER-L", nrow(data)),
@@ -101,7 +101,7 @@ data_do <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
                         "flag" = data$dissolvedOxygenFinalQF) # 1 = fail, 0 = Pass
 data_fdom <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
                         "datetime" = strptime(data$startDateTime, format = '%Y-%m-%d %H:%M:%S'),
-                        "lake" = data$siteID,
+                        "lake_id" = data$siteID,
                         "depth" = data$sensorDepth,
                         "variable" = rep("fdom", nrow(data)),
                         "unit" = rep("MicroGM-PER-L", nrow(data)),

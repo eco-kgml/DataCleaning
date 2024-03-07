@@ -6,7 +6,7 @@ library(tidyverse)
 
 # Creating data table
 Mendota <- data.frame(matrix(ncol = 8, nrow = 0))
-colnames(Mendota) <- c("source", "datetime", "lake", "depth", "varbiable", "unit", "observation", "flag")
+colnames(Mendota) <- c("source", "datetime", "lake_id", "depth", "varbiable", "unit", "observation", "flag")
 
 # Magnuson, J.J., S.R. Carpenter, and E.H. Stanley. 2023. North Temperate Lakes LTER: 
 # High Frequency Water Temperature Data - Lake Mendota Buoy 2006 - current ver 31. 
@@ -33,7 +33,7 @@ for (i in 11:last_year_data_index){
   data$datetime <- strptime(data$datetime, format = "%Y-%m-%d %H:%M:%S")
   data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                        "datetime" = data$datetime,
-                       "lake" = rep("ME", nrow(data)),
+                       "lake_id" = rep("ME", nrow(data)),
                        "depth" = data$depth,
                        "variable" = rep("temp", nrow(data)),
                        "unit" = rep("DEG_C", nrow(data)),

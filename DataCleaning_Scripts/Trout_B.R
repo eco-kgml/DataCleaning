@@ -6,7 +6,7 @@ library(tidyverse)
 
 # Creating data table
 Trout <- data.frame(matrix(ncol = 8, nrow = 0))
-colnames(Trout) <- c("source", "datetime", "lake", "depth", "varbiable", "unit", "observation", "flag")
+colnames(Trout) <- c("source", "datetime", "lake_id", "depth", "varbiable", "unit", "observation", "flag")
 
 # Magnuson, J.J., S.R. Carpenter, and E.H. Stanley. 2023. North Temperate Lakes LTER: 
 # High Frequency Water Temperature Data - Trout Lake Buoy 2004 - current ver 28. 
@@ -31,7 +31,7 @@ for (i in 4:9){
   data$datetime <- strptime(data$datetime, format = "%Y-%m-%d %H:%M:%S")
   data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                        "datetime" = data$datetime,
-                       "lake" = rep("TR", nrow(data)),
+                       "lake_id" = rep("TR", nrow(data)),
                        "depth" = data$depth,
                        "variable" = rep("temp", nrow(data)),
                        "unit" = rep("DEG_C", nrow(data)),

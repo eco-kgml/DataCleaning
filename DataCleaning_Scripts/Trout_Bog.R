@@ -6,7 +6,7 @@ library(tidyverse)
 
 # Creating data table
 Trout_Bog <- data.frame(matrix(ncol = 8, nrow = 0))
-colnames(Trout_Bog) <- c("source", "datetime", "lake", "depth", "varbiable", "unit", "observation", "flag")
+colnames(Trout_Bog) <- c("source", "datetime", "lake_id", "depth", "varbiable", "unit", "observation", "flag")
 
 #Magnuson, J., S. Carpenter, and E. Stanley. 2022. North Temperate Lakes LTER:
 #High Frequency Meteorological and Dissolved Oxygen Data - Trout Bog Buoy 2003 
@@ -30,7 +30,7 @@ data$datetime <- as_datetime(paste(data$sampledate, data$sampletime))
 
 data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = data$datetime,
-                     "lake" = rep("TB", nrow(data)),
+                     "lake_id" = rep("TB", nrow(data)),
                      "depth" = data$do_depth,
                      "variable" = rep("do", nrow(data)),
                      "unit" = rep("MilliGM-PER-L", nrow(data)),
@@ -47,7 +47,7 @@ data <- readr::read_csv(file = raw, show_col_types = FALSE)
 data$datetime <- as_datetime(paste(data$sampledate, data$sampletime))
 data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = data$datetime,
-                     "lake" = rep("TB", nrow(data)),
+                     "lake_id" = rep("TB", nrow(data)),
                      "depth" = data$hobo_depth,
                      "variable" = rep("par", nrow(data)),
                      "unit" = rep("MicroMOL-PER-M2-SEC", nrow(data)),
@@ -56,7 +56,7 @@ data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
   drop_na(observation)
 data_b <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = data$datetime,
-                     "lake" = rep("TB", nrow(data)),
+                     "lake_id" = rep("TB", nrow(data)),
                      "depth" = data$hobo_depth,
                      "variable" = rep("temp", nrow(data)),
                      "unit" = rep("DEG_C", nrow(data)),
@@ -89,7 +89,7 @@ if (exists("provenance")){
 data$datetime <- as_datetime(paste(data$sampledate, data$sampletime))
 data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = data$datetime,
-                     "lake" = rep("TB", nrow(data)),
+                     "lake_id" = rep("TB", nrow(data)),
                      "depth" = data$depth,
                      "variable" = rep("temp", nrow(data)),
                      "unit" = rep("DEG_C", nrow(data)),
@@ -106,7 +106,7 @@ data <- readr::read_csv(file = raw, show_col_types = FALSE)
 data$datetime <- as_datetime(paste(data$sampledate, data$sampletime))
 data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = data$datetime,
-                     "lake" = rep("TB", nrow(data)),
+                     "lake_id" = rep("TB", nrow(data)),
                      "depth" = data$depth,
                      "variable" = rep("temp", nrow(data)),
                      "unit" = rep("DEG_C", nrow(data)),
@@ -123,7 +123,7 @@ data <- readr::read_csv(file = raw, show_col_types = FALSE)
 data$datetime <- as_datetime(paste(data$sampledate, data$sampletime))
 data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = data$datetime,
-                     "lake" = rep("TB", nrow(data)),
+                     "lake_id" = rep("TB", nrow(data)),
                      "depth" = data$depth,
                      "variable" = rep("temp", nrow(data)),
                      "unit" = rep("DEG_C", nrow(data)),

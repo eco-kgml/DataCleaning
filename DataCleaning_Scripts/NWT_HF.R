@@ -6,7 +6,7 @@ library(tidyverse)
 
 # Creating data table
 NWT <- data.frame(matrix(ncol = 8, nrow = 0))
-colnames(NWT) <- c("source", "datetime", "lake", "depth", "varbiable", "unit", "observation", "flag")
+colnames(NWT) <- c("source", "datetime", "lake_id", "depth", "varbiable", "unit", "observation", "flag")
 
 # Johnson, P., S. Yevak, S. Dykema, K. Loria, and Niwot Ridge LTER. 2023. PAR data for the Green Lake 4 buoy, 
 # 2018 - ongoing. ver 4. Environmental Data Initiative. https://doi.org/10.6073/pasta/9b5abafd602c097c793dabcd9f5e0bb9 (Accessed 2023-10-26).
@@ -26,7 +26,7 @@ if (exists("provenance")){
 
 data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                         "datetime" = data$timestamp,
-                        "lake" = data$local_site,
+                        "lake_id" = data$local_site,
                         "depth" = data$depth,
                         "variable" = rep("par", nrow(data)),
                         "unit" = rep("MicroMOL-PER-M2-SEC", nrow(data)),
@@ -35,7 +35,7 @@ data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
   drop_na(observation)
 data_b <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = data$timestamp,
-                     "lake" = data$local_site,
+                     "lake_id" = data$local_site,
                      "depth" = data$depth,
                      "variable" = rep("temp", nrow(data)),
                      "unit" = rep("DEG_C", nrow(data)),
@@ -66,7 +66,7 @@ if (exists("provenance")){
 
 data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = data$timestamp,
-                     "lake" = data$local_site,
+                     "lake_id" = data$local_site,
                      "depth" = data$depth,
                      "variable" = rep("temp", nrow(data)),
                      "unit" = rep("DEG_C", nrow(data)),
@@ -95,7 +95,7 @@ if (exists("provenance")){
 
 data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = data$timestamp,
-                     "lake" = data$local_site,
+                     "lake_id" = data$local_site,
                      "depth" = data$depth,
                      "variable" = rep("temp", nrow(data)),
                      "unit" = rep("DEG_C", nrow(data)),
@@ -104,7 +104,7 @@ data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
   drop_na(observation)
 data_b <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = data$timestamp,
-                     "lake" = data$local_site,
+                     "lake_id" = data$local_site,
                      "depth" = data$depth,
                      "variable" = rep("do", nrow(data)),
                      "unit" = rep("MilliGM-PER-L", nrow(data)),
@@ -134,7 +134,7 @@ if (exists("provenance")){
 
 data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = data$timestamp,
-                     "lake" = data$local_site,
+                     "lake_id" = data$local_site,
                      "depth" = data$depth,
                      "variable" = rep("temp", nrow(data)),
                      "unit" = rep("DEG_C", nrow(data)),
@@ -143,7 +143,7 @@ data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
   drop_na(observation)
 data_b <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = data$timestamp,
-                     "lake" = data$local_site,
+                     "lake_id" = data$local_site,
                      "depth" = data$depth,
                      "variable" = rep("chla", nrow(data)),
                      "unit" = rep("MicroGM-PER-L", nrow(data)), # actually ppb but equivalent to ug/L
