@@ -6,7 +6,7 @@ library(tidyverse)
 
 # Creating data table
 Sparkling <- data.frame(matrix(ncol = 8, nrow = 0))
-colnames(Sparkling) <- c("source", "datetime", "lake", "depth", "varbiable", "unit", "observation", "flag")
+colnames(Sparkling) <- c("source", "datetime", "lake_id", "depth", "varbiable", "unit", "observation", "flag")
 
 #Magnuson, J.J., S.R. Carpenter, and E.H. Stanley. 2023. North Temperate Lakes
 #LTER: High Frequency Water Temperature Data - Sparkling Lake Raft 1989
@@ -28,7 +28,7 @@ if (exists("provenance")){
 
 data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = data$sampledate,
-                     "lake" = rep("SP", nrow(data)),
+                     "lake_id" = rep("SP", nrow(data)),
                      "depth" = data$depth,
                      "variable" = rep("temp", nrow(data)),
                      "unit" = rep("DEG_C", nrow(data)),
@@ -61,7 +61,7 @@ if (exists("provenance")){
 
 data_a<- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                     "datetime" = data$sampledate,
-                     "lake" = rep("SP", nrow(data)),
+                     "lake_id" = rep("SP", nrow(data)),
                      "depth" = rep(-2, nrow(data)),
                      "variable" = rep("par", nrow(data)),
                      "unit" = rep("MicroMOL-PER-M2-SEC", nrow(data)),
@@ -71,7 +71,7 @@ data_a<- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
 
 data_b <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = ymd(data$sampledate),
-                     "lake" = rep("SP",nrow(data)),
+                     "lake_id" = rep("SP",nrow(data)),
                      "depth" = rep(1,nrow(data)),
                      "variable" = rep("do", nrow(data)),
                      "unit" = rep("MilliGM-PER-L", nrow(data)),

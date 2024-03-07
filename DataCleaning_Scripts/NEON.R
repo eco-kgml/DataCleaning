@@ -9,7 +9,7 @@ sites <- c("SUGG", "BARC", "CRAM", "LIRO", "TOOK", "PRLA", "PRPO")
 # view(data_full[[length(data_full)]])
 
 NEON_Lakes <- data.frame(matrix(ncol = 8, nrow = 0))
-colnames(NEON_Lakes) <- c("source", "datetime", "lake", "depth", "varbiable", "unit", "observation", "flag")
+colnames(NEON_Lakes) <- c("source", "datetime", "lake_id", "depth", "varbiable", "unit", "observation", "flag")
 
 # Secchi Depth
 packageID = "DP1.20252.001"
@@ -30,7 +30,7 @@ data <- data %>% mutate(secchiDepth = case_when(is.na(secchiMeanDepth) & clearTo
 
 data_a <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
                      "datetime" = strptime(data$date, format = '%Y-%m-%d %H:%M:%S'),
-                     "lake" = data$siteID,
+                     "lake_id" = data$siteID,
                      "depth" = NA,
                      "variable" = rep("secchi", nrow(data)),
                      "unit" = rep("M", nrow(data)),
@@ -55,7 +55,7 @@ data <- data_full[["dep_profileData"]]
 
 data_a <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
                      "datetime" = strptime(data$date, format = '%Y-%m-%d %H:%M:%S'),
-                     "lake" = data$siteID,
+                     "lake_id" = data$siteID,
                      "depth" = data$sampleDepth,
                      "variable" = rep("temp", nrow(data)),
                      "unit" = rep("DEG_C", nrow(data)),
@@ -63,7 +63,7 @@ data_a <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
                      "flag" = data$dataQF)
 data_b <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
                      "datetime" = strptime(data$date, format = '%Y-%m-%d %H:%M:%S'),
-                     "lake" = data$siteID,
+                     "lake_id" = data$siteID,
                      "depth" = data$sampleDepth,
                      "variable" = rep("do", nrow(data)),
                      "unit" = rep("MilliGM-PER-L", nrow(data)),
@@ -116,7 +116,7 @@ data$new_flag <- replace(data$new_flag, is.na(data$new_flag) == FALSE, 1)
 
 data_a <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
                      "datetime" = strptime(data$collectDate, format = '%Y-%m-%d %H:%M:%S'),
-                     "lake" = data$siteID,
+                     "lake_id" = data$siteID,
                      "depth" = rep(0, nrow(data)),
                      "variable" = data$analyte_new_name,
                      "unit" = data$analyte_new_unit,
@@ -156,7 +156,7 @@ data$externalLabDataQF <- replace(data$externalLabDataQF, data$externalLabDataQF
 
 data_c <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
                      "datetime" = data$collectDate.y,
-                     "lake" = data$siteID.y,
+                     "lake_id" = data$siteID.y,
                      "depth" = data$realdepth,
                      "variable" = rep("chla", nrow(data)),
                      "unit" = rep("MicroGM-PER-L", nrow(data)),

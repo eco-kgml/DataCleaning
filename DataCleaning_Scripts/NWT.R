@@ -6,7 +6,7 @@ library(tidyverse)
 
 # Creating data table
 NWT <- data.frame(matrix(ncol = 8, nrow = 0))
-colnames(NWT) <- c("source", "datetime", "lake", "depth", "varbiable", "unit", "observation", "flag")
+colnames(NWT) <- c("source", "datetime", "lake_id", "depth", "varbiable", "unit", "observation", "flag")
 
 # McKnight, D., S. Yevak, S. Dykema, K. Loria, and Niwot Ridge LTER. 2023. Water quality data for Green Lakes Valley, 
 # 2000 - ongoing. ver 8. Environmental Data Initiative. https://doi.org/10.6073/pasta/2b9271ce9c27c939696fff96553a7bd2 (Accessed 2023-10-26).
@@ -28,7 +28,7 @@ if (exists("provenance")){
 
 data_chla <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = ymd(data$date),
-                     "lake" = data$local_site,
+                     "lake_id" = data$local_site,
                      "depth" = data$depth,
                      "variable" = rep("chla", nrow(data)),
                      "unit" = rep("MicroGM-PER-L", nrow(data)),
@@ -37,7 +37,7 @@ data_chla <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
   drop_na(observation)
 data_temp <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                         "datetime" = ymd(data$date),
-                        "lake" = data$local_site,
+                        "lake_id" = data$local_site,
                         "depth" = data$depth,
                         "variable" = rep("temp", nrow(data)),
                         "unit" = rep("DEG_C", nrow(data)),
@@ -46,7 +46,7 @@ data_temp <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
   drop_na(observation)
 data_do <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                         "datetime" = ymd(data$date),
-                        "lake" = data$local_site,
+                        "lake_id" = data$local_site,
                         "depth" = data$depth,
                         "variable" = rep("do", nrow(data)),
                         "unit" = rep("MilliGM-PER-L", nrow(data)),
@@ -55,7 +55,7 @@ data_do <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
   drop_na(observation)
 data_nitrate <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                         "datetime" = ymd(data$date),
-                        "lake" = data$local_site,
+                        "lake_id" = data$local_site,
                         "depth" = data$depth,
                         "variable" = rep("no3no2", nrow(data)),
                         "unit" = rep("MicroGM-PER-L", nrow(data)),
@@ -64,7 +64,7 @@ data_nitrate <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
   drop_na(observation)
 data_secchi <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                         "datetime" = ymd(data$date),
-                        "lake" = data$local_site,
+                        "lake_id" = data$local_site,
                         "depth" = NA,
                         "variable" = rep("secchi", nrow(data)),
                         "unit" = rep("M", nrow(data)),
@@ -73,7 +73,7 @@ data_secchi <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
   drop_na(observation)
 data_par <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                           "datetime" = ymd(data$date),
-                          "lake" = data$local_site,
+                          "lake_id" = data$local_site,
                           "depth" = data$depth,
                           "variable" = rep("par", nrow(data)),
                           "unit" = rep("MicroMOL-PER-M2-SEC", nrow(data)),
@@ -116,7 +116,7 @@ data$date <- as.Date(data$date)
 
 data_nh4 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                        "datetime" = ymd(data$date),
-                       "lake" = data$local_site,
+                       "lake_id" = data$local_site,
                        "depth" = data$depth,
                        "variable" = rep("nh4", nrow(data)),
                        "unit" = rep("MicroGM-PER-L", nrow(data)),
@@ -125,7 +125,7 @@ data_nh4 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
   drop_na(observation)
 data_no3 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                        "datetime" = ymd(data$date),
-                       "lake" = data$local_site,
+                       "lake_id" = data$local_site,
                        "depth" = data$depth,
                        "variable" = rep("no3", nrow(data)),
                        "unit" = rep("MicroGM-PER-L", nrow(data)),
@@ -134,7 +134,7 @@ data_no3 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
   drop_na(observation)
 data_tn <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                        "datetime" = ymd(data$date),
-                       "lake" = data$local_site,
+                       "lake_id" = data$local_site,
                        "depth" = data$depth,
                        "variable" = rep("tn", nrow(data)),
                        "unit" = rep("MicroGM-PER-L", nrow(data)),
@@ -143,7 +143,7 @@ data_tn <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
   drop_na(observation)
 data_tp <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                       "datetime" = ymd(data$date),
-                      "lake" = data$local_site,
+                      "lake_id" = data$local_site,
                       "depth" = data$depth,
                       "variable" = rep("tp", nrow(data)),
                       "unit" = rep("MicroGM-PER-L", nrow(data)),
@@ -152,7 +152,7 @@ data_tp <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
   drop_na(observation)
 data_doc <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                       "datetime" = ymd(data$date),
-                      "lake" = data$local_site,
+                      "lake_id" = data$local_site,
                       "depth" = data$depth,
                       "variable" = rep("doc", nrow(data)),
                       "unit" = rep("MilliGM-PER-L", nrow(data)),
@@ -161,7 +161,7 @@ data_doc <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
   drop_na(observation)
 data_poc <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                        "datetime" = ymd(data$date),
-                       "lake" = data$local_site,
+                       "lake_id" = data$local_site,
                        "depth" = data$depth,
                        "variable" = rep("poc", nrow(data)),
                        "unit" = rep("MilliGM-PER-L", nrow(data)),
@@ -177,7 +177,7 @@ NWT <- rbind(NWT, data_nh4) %>%
   rbind(data_poc)
 rm(data_nh4, data_no3, data_tn, data_tp, data_doc, data_poc)
 
-NWT <- NWT %>% filter(lake != "ROCK GLACIER")
+NWT <- NWT %>% filter(lake_id != "ROCK GLACIER")
 
 NWT$flag <- replace(NWT$flag, NWT$flag == "NaN" | NWT$flag == "Q(conduct)" | NWT$flag == "Q(std_conduct)" | NWT$flag == "pH_out_of_range Q(std_conduct)", NA)
 NWT$flag <- replace(NWT$flag, NWT$flag == "pH_out_of_range", 8)

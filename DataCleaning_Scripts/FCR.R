@@ -131,9 +131,9 @@ ctd1 <- ctd %>%
   filter(Reservoir == "FCR" & Site == 50) %>%
   select(DateTime, Reservoir, Depth_m, Temp_C, DO_mgL, PAR_umolm2s, Flag_Temp_C, Flag_DO_mgL, Flag_PAR_umolm2s) %>%  
   rename(datetime = DateTime,
-         lake = Reservoir,
+         lake_id = Reservoir,
          depth = Depth_m) %>%
-  pivot_longer(-c(datetime, lake, depth)) %>%
+  pivot_longer(-c(datetime, lake_id, depth)) %>%
   mutate(variable = str_extract(name, 'Temp|DO|PAR')) %>%
   mutate(variable = ifelse(variable == "Temp","temp",
                            ifelse(variable == "DO","do","par"))) %>%
@@ -142,16 +142,16 @@ ctd1 <- ctd %>%
   filter(!(variable == "par" & depth >= 0)) %>%
   rename(observation = value) %>%
   filter(!grepl("Flag",name)) %>%
-  select(datetime, lake, depth, variable, unit, observation, name)
+  select(datetime, lake_id, depth, variable, unit, observation, name)
 head(ctd1)
 
 ctd2 <- ctd %>%
   filter(Reservoir == "FCR" & Site == 50) %>%
   select(DateTime, Reservoir, Depth_m, Temp_C, DO_mgL, PAR_umolm2s, Flag_Temp_C, Flag_DO_mgL, Flag_PAR_umolm2s) %>%  
   rename(datetime = DateTime,
-         lake = Reservoir,
+         lake_id = Reservoir,
          depth = Depth_m) %>%
-  pivot_longer(-c(datetime, lake, depth)) %>%
+  pivot_longer(-c(datetime, lake_id, depth)) %>%
   mutate(variable = str_extract(name, 'Temp|DO|PAR')) %>%
   mutate(variable = ifelse(variable == "Temp","temp",
                            ifelse(variable == "DO","do","par"))) %>%
@@ -161,14 +161,14 @@ ctd2 <- ctd %>%
   rename(flag = value) %>%
   filter(grepl("Flag",name)) %>%
   mutate(name = gsub("Flag_","",name)) %>%
-  select(datetime, lake, depth, variable, unit, flag, name)
+  select(datetime, lake_id, depth, variable, unit, flag, name)
 head(ctd2)
 
 ctd3 <- bind_cols(ctd1, ctd2$flag) %>%
   rename(flag = `...8`) %>%
   select(-name) %>%
   mutate(depth = as.double(depth), source = paste("EDI", packageId_ctd))%>%
-  select(source, datetime, lake, depth, variable, unit, observation, flag)
+  select(source, datetime, lake_id, depth, variable, unit, observation, flag)
 head(ctd3)
 
 ctd3$flag <- replace(ctd3$flag, nchar(ctd3$flag) >= 2, 46)
@@ -188,14 +188,14 @@ inflow1 <- inflow %>%
   filter(Reservoir == "FCR" & Site == 100) %>%
   select(DateTime, Reservoir, WVWA_Flow_cms, Flag_WVWA_Flow_cms) %>%
   rename(datetime = DateTime,
-         lake = Reservoir,
+         lake_id = Reservoir,
          observation = WVWA_Flow_cms,
          flag = Flag_WVWA_Flow_cms) %>%
   add_column(unit = "cms",
              variable = "inflow",
              depth = NA) %>%
   mutate(source = paste("EDI", packageId_inflow)) %>%
-  select(source, datetime, lake, depth, variable, unit, observation, flag)
+  select(source, datetime, lake_id, depth, variable, unit, observation, flag)
 head(inflow1)
 
 inflow1$flag <- replace(inflow1$flag, nchar(inflow1$flag) >= 2, 46)
@@ -217,8 +217,8 @@ colnames(catwalk)
 catwalk1 <- catwalk %>%
   select(DateTime, Reservoir, ThermistorTemp_C_surface:ThermistorTemp_C_9, EXOTemp_C_1, RDOTemp_C_5, RDOTemp_C_9, EXODO_mgL_1, RDO_mgL_5, RDO_mgL_9,  EXOChla_ugL_1, EXOBGAPC_RFU_1, EXOfDOM_RFU_1, Flag_ThermistorTemp_C_surface:Flag_ThermistorTemp_C_9, Flag_RDO_mgL_5, Flag_RDOTemp_C_5, Flag_RDO_mgL_9, Flag_RDOTemp_C_9, Flag_EXOTemp_C_1, Flag_EXODO_mgL_1, Flag_EXOChla_ugL_1, Flag_EXOBGAPC_RFU_1, Flag_EXOfDOM_RFU_1) %>%
   rename(datetime = DateTime,
-         lake = Reservoir) %>%
-  pivot_longer(-c(datetime, lake)) %>%
+         lake_id = Reservoir) %>%
+  pivot_longer(-c(datetime, lake_id)) %>%
   mutate(variable = str_extract(name, 'Temp|DO|Chla|BGAPC|fDOM'),
          depth = str_extract(name, 'surface|1|2|3|4|5|6|7|8|9')) %>%
   mutate(depth = ifelse(grepl("EXO",name),1.6,
@@ -232,14 +232,14 @@ catwalk1 <- catwalk %>%
                                   ifelse(variable == "chla","MicroGM-PER-L","RFU")))) %>%
   rename(observation = value) %>%
   filter(!grepl("Flag",name)) %>%
-  select(datetime, lake, depth, variable, unit, observation, name)
+  select(datetime, lake_id, depth, variable, unit, observation, name)
 head(catwalk1)
 
 catwalk2 <- catwalk %>%
   select(DateTime, Reservoir, ThermistorTemp_C_surface:ThermistorTemp_C_9, EXOTemp_C_1, RDOTemp_C_5, RDOTemp_C_9, EXODO_mgL_1, RDO_mgL_5, RDO_mgL_9,  EXOChla_ugL_1, EXOBGAPC_RFU_1, EXOfDOM_RFU_1, Flag_ThermistorTemp_C_surface:Flag_ThermistorTemp_C_9, Flag_RDO_mgL_5, Flag_RDOTemp_C_5, Flag_RDO_mgL_9, Flag_RDOTemp_C_9, Flag_EXOTemp_C_1, Flag_EXODO_mgL_1, Flag_EXOChla_ugL_1, Flag_EXOBGAPC_RFU_1, Flag_EXOfDOM_RFU_1) %>%
   rename(datetime = DateTime,
-         lake = Reservoir) %>%
-  pivot_longer(-c(datetime, lake)) %>%
+         lake_id = Reservoir) %>%
+  pivot_longer(-c(datetime, lake_id)) %>%
   mutate(variable = str_extract(name, 'Temp|DO|Chla|BGAPC|fDOM'),
          depth = str_extract(name, 'surface|1|2|3|4|5|6|7|8|9')) %>%
   mutate(depth = ifelse(grepl("EXO",name),1.6,
@@ -254,13 +254,13 @@ catwalk2 <- catwalk %>%
   rename(flag = value) %>%
   filter(grepl("Flag",name)) %>%
   mutate(name = gsub("Flag_","",name)) %>%
-  select(datetime, lake, depth, variable, unit, flag, name)
+  select(datetime, lake_id, depth, variable, unit, flag, name)
 head(catwalk2)
 
-catwalk3 <- left_join(catwalk1, catwalk2, by = c("datetime","lake","depth","variable","unit","name")) %>%
+catwalk3 <- left_join(catwalk1, catwalk2, by = c("datetime","lake_id","depth","variable","unit","name")) %>%
   select(-name) %>%
   mutate(depth = as.double(depth), source = paste("EDI", packageId_catwalk))%>%
-  select(source, datetime, lake, depth, variable, unit, observation, flag)
+  select(source, datetime, lake_id, depth, variable, unit, observation, flag)
 head(catwalk3)
 
 catwalk3$flag <- replace(catwalk3$flag, nchar(catwalk3$flag) >= 2, 46)
@@ -280,9 +280,9 @@ chem1 <- chem %>%
   filter(Reservoir == "FCR" & Site == 50) %>%
   select(-Site,-Rep, -DC_mgL, -DN_mgL, -Flag_DC_mgL, -Flag_DN_mgL, -Flag_DateTime) %>%
   rename(datetime = DateTime,
-         lake = Reservoir,
+         lake_id = Reservoir,
          depth = Depth_m) %>%
-  pivot_longer(-c(datetime, lake, depth)) %>%
+  pivot_longer(-c(datetime, lake_id, depth)) %>%
   mutate(variable = str_extract(name, 'TP|TN|SRP|NH4|NO3NO2|DIC|DOC')) %>%
   mutate(variable = ifelse(variable == "TP","tp",
                            ifelse(variable == "TN","tn",
@@ -292,16 +292,16 @@ chem1 <- chem %>%
   mutate(unit = ifelse(variable %in% c("tp","tn","drp","no3"),"MicroGM-PER-L","MilliGM-PER-L")) %>%
   rename(observation = value) %>%
   filter(!grepl("Flag",name)) %>%
-  select(datetime, lake, depth, variable, unit, observation, name)
+  select(datetime, lake_id, depth, variable, unit, observation, name)
 head(chem1)
 
 chem2 <- chem %>%
   filter(Reservoir == "FCR" & Site == 50) %>%
   select(-Site,-Rep, -DC_mgL, -DN_mgL, -Flag_DC_mgL, -Flag_DN_mgL, -Flag_DateTime) %>%
   rename(datetime = DateTime,
-         lake = Reservoir,
+         lake_id = Reservoir,
          depth = Depth_m) %>%
-  pivot_longer(-c(datetime, lake, depth)) %>%
+  pivot_longer(-c(datetime, lake_id, depth)) %>%
   mutate(variable = str_extract(name, 'TP|TN|SRP|NH4|NO3NO2|DIC|DOC')) %>%
   mutate(variable = ifelse(variable == "TP","tp",
                            ifelse(variable == "TN","tn",
@@ -312,7 +312,7 @@ chem2 <- chem %>%
   rename(flag = value) %>%
   filter(grepl("Flag",name)) %>%
   mutate(name = gsub("Flag_","",name)) %>%
-  select(datetime, lake, depth, variable, unit, flag, name)
+  select(datetime, lake_id, depth, variable, unit, flag, name)
 head(chem2)
 
 chem1$variable <- replace(chem1$variable, chem2$variable == "doc_mgl", "doc")
@@ -325,7 +325,7 @@ chem3 <- bind_cols(chem1, chem2$flag) %>%
   rename(flag = `...8`) %>%
   select(-name) %>%
   mutate(depth = as.double(depth), source = paste("EDI", packageId_chemistry))%>%
-  select(source, datetime, lake, depth, variable, unit, observation, flag)
+  select(source, datetime, lake_id, depth, variable, unit, observation, flag)
 head(chem3)
 
 chem3$flag <- replace(chem3$flag, nchar(chem3$flag) >= 2, 46)
@@ -346,14 +346,14 @@ secchi1 <- secchi %>%
   filter(Reservoir == "FCR" & Site == 50) %>%
   select(DateTime, Reservoir, Secchi_m, Flag_Secchi_m) %>%
   rename(datetime = DateTime,
-         lake = Reservoir,
+         lake_id = Reservoir,
          observation = Secchi_m,
          flag = Flag_Secchi_m) %>%
   add_column(unit = "M",
              variable = "secchi",
              depth = NA) %>%
   mutate(source = paste("EDI", packageId_secchi)) %>%
-  select(source, datetime, lake, depth, variable, unit, observation, flag)
+  select(source, datetime, lake_id, depth, variable, unit, observation, flag)
 head(secchi1)
 
 secchi1$flag <- replace(secchi1$flag, secchi1$flag == 0, NA)
@@ -366,9 +366,9 @@ ysi1 <- ysi %>%
   filter(Reservoir == "FCR" & Site == 50) %>%
   select(DateTime, Reservoir, Depth_m, Temp_C, DO_mgL, PAR_umolm2s, Flag_Temp_C, Flag_DO_mgL, Flag_PAR_umolm2s) %>%  
   rename(datetime = DateTime,
-         lake = Reservoir,
+         lake_id = Reservoir,
          depth = Depth_m) %>%
-  pivot_longer(-c(datetime, lake, depth)) %>%
+  pivot_longer(-c(datetime, lake_id, depth)) %>%
   mutate(variable = str_extract(name, 'Temp|DO|PAR')) %>%
   mutate(variable = ifelse(variable == "Temp","temp",
                            ifelse(variable == "DO","do","par"))) %>%
@@ -377,16 +377,16 @@ ysi1 <- ysi %>%
   filter(!(variable == "par" & depth >= 0)) %>%
   rename(observation = value) %>%
   filter(!grepl("Flag",name)) %>%
-  select(datetime, lake, depth, variable, unit, observation, name)
+  select(datetime, lake_id, depth, variable, unit, observation, name)
 head(ysi1)
 
 ysi2 <- ysi %>%
   filter(Reservoir == "FCR" & Site == 50) %>%
   select(DateTime, Reservoir, Depth_m, Temp_C, DO_mgL, PAR_umolm2s, Flag_Temp_C, Flag_DO_mgL, Flag_PAR_umolm2s) %>%  
   rename(datetime = DateTime,
-         lake = Reservoir,
+         lake_id = Reservoir,
          depth = Depth_m) %>%
-  pivot_longer(-c(datetime, lake, depth)) %>%
+  pivot_longer(-c(datetime, lake_id, depth)) %>%
   mutate(variable = str_extract(name, 'Temp|DO|PAR')) %>%
   mutate(variable = ifelse(variable == "Temp","temp",
                            ifelse(variable == "DO","do","par"))) %>%
@@ -396,14 +396,14 @@ ysi2 <- ysi %>%
   rename(flag = value) %>%
   filter(grepl("Flag",name)) %>%
   mutate(name = gsub("Flag_","",name)) %>%
-  select(datetime, lake, depth, variable, unit, flag, name)
+  select(datetime, lake_id, depth, variable, unit, flag, name)
 head(ysi2)
 
 ysi3 <- bind_cols(ysi1, ysi2$flag) %>%
   rename(flag = `...8`) %>%
   select(-name) %>%
   mutate(depth = as.double(depth), source = paste("EDI", packageId_ysi))%>%
-  select(source, datetime, lake, depth, variable, unit, observation, flag)
+  select(source, datetime, lake_id, depth, variable, unit, observation, flag)
 head(ysi3)
 
 ysi3$flag <- replace(ysi3$flag, nchar(ysi3$flag) >= 2, 46)
@@ -420,14 +420,14 @@ chla1 <- chla %>%
   filter(Reservoir == "FCR" & Site == 50) %>%
   select(DateTime, Depth_m, Reservoir, Chla_ugL, Flag_Chla_ugL) %>%
   rename(datetime = DateTime,
-         lake = Reservoir,
+         lake_id = Reservoir,
          depth = Depth_m,
          observation = Chla_ugL,
          flag = Flag_Chla_ugL) %>%
   add_column(unit = "MicroGM-PER-L",
              variable = "chla") %>%
   mutate(source = paste("EDI", packageId_chla)) %>%
-  select(source, datetime, lake, depth, variable, unit, observation, flag)
+  select(source, datetime, lake_id, depth, variable, unit, observation, flag)
 head(chla1)
 
 chla1$flag <- replace(chla1$flag, nchar(chla1$flag) >= 2, 46)

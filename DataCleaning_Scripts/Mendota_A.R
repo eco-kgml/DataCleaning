@@ -6,7 +6,7 @@ library(tidyverse)
 
 # Creating data table
 Mendota <- data.frame(matrix(ncol = 8, nrow = 0))
-colnames(Mendota) <- c("source", "datetime", "lake", "depth", "varbiable", "unit", "observation", "flag")
+colnames(Mendota) <- c("source", "datetime", "lake_id", "depth", "varbiable", "unit", "observation", "flag")
 
 #### Magnuson, J.J., S.R. Carpenter, and E.H. Stanley. 2023. North Temperate Lakes LTER: High Frequency Data: Meteorological, 
 #### Dissolved Oxygen, Chlorophyll, Phycocyanin - Lake Mendota Buoy 2006 - current ver 35. Environmental Data Initiative. 
@@ -30,7 +30,7 @@ data$datetime <- paste(data$sampledate, data$sampletime)
 data$datetime <- strptime(data$datetime, format = "%Y-%m-%d %H:%M:%S")
 data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = data$datetime,
-                     "lake" = rep("ME", nrow(data)),
+                     "lake_id" = rep("ME", nrow(data)),
                      "depth" = rep(1, nrow(data)),
                      "variable" = rep("chla", nrow(data)),
                      "unit" = rep("RFU", nrow(data)),
@@ -40,7 +40,7 @@ Mendota <- rbind(Mendota, data_a)
 rm(data_a)
 data_b <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = data$datetime,
-                     "lake" = rep("ME", nrow(data)),
+                     "lake_id" = rep("ME", nrow(data)),
                      "depth" = rep(1, nrow(data)),
                      "variable" = rep("phyco", nrow(data)),
                      "unit" = rep("RFU", nrow(data)),
@@ -50,7 +50,7 @@ Mendota <- rbind(Mendota, data_b)
 rm(data_b)
 data_c <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = data$datetime,
-                     "lake" = rep("ME", nrow(data)),
+                     "lake_id" = rep("ME", nrow(data)),
                      "depth" = rep(1, nrow(data)),
                      "variable" = rep("do", nrow(data)),
                      "unit" = rep("MilliGM-PER-L", nrow(data)),
@@ -60,7 +60,7 @@ Mendota <- rbind(Mendota, data_c)
 rm(data_c)
 data_d <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = data$datetime,
-                     "lake" = rep("ME", nrow(data)),
+                     "lake_id" = rep("ME", nrow(data)),
                      "depth" = rep(1, nrow(data)),
                      "variable" = rep("temp", nrow(data)),
                      "unit" = rep("DEG_C", nrow(data)),
@@ -70,7 +70,7 @@ Mendota <- rbind(Mendota, data_d)
 rm(data_d)
 data_e <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = data$datetime,
-                     "lake" = rep("ME", nrow(data)),
+                     "lake_id" = rep("ME", nrow(data)),
                      "depth" = rep(1, nrow(data)),
                      "variable" = rep("fdom", nrow(data)),
                      "unit" = rep("RFU", nrow(data)),
@@ -80,7 +80,7 @@ Mendota <- rbind(Mendota, data_e)
 rm(data_e)
 data_f <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = data$datetime,
-                     "lake" = rep("ME", nrow(data)),
+                     "lake_id" = rep("ME", nrow(data)),
                      "depth" = rep(1, nrow(data)),
                      "variable" = rep("par", nrow(data)),
                      "unit" = rep("MicroMOL-PER-M2-SEC", nrow(data)),
@@ -90,7 +90,7 @@ Mendota <- rbind(Mendota, data_f)
 rm(data_f)
 data_g <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = data$datetime,
-                     "lake" = rep("ME", nrow(data)),
+                     "lake_id" = rep("ME", nrow(data)),
                      "depth" = rep(-2, nrow(data)),
                      "variable" = rep("par", nrow(data)),
                      "unit" = rep("MicroMOL-PER-M2-SEC", nrow(data)),

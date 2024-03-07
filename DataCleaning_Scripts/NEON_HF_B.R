@@ -9,7 +9,7 @@ library(tidyverse)
 sites <- c("SUGG", "BARC", "CRAM", "LIRO", "TOOK", "PRLA", "PRPO")
 
 NEON_Lakes <- data.frame(matrix(ncol = 8, nrow = 0))
-colnames(NEON_Lakes) <- c("source", "datetime", "lake", "depth", "varbiable", "unit", "observation", "flag")
+colnames(NEON_Lakes) <- c("source", "datetime", "lake_id", "depth", "varbiable", "unit", "observation", "flag")
 
 
 # Temperature at specific depth in surface water
@@ -28,7 +28,7 @@ gc()
 
 data <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
                    "datetime" = data$startDateTime,
-                   "lake" = data$siteID,
+                   "lake_id" = data$siteID,
                    "depth" = data$thermistorDepth,
                    "variable" = rep("temp", nrow(data)),
                    "unit" = rep("DEG_C", nrow(data)),

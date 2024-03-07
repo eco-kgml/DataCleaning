@@ -6,7 +6,7 @@ library(tidyverse)
 sites <- c("SUGG", "BARC", "CRAM", "LIRO", "TOOK", "PRLA", "PRPO")
 
 NEON_Lakes <- data.frame(matrix(ncol = 8, nrow = 0))
-colnames(NEON_Lakes) <- c("source", "datetime", "lake", "depth", "varbiable", "unit", "observation", "flag")
+colnames(NEON_Lakes) <- c("source", "datetime", "lake_id", "depth", "varbiable", "unit", "observation", "flag")
 
 # Photosynthetically active radiation below water surface
 packageID = "DP1.20261.001"
@@ -32,7 +32,7 @@ gc()
 
 data <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
                    "datetime" = data$startDateTime,
-                   "lake" = data$siteID,
+                   "lake_id" = data$siteID,
                    "depth" = data$sensorheight,
                    "variable" = rep("par", nrow(data)),
                    "unit" = rep("MicroMOL-PER-M2-SEC", nrow(data)),
