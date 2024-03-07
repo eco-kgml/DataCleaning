@@ -23,131 +23,24 @@ if (exists("provenance")){
 
 res <- read_data_entity_names(packageId = packageId)
 
-# 2010
-raw <- read_data_entity(packageId = packageId, entityId = res$entityId[4])
-data <- readr::read_csv(file = raw, show_col_types = FALSE)
-
-data$datetime <- paste(data$sampledate, data$sampletime)
-data$datetime <- strptime(data$datetime, format = "%Y-%m-%d %H:%M:%S")
-data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
-                     "datetime" = data$datetime,
-                     "lake" = rep("TR", nrow(data)),
-                     "depth" = data$depth,
-                     "variable" = rep("temp", nrow(data)),
-                     "unit" = rep("DEG_C", nrow(data)),
-                     "observation" = data$wtemp,
-                     "flag" = data$flag_wtemp)
-Trout <- rbind(Trout, data_a)
-rm(data_a)
-gc()
-
-# 2011
-raw <- read_data_entity(packageId = packageId, entityId = res$entityId[5])
-data <- readr::read_csv(file = raw, show_col_types = FALSE)
-
-data$datetime <- paste(data$sampledate, data$sampletime)
-data$datetime <- strptime(data$datetime, format = "%Y-%m-%d %H:%M:%S")
-data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
-                     "datetime" = data$datetime,
-                     "lake" = rep("TR", nrow(data)),
-                     "depth" = data$depth,
-                     "variable" = rep("temp", nrow(data)),
-                     "unit" = rep("DEG_C", nrow(data)),
-                     "observation" = data$wtemp,
-                     "flag" = data$flag_wtemp)
-Trout <- rbind(Trout, data_a)
-rm(data_a)
-gc()
-
-# 2011
-raw <- read_data_entity(packageId = packageId, entityId = res$entityId[5])
-data <- readr::read_csv(file = raw, show_col_types = FALSE)
-
-data$datetime <- paste(data$sampledate, data$sampletime)
-data$datetime <- strptime(data$datetime, format = "%Y-%m-%d %H:%M:%S")
-data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
-                     "datetime" = data$datetime,
-                     "lake" = rep("TR", nrow(data)),
-                     "depth" = data$depth,
-                     "variable" = rep("temp", nrow(data)),
-                     "unit" = rep("DEG_C", nrow(data)),
-                     "observation" = data$wtemp,
-                     "flag" = data$flag_wtemp)
-Trout <- rbind(Trout, data_a)
-rm(data_a)
-gc()
-
-# 2012
-raw <- read_data_entity(packageId = packageId, entityId = res$entityId[6])
-data <- readr::read_csv(file = raw, show_col_types = FALSE)
-
-data$datetime <- paste(data$sampledate, data$sampletime)
-data$datetime <- strptime(data$datetime, format = "%Y-%m-%d %H:%M:%S")
-data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
-                     "datetime" = data$datetime,
-                     "lake" = rep("TR", nrow(data)),
-                     "depth" = data$depth,
-                     "variable" = rep("temp", nrow(data)),
-                     "unit" = rep("DEG_C", nrow(data)),
-                     "observation" = data$wtemp,
-                     "flag" = data$flag_wtemp)
-Trout <- rbind(Trout, data_a)
-rm(data_a)
-gc()
-
-# 2013
-raw <- read_data_entity(packageId = packageId, entityId = res$entityId[7])
-data <- readr::read_csv(file = raw, show_col_types = FALSE)
-
-data$datetime <- paste(data$sampledate, data$sampletime)
-data$datetime <- strptime(data$datetime, format = "%Y-%m-%d %H:%M:%S")
-data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
-                     "datetime" = data$datetime,
-                     "lake" = rep("TR", nrow(data)),
-                     "depth" = data$depth,
-                     "variable" = rep("temp", nrow(data)),
-                     "unit" = rep("DEG_C", nrow(data)),
-                     "observation" = data$wtemp,
-                     "flag" = data$flag_wtemp)
-Trout <- rbind(Trout, data_a)
-rm(data_a)
-gc()
-
-# 2014
-raw <- read_data_entity(packageId = packageId, entityId = res$entityId[8])
-data <- readr::read_csv(file = raw, show_col_types = FALSE)
-
-data$datetime <- paste(data$sampledate, data$sampletime)
-data$datetime <- strptime(data$datetime, format = "%Y-%m-%d %H:%M:%S")
-data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
-                     "datetime" = data$datetime,
-                     "lake" = rep("TR", nrow(data)),
-                     "depth" = data$depth,
-                     "variable" = rep("temp", nrow(data)),
-                     "unit" = rep("DEG_C", nrow(data)),
-                     "observation" = data$wtemp,
-                     "flag" = data$flag_wtemp)
-Trout <- rbind(Trout, data_a)
-rm(data_a)
-gc()
-
-# 2015
-raw <- read_data_entity(packageId = packageId, entityId = res$entityId[9])
-data <- readr::read_csv(file = raw, show_col_types = FALSE)
-
-data$datetime <- paste(data$sampledate, data$sampletime)
-data$datetime <- strptime(data$datetime, format = "%Y-%m-%d %H:%M:%S")
-data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
-                     "datetime" = data$datetime,
-                     "lake" = rep("TR", nrow(data)),
-                     "depth" = data$depth,
-                     "variable" = rep("temp", nrow(data)),
-                     "unit" = rep("DEG_C", nrow(data)),
-                     "observation" = data$wtemp,
-                     "flag" = data$flag_wtemp)
-Trout <- rbind(Trout, data_a)
-rm(data_a)
-gc()
+for (i in 4:9){
+  raw <- read_data_entity(packageId = packageId, entityId = res$entityId[i])
+  data <- readr::read_csv(file = raw, show_col_types = FALSE)
+  
+  data$datetime <- paste(data$sampledate, data$sampletime)
+  data$datetime <- strptime(data$datetime, format = "%Y-%m-%d %H:%M:%S")
+  data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+                       "datetime" = data$datetime,
+                       "lake" = rep("TR", nrow(data)),
+                       "depth" = data$depth,
+                       "variable" = rep("temp", nrow(data)),
+                       "unit" = rep("DEG_C", nrow(data)),
+                       "observation" = data$wtemp,
+                       "flag" = data$flag_wtemp)
+  Trout <- rbind(Trout, data_a)
+  rm(data_a)
+  gc()
+}
 
 Trout$flag <- replace(Trout$flag, Trout$flag == "H", 8)
 Trout$flag <- replace(Trout$flag, Trout$flag == "J", 25)
