@@ -54,7 +54,7 @@ if (exists("provenance")){
 data <- data_full[["dep_profileData"]]
 
 data_a <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
-                     "datetime" = strptime(data$date, format = '%Y-%m-%d %H:%M:%S'),
+                     "datetime" = data$date,
                      "lake_id" = data$siteID,
                      "depth" = data$sampleDepth,
                      "variable" = rep("temp", nrow(data)),
@@ -62,7 +62,7 @@ data_a <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
                      "observation" = data$waterTemp,
                      "flag" = data$dataQF)
 data_b <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
-                     "datetime" = strptime(data$date, format = '%Y-%m-%d %H:%M:%S'),
+                     "datetime" = data$date,
                      "lake_id" = data$siteID,
                      "depth" = data$sampleDepth,
                      "variable" = rep("do", nrow(data)),
@@ -115,7 +115,7 @@ data$new_flag <- replace(data$new_flag, data$new_flag == "NA|NA|0|GOOD" | data$n
 data$new_flag <- replace(data$new_flag, is.na(data$new_flag) == FALSE, 1)
 
 data_a <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
-                     "datetime" = strptime(data$collectDate, format = '%Y-%m-%d %H:%M:%S'),
+                     "datetime" = data$collectDate,
                      "lake_id" = data$siteID,
                      "depth" = rep(0, nrow(data)),
                      "variable" = data$analyte_new_name,
