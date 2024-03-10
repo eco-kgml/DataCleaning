@@ -24,7 +24,7 @@ if (exists("provenance")){
 data <- data_full[["NSW_15_minute"]]
 
 data_a <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
-                     "datetime" = strptime(data$startDateTime, format = '%Y-%m-%d %H:%M:%S'),
+                     "datetime" = data$startDateTime,
                      "lake_id" = data$siteID,
                      "depth" = rep(0, nrow(data)), #double check
                      "variable" = rep("no3", nrow(data)),
@@ -56,7 +56,7 @@ data <- data_full[["PARWS_1min"]] %>% mutate(sensorheight = case_when(siteID == 
                                                            siteID == "TOOK" ~ -data_vert[which(data_vert$siteID == "TOOK"), zOffset]))
 
 data_a <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
-                     "datetime" = strptime(data$startDateTime, format = '%Y-%m-%d %H:%M:%S'),
+                     "datetime" = data$startDateTime,
                      "lake_id" = data$siteID,
                      "depth" = data$sensorheight,
                      "variable" = rep("par", nrow(data)),
@@ -84,7 +84,7 @@ data <- data_full[["waq_instantaneous"]]
 # data_vert <- data_full[["sensor_positions_20288"]]
 
 data_chla <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
-                     "datetime" = strptime(data$startDateTime, format = '%Y-%m-%d %H:%M:%S'),
+                     "datetime" = data$startDateTime,
                      "lake_id" = data$siteID,
                      "depth" = data$sensorDepth,
                      "variable" = rep("chla", nrow(data)),
@@ -92,7 +92,7 @@ data_chla <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
                      "observation" = data$chlorophyll,
                      "flag" = data$chlorophyllFinalQF) # 1 = fail, 0 = Pass
 data_do <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
-                        "datetime" = strptime(data$startDateTime, format = '%Y-%m-%d %H:%M:%S'),
+                        "datetime" = data$startDateTime,
                         "lake_id" = data$siteID,
                         "depth" = data$sensorDepth,
                         "variable" = rep("do", nrow(data)),
@@ -100,7 +100,7 @@ data_do <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
                         "observation" = data$dissolvedOxygen,
                         "flag" = data$dissolvedOxygenFinalQF) # 1 = fail, 0 = Pass
 data_fdom <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
-                        "datetime" = strptime(data$startDateTime, format = '%Y-%m-%d %H:%M:%S'),
+                        "datetime" = data$startDateTime,
                         "lake_id" = data$siteID,
                         "depth" = data$sensorDepth,
                         "variable" = rep("fdom", nrow(data)),
