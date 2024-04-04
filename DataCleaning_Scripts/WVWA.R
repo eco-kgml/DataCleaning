@@ -1,4 +1,4 @@
-#Read in FCR data from EDI
+#Read in WVWA data from EDI
 #Author: Mary Lofton (data curation and formatting), Bennett McAfee (EDIutils loading)
 #Date: 09JUN23
 
@@ -49,7 +49,7 @@ if (exists("provenance")){
   provenance <- append(provenance, packageId_inflow)
 }
 
-#3. catwalk
+#3. FCR catwalk
 scope = "edi"
 identifier = 271
 revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
@@ -119,6 +119,20 @@ if (exists("provenance")){
   provenance <- append(provenance, packageId_chla)
 }
 
+#8. BVR HF
+scope = "edi"
+identifier = 725
+revision = list_data_package_revisions(scope = scope,identifier = identifier, filter = "newest")
+packageId_BVRHF = paste0(scope, ".", identifier, ".", revision)
+
+res <- read_data_entity_names(packageId = packageId_BVRHF)
+raw <- read_data_entity(packageId = packageId_BVRHF, entityId = res$entityId[2])
+BVRHF <- readr::read_csv(file = raw, show_col_types = FALSE)
+
+if (exists("provenance")){
+  provenance <- append(provenance, packageId_BVRHF)
+}
+
 ##### REFORMAT DATA #####
 library(tidyverse)
 library(lubridate)
@@ -128,7 +142,7 @@ library(data.table)
 colnames(ctd)
 
 ctd1 <- ctd %>%
-  filter(Reservoir == "FCR" & Site == 50) %>%
+  filter(Reservoir == "FCR" & Site == 50 | Reservoir == "BVR" & Site == 50) %>%
   select(DateTime, Reservoir, Depth_m, Temp_C, DO_mgL, PAR_umolm2s, Flag_Temp_C, Flag_DO_mgL, Flag_PAR_umolm2s) %>%  
   rename(datetime = DateTime,
          lake_id = Reservoir,
@@ -146,7 +160,7 @@ ctd1 <- ctd %>%
 head(ctd1)
 
 ctd2 <- ctd %>%
-  filter(Reservoir == "FCR" & Site == 50) %>%
+  filter(Reservoir == "FCR" & Site == 50 | Reservoir == "BVR" & Site == 50) %>%
   select(DateTime, Reservoir, Depth_m, Temp_C, DO_mgL, PAR_umolm2s, Flag_Temp_C, Flag_DO_mgL, Flag_PAR_umolm2s) %>%  
   rename(datetime = DateTime,
          lake_id = Reservoir,
@@ -277,7 +291,7 @@ catwalk3$flag <- replace(catwalk3$flag, catwalk3$flag == 8, 48)
 #'4. water chemistry 
 colnames(chem)
 chem1 <- chem %>%
-  filter(Reservoir == "FCR" & Site == 50) %>%
+  filter(Reservoir == "FCR" & Site == 50 | Reservoir == "BVR" & Site == 50) %>%
   select(-Site,-Rep, -DC_mgL, -DN_mgL, -Flag_DC_mgL, -Flag_DN_mgL, -Flag_DateTime) %>%
   rename(datetime = DateTime,
          lake_id = Reservoir,
@@ -296,7 +310,7 @@ chem1 <- chem %>%
 head(chem1)
 
 chem2 <- chem %>%
-  filter(Reservoir == "FCR" & Site == 50) %>%
+  filter(Reservoir == "FCR" & Site == 50 | Reservoir == "BVR" & Site == 50) %>%
   select(-Site,-Rep, -DC_mgL, -DN_mgL, -Flag_DC_mgL, -Flag_DN_mgL, -Flag_DateTime) %>%
   rename(datetime = DateTime,
          lake_id = Reservoir,
@@ -343,7 +357,7 @@ chem3$flag <- replace(chem3$flag, chem3$flag == 9, 1)
 #5. Secchi
 colnames(secchi)
 secchi1 <- secchi %>%
-  filter(Reservoir == "FCR" & Site == 50) %>%
+  filter(Reservoir == "FCR" & Site == 50 | Reservoir == "BVR" & Site == 50) %>%
   select(DateTime, Reservoir, Secchi_m, Flag_Secchi_m) %>%
   rename(datetime = DateTime,
          lake_id = Reservoir,
@@ -363,7 +377,7 @@ secchi1$flag <- replace(secchi1$flag, secchi1$flag == 1, 32)
 colnames(ysi)
 
 ysi1 <- ysi %>%
-  filter(Reservoir == "FCR" & Site == 50) %>%
+  filter(Reservoir == "FCR" & Site == 50 | Reservoir == "BVR" & Site == 50) %>%
   select(DateTime, Reservoir, Depth_m, Temp_C, DO_mgL, PAR_umolm2s, Flag_Temp_C, Flag_DO_mgL, Flag_PAR_umolm2s) %>%  
   rename(datetime = DateTime,
          lake_id = Reservoir,
@@ -381,7 +395,7 @@ ysi1 <- ysi %>%
 head(ysi1)
 
 ysi2 <- ysi %>%
-  filter(Reservoir == "FCR" & Site == 50) %>%
+  filter(Reservoir == "FCR" & Site == 50 | Reservoir == "BVR" & Site == 50) %>%
   select(DateTime, Reservoir, Depth_m, Temp_C, DO_mgL, PAR_umolm2s, Flag_Temp_C, Flag_DO_mgL, Flag_PAR_umolm2s) %>%  
   rename(datetime = DateTime,
          lake_id = Reservoir,
@@ -417,7 +431,7 @@ ysi3$flag <- replace(ysi3$flag, ysi3$flag == 5, 1)
 #7. filtered chl-a
 colnames(chla)
 chla1 <- chla %>%
-  filter(Reservoir == "FCR" & Site == 50) %>%
+  filter(Reservoir == "FCR" & Site == 50 | Reservoir == "BVR" & Site == 50) %>%
   select(DateTime, Depth_m, Reservoir, Chla_ugL, Flag_Chla_ugL) %>%
   rename(datetime = DateTime,
          lake_id = Reservoir,
@@ -438,6 +452,86 @@ chla1$flag <- replace(chla1$flag, chla1$flag == 3, 44)
 chla1$flag <- replace(chla1$flag, chla1$flag == 4, 45)
 chla1$flag <- replace(chla1$flag, chla1$flag == 5, 5)
 
+#8. BVR High Frequency Data
+BVRHF_HoboMini <- BVRHF %>% 
+  select(-contains("Flag"), -contains("EXO")) %>% # Flags only indicate missing data, which is removed later.
+  pivot_longer(cols = 4:21) %>% 
+  filter(Reservoir == "BVR" & Site == 50) %>%
+  rowwise() %>%
+  mutate(depth = strsplit(name, "_(?!.*_)", perl=TRUE)[[1]][2],
+         name2 = strsplit(name, "_(?!.*_)", perl=TRUE)[[1]][1]) %>%
+  ungroup() %>%
+  mutate(variable = case_when(name2 == "HoboTemp_C" ~ "temp",
+                              name2 == "MiniDotTemp_C" ~ "temp",
+                              name2 == "MiniDotDO_mgL" ~ "do"),
+         unit = case_when(name2 == "HoboTemp_C" ~ "DEG_C",
+                          name2 == "MiniDotTemp_C" ~ "DEG_C",
+                          name2 == "MiniDotDO_mgL" ~ "MilliGM-PER-L")) %>%
+  filter(variable == "temp" | variable == "do")
+BVRHF_HoboMini <- data.frame("source" = rep(paste("EDI", packageId_BVRHF), nrow(BVRHF_HoboMini)),
+                       "datetime" = BVRHF_HoboMini$DateTime,
+                       "lake_id" = BVRHF_HoboMini$Reservoir,
+                       "depth" = BVRHF_HoboMini$depth,
+                       "variable" = BVRHF_HoboMini$variable,
+                       "unit" = BVRHF_HoboMini$unit,
+                       "observation" = BVRHF_HoboMini$value,
+                       "flag" = NA) %>% 
+  drop_na(observation)
+
+BVRHF_EXOdo <- data.frame("source" = rep(paste("EDI", packageId_BVRHF), nrow(BVRHF)),
+                              "datetime" = BVRHF$DateTime,
+                              "lake_id" = BVRHF$Reservoir,
+                              "depth" = BVRHF$EXODepth_m,
+                              "variable" = "do",
+                              "unit" = "MilliGM-PER-L",
+                              "observation" = BVRHF$EXODO_mgL_1.5,
+                              "flag" = NA) %>% 
+  drop_na(observation)
+BVRHF_EXOchla <- data.frame("source" = rep(paste("EDI", packageId_BVRHF), nrow(BVRHF)),
+                         "datetime" = BVRHF$DateTime,
+                         "lake_id" = BVRHF$Reservoir,
+                         "depth" = BVRHF$EXODepth_m,
+                         "variable" = "chla",
+                         "unit" = "RFU",
+                         "observation" = BVRHF$EXOChla_RFU_1.5,
+                         "flag" = NA) %>% 
+  drop_na(observation)
+BVRHF_EXOfdom <- data.frame("source" = rep(paste("EDI", packageId_BVRHF), nrow(BVRHF)),
+                             "datetime" = BVRHF$DateTime,
+                             "lake_id" = BVRHF$Reservoir,
+                             "depth" = BVRHF$EXODepth_m,
+                             "variable" = "fdom",
+                             "unit" = "RFU",
+                             "observation" = BVRHF$EXOfDOM_RFU_1.5,
+                             "flag" = NA) %>% 
+  drop_na(observation)
+
+source("DataCleaning_Scripts/BVR.R")
+HLW_FLARE_output2 <- HLW_FLARE_output %>% 
+  mutate(var = case_when(Variable == "temperature" ~ "temp",
+                         Variable == "oxygen" ~ "do",
+                         Variable == "fdom" ~ "fdom",
+                         Variable == "chla" ~ "chla"),
+         unit = case_when(Units == "C" ~ "DEG_C",
+                          Units == "mgL" ~ "MilliGM-PER-L",
+                          Units == "RFU" ~ "RFU")) %>%
+  filter(is.na(var) == FALSE & is.na(unit) == FALSE)
+HLW_FLARE_output3 <- data.frame("source" = rep(paste("EDI", packageId_BVRHF), nrow(HLW_FLARE_output2)),
+                                "datetime" = HLW_FLARE_output2$DateTime,
+                                "lake_id" = HLW_FLARE_output2$Reservoir,
+                                "depth" = HLW_FLARE_output2$Depth,
+                                "variable" = HLW_FLARE_output2$var,
+                                "unit" = HLW_FLARE_output2$unit,
+                                "observation" = HLW_FLARE_output2$Reading,
+                                "flag" = NA) %>% 
+  drop_na(observation)
+
+BVRHF_all <- rbind(BVRHF_HoboMini, BVRHF_EXOdo) %>% 
+  rbind(BVRHF_EXOchla) %>% 
+  rbind(BVRHF_EXOfdom) %>% 
+  rbind(HLW_FLARE_output3)
+rm(BVRHF_HoboMini, BVRHF_EXOdo, BVRHF_EXOchla, BVRHF_EXOfdom, HLW_FLARE_output, HLW_FLARE_output2, HLW_FLARE_output3)
+
 #### MERGE DATA ####
 # FCR <- bind_rows(ctd3, inflow1) %>% 
 #   bind_rows(., catwalk3) %>% 
@@ -446,15 +540,15 @@ chla1$flag <- replace(chla1$flag, chla1$flag == 5, 5)
 #   bind_rows(., ysi3) %>% 
 #   bind_rows(., chla1) 
 
-FCR_LF <- rbind(chem3, secchi1) %>% rbind(ysi3) %>% rbind(chla1)
-FCR_LF <- drop_na(FCR_LF, observation)
+WVWA_LF <- rbind(chem3, secchi1) %>% rbind(ysi3) %>% rbind(chla1)
+WVWA_LF <- drop_na(WVWA_LF, observation)
 
-FCR_HF <- rbind(ctd3, inflow1) %>% rbind(catwalk3)
-FCR_HF <- drop_na(FCR_HF, observation)
+WVWA_HF <- rbind(ctd3, inflow1) %>% rbind(catwalk3) %>% rbind(BVRHF_all)
+WVWA_HF <- drop_na(WVWA_HF, observation)
 
 rm(catwalk, catwalk1, catwalk2, catwalk3, chem, chem1, chem2, chem3, chla, chla1,
    ctd, ctd1, ctd2, ctd3, inflow, inflow1, secchi, secchi1, ysi, ysi1, ysi2, ysi3,
    res, raw, packageId_catwalk, packageId_chemistry, packageId_chla, packageId_ctd,
-   packageId_inflow, packageId_secchi, packageId_ysi, identifier, revision, scope)
+   packageId_inflow, packageId_secchi, packageId_ysi, identifier, revision, scope, BVRHF, BVRHF_all, packageId_BVRHF)
 
 
