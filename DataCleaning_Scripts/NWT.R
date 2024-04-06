@@ -177,7 +177,7 @@ NWT <- rbind(NWT, data_nh4) %>%
   rbind(data_poc)
 rm(data_nh4, data_no3, data_tn, data_tp, data_doc, data_poc)
 
-NWT <- NWT %>% filter(lake_id != "ROCK GLACIER")
+NWT <- NWT %>% filter(lake_id == "GL4")
 
 NWT$flag <- replace(NWT$flag, NWT$flag == "NaN" | NWT$flag == "Q(conduct)" | NWT$flag == "Q(std_conduct)" | NWT$flag == "pH_out_of_range Q(std_conduct)", NA)
 NWT$flag <- replace(NWT$flag, NWT$flag == "pH_out_of_range", 8)
