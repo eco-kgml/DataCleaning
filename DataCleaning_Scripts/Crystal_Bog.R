@@ -40,6 +40,13 @@ data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
 Crystal_Bog <- rbind(Crystal_Bog,data_a)
 rm(data_a)
 
+# Filling in missing depth values (prior to 2014 the depth is unknown but near the surface)
+tmp_depth_index <- which(is.na(Crystal_Bog$depth))
+tmp_flag_index <- which(is.na(Crystal_Bog$depth) & is.na(Crystal_Bog$flag))
+Crystal_Bog["depth",tmp_depth_index] <- 0.5
+Crystal_Bog["flag",tmp_flag_index] <- 51
+rm(tmp_flag_index, tmp_depth_index)
+
 raw <- read_data_entity(packageId = packageId, entityId = res$entityId[6])
 data <- readr::read_csv(file = raw, show_col_types = FALSE)
 
