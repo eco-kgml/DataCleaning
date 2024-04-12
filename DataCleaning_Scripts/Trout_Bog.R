@@ -42,11 +42,8 @@ Trout_Bog <- rbind(Trout_Bog,data_a)
 rm(data_a)
 
 # Filling in missing depth values (prior to 2014 the depth is unknown but near the surface)
-tmp_depth_index <- which(is.na(Trout_Bog$depth))
-tmp_flag_index <- which(is.na(Trout_Bog$depth) & is.na(Trout_Bog$flag))
-Trout_Bog["depth",tmp_depth_index] <- 0.5
-Trout_Bog["flag",tmp_flag_index] <- 51
-rm(tmp_flag_index, tmp_depth_index)
+Trout_Bog$flag <- replace(Trout_Bog$flag, is.na(Trout_Bog$depth) & is.na(Trout_Bog$flag), 51)
+Trout_Bog$depth <- replace(Trout_Bog$depth, is.na(Trout_Bog$depth), 0.5)
 
 raw <- read_data_entity(packageId = packageId, entityId = res$entityId[6])
 data <- readr::read_csv(file = raw, show_col_types = FALSE)
