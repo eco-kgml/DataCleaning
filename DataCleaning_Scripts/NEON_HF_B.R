@@ -36,6 +36,7 @@ data <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
                    "flag" = data$flag)
 
 data <- data[is.na(data$observation) == FALSE,]
+data <- data[is.na(data$depth) == FALSE,]
 data$flag <- replace(data$flag, data$flag == 0, NA)
 NEON_Lakes <- rbind(NEON_Lakes, data)
 rm(data)
