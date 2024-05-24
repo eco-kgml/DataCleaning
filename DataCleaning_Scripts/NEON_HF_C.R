@@ -18,14 +18,14 @@ if (exists("provenance")){
   provenance <- append(provenance, packageID)
 }
 
-data_vert <- data_full[['sensor_positions_20261']] %>% filter(grepl("Buoy", sensorLocationDescription)) %>% group_by(siteID) %>% summarize(zOffset = mean(zOffset))
-data <- data_full[['uPAR_1min']] %>% mutate(sensorheight = case_when(siteID == "SUGG" ~ -data_vert[which(data_vert$siteID == "SUGG"), 'zOffset'],
-                                                                     siteID == "BARC" ~ -data_vert[which(data_vert$siteID == "BARC"), 'zOffset'],
-                                                                     siteID == "CRAM" ~ -data_vert[which(data_vert$siteID == "CRAM"), 'zOffset'],
-                                                                     siteID == "LIRO" ~ -data_vert[which(data_vert$siteID == "LIRO"), 'zOffset'],
-                                                                     siteID == "PRLA" ~ -data_vert[which(data_vert$siteID == "PRLA"), 'zOffset'],
-                                                                     siteID == "PRPO" ~ -data_vert[which(data_vert$siteID == "PRPO"), 'zOffset'],
-                                                                     siteID == "TOOK" ~ -data_vert[which(data_vert$siteID == "TOOK"), 'zOffset']))
+data_vert <- data_full[['sensor_positions_20261']] %>% filter(grepl("103", HOR.VER)) %>% filter(grepl("Incoming", sensorLocationDescription))
+data <- data_full[['uPAR_1min']] %>% mutate(sensorheight = case_when(siteID == "SUGG" ~ -data_vert$zOffset[which(data_vert$siteID == "SUGG")],
+                                                                     siteID == "BARC" ~ -data_vert$zOffset[which(data_vert$siteID == "BARC")],
+                                                                     siteID == "CRAM" ~ -data_vert$zOffset[which(data_vert$siteID == "CRAM")],
+                                                                     siteID == "LIRO" ~ -data_vert$zOffset[which(data_vert$siteID == "LIRO")],
+                                                                     siteID == "PRLA" ~ -data_vert$zOffset[which(data_vert$siteID == "PRLA")],
+                                                                     siteID == "PRPO" ~ -data_vert$zOffset[which(data_vert$siteID == "PRPO")],
+                                                                     siteID == "TOOK" ~ -data_vert$zOffset[which(data_vert$siteID == "TOOK")]))
 
 rm(data_full, data_vert)
 gc()

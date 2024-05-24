@@ -79,7 +79,7 @@ if (exists("provenance")){
   provenance <- append(provenance, packageID)
 }
 
-data <- data_full[["waq_instantaneous"]]
+data <- data_full[["waq_instantaneous"]] %>% filter(sensorDepth >= 0)
 
 # data_vert <- data_full[["sensor_positions_20288"]]
 

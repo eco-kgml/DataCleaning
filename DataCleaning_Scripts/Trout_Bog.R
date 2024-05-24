@@ -1,5 +1,5 @@
 #Read in Trout Bog data from EDI
-#Author: Adi Tewari
+#Author: Adi Tewari and Bennett McAfee
 
 library(EDIutils)
 library(tidyverse)
@@ -41,6 +41,10 @@ data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
 Trout_Bog <- rbind(Trout_Bog,data_a)
 rm(data_a)
 
+# Filling in missing depth values (prior to 2014 the depth is unknown but near the surface)
+Trout_Bog$flag <- replace(Trout_Bog$flag, is.na(Trout_Bog$depth) & is.na(Trout_Bog$flag), 51)
+Trout_Bog$depth <- replace(Trout_Bog$depth, is.na(Trout_Bog$depth), 0.5)
+
 raw <- read_data_entity(packageId = packageId, entityId = res$entityId[6])
 data <- readr::read_csv(file = raw, show_col_types = FALSE)
 
@@ -66,7 +70,6 @@ data_b <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
 
 Trout_Bog <- rbind(Trout_Bog,data_a) %>% rbind(data_b)
 rm(data_a, data_b)
-
 
 #Magnuson, J., S. Carpenter, and E. Stanley. 2022. North Temperate Lakes LTER: 
 #High Frequency Water Temperature Data - Trout Bog Buoy 2003 - 2014 ver 28. 
