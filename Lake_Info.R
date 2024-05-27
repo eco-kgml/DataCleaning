@@ -323,5 +323,5 @@ for (obj in lake_objects){
   output_df <- rbind(output_df, get(obj))
 }
 
-write.csv(output_df, file = "Lake_Info.csv")
+write.csv(output_df, file = "Lake_Info.csv", row.names = FALSE)
 
