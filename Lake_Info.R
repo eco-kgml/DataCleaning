@@ -286,7 +286,7 @@ WI_info <- data.frame(lake_id = "WI",
                       area_ha = 136.2, # NTL-LTER Website
                       mean_depth_m = 2.7, # NTL-LTER Website
                       max_depth_m = 4.2, # NTL-LTER Website
-                      residence_time_yr = 4.4, # Rast and Lee 1977 (https://books.google.com/books?hl=en&lr=&id=W4fwAAAAMAAJ&oi=fnd&pg=PA337&dq=%22lake+wingra%22+%22residence+time%22&ots=dMYwrs2Mb5&sig=7p4o2g-D15sQPhlA2dlAR-7Qr8M#v=onepage&q=%22lake%20wingra%22%20%22residence%20time%22&f=false)
+                      residence_time_yr = 0.44, # Seyb and Randolph 1977 (https://books.google.com/books?id=zELaRGW0IrcC&q=Lake+Wingra&source=gbs_word_cloud_r&cad=3#v=snippet&q=Lake%20Wingra&f=false)
                       known_manipulations = "Carp removal [2007-2009]") #Lin and Wu 2013 (https://doi.org/10.1051/limn/2013049)
 
 CB_info <- data.frame(lake_id = "CB",
