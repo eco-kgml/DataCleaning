@@ -64,7 +64,7 @@ res <- read_data_entity_names(packageId = packageId_BVRHF)
 raw <- read_data_entity(packageId = packageId_BVRHF, entityId = res$entityId[1])
 bvr <- readr::read_csv(file = raw, show_col_types = FALSE)
 
-raw <- read_data_entity(packageId = packageId_BVRHF, entityId = res$entityId[6])
+raw <- read_data_entity(packageId = packageId_BVRHF, entityId = res$entityId[3])
 depth <- readr::read_csv(file = raw, show_col_types = FALSE)
 
 
@@ -81,8 +81,8 @@ EXO=bvr%>%
 # Select the sensors on the temp string because they are stationary.
 # Then pivot the data frame longer to merge the offset file so you can add a depth to each sensor reading
 bvr_new=bvr%>%
-  select(Reservoir,Site,DateTime, starts_with("Ther"), starts_with("RDO"), starts_with("Lvl"),Depth_m_13)%>%
-  pivot_longer(-c(Reservoir,Site,DateTime,Depth_m_13), names_to="Sensor", values_to="Reading", values_drop_na=FALSE)%>%
+  select(Reservoir,Site,DateTime, starts_with("Ther"), starts_with("RDO"), starts_with("Lvl"),LvlDepth_m_13)%>%
+  pivot_longer(-c(Reservoir,Site,DateTime,LvlDepth_m_13), names_to="Sensor", values_to="Reading", values_drop_na=FALSE)%>%
   separate(Sensor,c("Sensor","Units","Position"),"_")%>%
   mutate(Position=as.numeric(Position))%>%
   full_join(.,depth, by="Position")%>%#add in the offset file
@@ -96,13 +96,13 @@ bvr_new=bvr%>%
 
 bvr_pre_05APR21=bvr_new%>%
   filter(DateTime<="2021-04-05 13:20")%>%
-  mutate(Sensor_depth=Depth_m_13-Offset_before_05APR21)%>% #this gives you the depth of the thermistors from the surface
+  mutate(Sensor_depth=LvlDepth_m_13-Offset_before_05APR21)%>% #this gives you the depth of the thermistors from the surface
   mutate(Rounded_depth_whole=round_any(Sensor_depth, 1))%>% #Round the depth to the nearest whole number
   mutate(Rounded_depth_hundreth=round_any(Sensor_depth, 0.01))#Round to the nearest hundredth 
   
 bvr_post_05APR21=bvr_new%>%
   filter(DateTime>"2021-04-05 13:20")%>%
-  mutate(Sensor_depth=Depth_m_13-Offset_after_05APR21)%>% #this gives you the depth of the thermistor from the surface
+  mutate(Sensor_depth=LvlDepth_m_13-Offset_after_05APR21)%>% #this gives you the depth of the thermistor from the surface
   mutate(Rounded_depth_whole=round_any(Sensor_depth, 1))%>% #Round the depth to the nearest whole number
   mutate(Rounded_depth_hundreth=round_any(Sensor_depth, 0.01)) #Round to the nearest hundredth 
 
@@ -114,9 +114,9 @@ bvr_by_depth=bvr_pre_05APR21%>%
   filter(!is.na(Reading))%>%
   filter(!is.na(Sensor_depth))%>%
   select(-Offset_before_05APR21, -Offset_after_05APR21, -Distance_above_sediments)%>%
-  mutate(Reservoir_depth=Depth_m_13+0.5)%>%
-  select(Reservoir, Site,DateTime, Sensor, Units, Reading, Sensor_depth, Rounded_depth_hundreth, Depth_m_13, Reservoir_depth)
-  #select(-Offset_before_05APR21, -Offset_after_05APR21, -Distance_above_sediments, -Depth_m_13)
+  mutate(Reservoir_depth=LvlDepth_m_13+0.5)%>%
+  select(Reservoir, Site,DateTime, Sensor, Units, Reading, Sensor_depth, Rounded_depth_hundreth, LvlDepth_m_13, Reservoir_depth)
+  #select(-Offset_before_05APR21, -Offset_after_05APR21, -Distance_above_sediments, -LvlDepth_m_13)
 
 
 # write.csv(bvr_by_depth, paste0(folder,'BVR_longoutput_FLARE_2020_2021.csv'), row.names = FALSE)

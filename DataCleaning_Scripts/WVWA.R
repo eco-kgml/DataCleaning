@@ -126,7 +126,7 @@ revision = list_data_package_revisions(scope = scope,identifier = identifier, fi
 packageId_BVRHF = paste0(scope, ".", identifier, ".", revision)
 
 res <- read_data_entity_names(packageId = packageId_BVRHF)
-raw <- read_data_entity(packageId = packageId_BVRHF, entityId = res$entityId[2])
+raw <- read_data_entity(packageId = packageId_BVRHF, entityId = res$entityId[4])
 BVRHF <- readr::read_csv(file = raw, show_col_types = FALSE)
 
 if (exists("provenance")){
