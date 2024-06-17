@@ -205,7 +205,7 @@ inflow1 <- inflow %>%
          lake_id = Reservoir,
          observation = WVWA_Flow_cms,
          flag = Flag_WVWA_Flow_cms) %>%
-  add_column(unit = "cms",
+  add_column(unit = "M3-PER-SEC",
              variable = "inflow",
              depth = NA) %>%
   mutate(source = paste("EDI", packageId_inflow)) %>%
