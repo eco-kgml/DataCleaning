@@ -146,6 +146,7 @@ data <- merge(data_b, data_a, by = "sampleID", all = TRUE)
 # data$meandepth <- rowMeans(data[,c("phytoDepth1", "phytoDepth2", "phytoDepth3")], na.rm=TRUE)
 data$no_depth <- rowSums(is.na(data[,c("phytoDepth1", "phytoDepth2", "phytoDepth3")]))
 
+# Assign -99 depth to integrated samples.
 data <- data %>% mutate(realdepth = case_when(no_depth < 2 ~ -99,
                                      no_depth == 2 ~ phytoDepth1)) %>%
   filter(analyte == "chlorophyll a") %>%
