@@ -172,144 +172,162 @@ BVR_info <- data.frame(lake_id = "BVR",
 #### NTL Lakes ####
 ###################
 
-# Lat, long, and elevation come from https://lter.limnology.wisc.edu/core-study-lakes/.
-# Need to doble check whether the NTL GIS files have elevation information so they can be cited.
+# Many attributes derived from the following data package:
+#Lottig, N.R. and H.A. Dugan. 2024. North Temperate Lakes-LTER 
+#Core Research Lakes Information ver 1. Environmental Data Initiative. 
+#https://doi.org/10.6073/pasta/b9080c962f552029ee2b43aec1410328 (Accessed 2024-06-24).
 
+packageId <- "knb-lter-ntl.434.1"
+res <- read_data_entity_names(packageId = packageId)
+raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
+data <- readr::read_csv(file = raw, show_col_types = FALSE)
+
+lakename <- "Allequash Lake"
 AL_info <- data.frame(lake_id = "AL",
-                       lake_name = "Allequash Lake",
+                       lake_name = lakename,
                        institution = "NTL-LTER",
-                       latitude = 46.038, 
-                       longitude = -89.621,
+                       latitude = data$waterbody_lat_decdeg[which(data$waterbody_name == lakename)], 
+                       longitude = data$waterbody_lon_decdeg[which(data$waterbody_name == lakename)],
                        elevation_m = 494.03, # USGS National Map
-                       area_ha = 164.2, # Ladwig et al. 2022 (https://doi.org/10.1002/lno.12098)
-                       mean_depth_m = 2.9, # Ladwig et al. 2022
-                       max_depth_m = 8, # Ladwig et al. 2022
+                       area_ha = data$waterbody_area_ha[which(data$waterbody_name == lakename)],
+                       mean_depth_m = data$avg_depth_m[which(data$waterbody_name == lakename)],
+                       max_depth_m = data$max_depth_m[which(data$waterbody_name == lakename)],
                        residence_time_yr = 0.5, # Webster et al. 1996 (https://doi.org/10.4319/lo.1996.41.5.0977)
                        known_manipulations = NA)
 
+lakename <- "Big Muskellunge Lake"
 BM_info <- data.frame(lake_id = "BM",
-                      lake_name = "Big Muskellunge Lake",
+                      lake_name = lakename,
                       institution = "NTL-LTER",
-                      latitude = 46.021, 
-                      longitude = -89.612,
+                      latitude = data$waterbody_lat_decdeg[which(data$waterbody_name == lakename)], 
+                      longitude = data$waterbody_lon_decdeg[which(data$waterbody_name == lakename)],
                       elevation_m = 499.32, # USGS National Map
-                      area_ha = 363.4, # Ladwig et al. 2022
-                      mean_depth_m = 7.5, # Ladwig et al. 2022
-                      max_depth_m = 21.3, # Ladwig et al. 2022
+                      area_ha = data$waterbody_area_ha[which(data$waterbody_name == lakename)],
+                      mean_depth_m = data$avg_depth_m[which(data$waterbody_name == lakename)],
+                      max_depth_m = data$max_depth_m[which(data$waterbody_name == lakename)],
                       residence_time_yr = 8, # Webster et al. 1996
                       known_manipulations = NA)
 
+lakename <- "Crystal Lake"
 CR_info <- data.frame(lake_id = "CR",
-                      lake_name = "Crystal Lake",
+                      lake_name = lakename,
                       institution = "NTL-LTER",
-                      latitude = 46.003, 
-                      longitude = -89.612,
+                      latitude = data$waterbody_lat_decdeg[which(data$waterbody_name == lakename)], 
+                      longitude = data$waterbody_lon_decdeg[which(data$waterbody_name == lakename)],
                       elevation_m = 500.47, # USGS National Map
-                      area_ha = 37.5, # Ladwig et al. 2022
-                      mean_depth_m = 10.4, # Ladwig et al. 2022
-                      max_depth_m = 20.4, # Ladwig et al. 2022
+                      area_ha = data$waterbody_area_ha[which(data$waterbody_name == lakename)],
+                      mean_depth_m = data$avg_depth_m[which(data$waterbody_name == lakename)],
+                      max_depth_m = data$max_depth_m[which(data$waterbody_name == lakename)],
                       residence_time_yr = 12.7, # Webster et al. 1996
                       known_manipulations = "Thermal manipulation [2012-2013], Invasive smelt removal [2002-2009], Cisco introduction [2020-present]")
 # Thermal manipulation: Lawson et al. 2015 (https://doi.org/10.1139/cjfas-2014-0346)
 # Smelt removal: Gaeta et al. 2014 (https://doi.org/10.1007/s10750-014-1916-3)
 # Cisco introduction: Mrnak et al. 2022 (https://doi.org/10.1080/23308249.2022.2078951)
 
+lakename <- "Sparkling Lake"
 SP_info <- data.frame(lake_id = "SP",
-                      lake_name = "Sparkling Lake",
+                      lake_name = lakename,
                       institution = "NTL-LTER",
-                      latitude = 46.008, 
-                      longitude = -89.701,
+                      latitude = data$waterbody_lat_decdeg[which(data$waterbody_name == lakename)], 
+                      longitude = data$waterbody_lon_decdeg[which(data$waterbody_name == lakename)],
                       elevation_m = 494.16, # USGS National Map
-                      area_ha = 63.7, # Ladwig et al. 2022
-                      mean_depth_m = 10.9, # Ladwig et al. 2022
-                      max_depth_m = 20, # Ladwig et al. 2022
+                      area_ha = data$waterbody_area_ha[which(data$waterbody_name == lakename)],
+                      mean_depth_m = data$avg_depth_m[which(data$waterbody_name == lakename)],
+                      max_depth_m = data$max_depth_m[which(data$waterbody_name == lakename)],
                       residence_time_yr = 10.4, # Webster et al. 1996
                       known_manipulations = "Invasive crayfish removal [2001-2008], Invasive smelt removal [2002-2009], Cisco introduction [2020-present]") 
 # Crayfish removal: Martin Perales et al. 2021 (https://doi.org/10.1111/fwb.13818)
 # Smelt removal: Gaeta et al. 2014
 # Cisco introduction: Mrnak et al. 2022
 
+lakename <- "Trout Lake"
 TR_info <- data.frame(lake_id = "TR",
-                      lake_name = "Trout Lake",
+                      lake_name = lakename,
                       institution = "NTL-LTER",
-                      latitude = 46.029, 
-                      longitude = -89.665,
+                      latitude = data$waterbody_lat_decdeg[which(data$waterbody_name == lakename)], 
+                      longitude = data$waterbody_lon_decdeg[which(data$waterbody_name == lakename)],
                       elevation_m = 491.71, # USGS National Map
-                      area_ha = 1565.1, # Ladwig et al. 2022
-                      mean_depth_m = 14.6, # Ladwig et al. 2022
-                      max_depth_m = 35.7, # Ladwig et al. 2022
+                      area_ha = data$waterbody_area_ha[which(data$waterbody_name == lakename)],
+                      mean_depth_m = data$avg_depth_m[which(data$waterbody_name == lakename)],
+                      max_depth_m = data$max_depth_m[which(data$waterbody_name == lakename)],
                       residence_time_yr = 4.5, # Webster et al. 1996
                       known_manipulations = NA)
 
+lakename <- "Fish Lake"
 FI_info <- data.frame(lake_id = "FI",
-                      lake_name = "Fish Lake",
+                      lake_name = lakename,
                       institution = "NTL-LTER",
-                      latitude = 43.287, 
-                      longitude = -89.652,
+                      latitude = data$waterbody_lat_decdeg[which(data$waterbody_name == lakename)],
+                      longitude = data$waterbody_lon_decdeg[which(data$waterbody_name == lakename)],
                       elevation_m = 262.05, # USGS National Map
-                      area_ha = 80.4, # Ladwig et al. 2022
-                      mean_depth_m = 6.6, # Ladwig et al. 2022
-                      max_depth_m = 18.9, # Ladwig et al. 2022
+                      area_ha = data$waterbody_area_ha[which(data$waterbody_name == lakename)],
+                      mean_depth_m = data$avg_depth_m[which(data$waterbody_name == lakename)],
+                      max_depth_m = data$max_depth_m[which(data$waterbody_name == lakename)],
                       residence_time_yr = NA, # closed basin system, residence time is unknown
                       known_manipulations = NA)
 
+lakename <- "Lake Mendota"
 ME_info <- data.frame(lake_id = "ME",
-                      lake_name = "Lake Mendota",
+                      lake_name = lakename,
                       institution = "NTL-LTER",
-                      latitude = 43.099, 
-                      longitude = -89.405,
+                      latitude = data$waterbody_lat_decdeg[which(data$waterbody_name == lakename)],
+                      longitude = data$waterbody_lon_decdeg[which(data$waterbody_name == lakename)],
                       elevation_m = 258.95, # USGS National Map
-                      area_ha = 3961.2, # Ladwig et al. 2022
-                      mean_depth_m = 12.8, # Ladwig et al. 2022
-                      max_depth_m = 25.3, # Ladwig et al. 2022
+                      area_ha = data$waterbody_area_ha[which(data$waterbody_name == lakename)],
+                      mean_depth_m = data$avg_depth_m[which(data$waterbody_name == lakename)],
+                      max_depth_m = data$max_depth_m[which(data$waterbody_name == lakename)],
                       residence_time_yr = 4.3, # Lathrop and Carpenter 2014 (https://doi.org/10.5268/IW-4.1.680)
                       known_manipulations = "Piscivore stocking [1987-1999]") # Lathrop et al. 2002 (https://doi.org/10.1046/j.1365-2427.2002.01011.x)
 
+lakename = "Lake Monona"
 MO_info <- data.frame(lake_id = "MO",
-                      lake_name = "Lake Monona",
+                      lake_name = lakename,
                       institution = "NTL-LTER",
-                      latitude = 43.063, 
-                      longitude = -89.361,
+                      latitude = data$waterbody_lat_decdeg[which(data$waterbody_name == lakename)],
+                      longitude = data$waterbody_lon_decdeg[which(data$waterbody_name == lakename)],
                       elevation_m = 257.42, # USGS National Map
-                      area_ha = 1359.8, # Ladwig et al. 2022
-                      mean_depth_m = 8.2, # Ladwig et al. 2022
-                      max_depth_m = 22.5, # Ladwig et al. 2022
+                      area_ha = data$waterbody_area_ha[which(data$waterbody_name == lakename)],
+                      mean_depth_m = data$avg_depth_m[which(data$waterbody_name == lakename)],
+                      max_depth_m = data$max_depth_m[which(data$waterbody_name == lakename)],
                       residence_time_yr = 0.7,  # Lathrop and Carpenter 2014
                       known_manipulations = NA)
 
+lakename = "Lake Wingra"
 WI_info <- data.frame(lake_id = "WI",
-                      lake_name = "Lake Wingra",
+                      lake_name = lakename,
                       institution = "NTL-LTER",
-                      latitude = 43.053, 
-                      longitude = -89.425,
+                      latitude = data$waterbody_lat_decdeg[which(data$waterbody_name == lakename)], 
+                      longitude = data$waterbody_lon_decdeg[which(data$waterbody_name == lakename)],
                       elevation_m = 258.39, # USGS National Map
-                      area_ha = 136.2, # NTL-LTER Website
-                      mean_depth_m = 2.7, # NTL-LTER Website
-                      max_depth_m = 4.2, # NTL-LTER Website
-                      residence_time_yr = 0.44, # Seyb and Randolph 1977 (https://books.google.com/books?id=zELaRGW0IrcC&q=Lake+Wingra&source=gbs_word_cloud_r&cad=3#v=snippet&q=Lake%20Wingra&f=false)
+                      area_ha = data$waterbody_area_ha[which(data$waterbody_name == lakename)],
+                      mean_depth_m = data$avg_depth_m[which(data$waterbody_name == lakename)],
+                      max_depth_m = data$max_depth_m[which(data$waterbody_name == lakename)],
+                      residence_time_yr = 0.44, # Rast and Lee 1977 p.344 (https://books.google.com/books?id=zELaRGW0IrcC&q=Lake+Wingra&source=gbs_word_cloud_r&cad=3#v=snippet&q=Lake%20Wingra&f=false)
                       known_manipulations = "Carp removal [2007-2009]") #Lin and Wu 2013 (https://doi.org/10.1051/limn/2013049)
 
+lakename <- "Crystal Bog"
 CB_info <- data.frame(lake_id = "CB",
-                      lake_name = "Crystal Bog",
+                      lake_name = lakename,
                       institution = "NTL-LTER",
-                      latitude = 46.008, # Watras and Hanson 2023 (https://doi.org/10.1002/eco.2591)
-                      longitude = -89.606, # Watras and Hanson 2023
+                      latitude = data$waterbody_lat_decdeg[which(data$waterbody_name == lakename)], 
+                      longitude = data$waterbody_lon_decdeg[which(data$waterbody_name == lakename)],
                       elevation_m = 501.49, # USGS National Map
-                      area_ha = 5357 / 10000, # Watras and Hanson 2023 converted to hectares
-                      mean_depth_m = 9660 / 5357, # Watras and Hanson 2023 calculated
-                      max_depth_m = 2.5, # Watras and Hanson 2023
-                      residence_time_yr = 2.6, # Watras and Hanson 2023
+                      area_ha = data$waterbody_area_ha[which(data$waterbody_name == lakename)],
+                      mean_depth_m = data$avg_depth_m[which(data$waterbody_name == lakename)],
+                      max_depth_m = data$max_depth_m[which(data$waterbody_name == lakename)],
+                      residence_time_yr = 2.6, # Watras and Hanson 2023 (https://doi.org/10.1002/eco.2591)
                       known_manipulations = NA)
 
+lakename <- "Trout Bog"
 TB_info <- data.frame(lake_id = "TB",
-                      lake_name = "Trout Bog",
+                      lake_name = lakename,
                       institution = "NTL-LTER",
-                      latitude = 46.041, # Watras and Hanson 2023
-                      longitude = -89.686, # Watras and Hanson 2023
+                      latitude = data$waterbody_lat_decdeg[which(data$waterbody_name == lakename)], 
+                      longitude = data$waterbody_lon_decdeg[which(data$waterbody_name == lakename)],
                       elevation_m = 493.5, # USGS National Map
-                      area_ha = 11000 / 10000, # Watras and Hanson 2023 converted to hectares
-                      mean_depth_m = 61693 / 11000, # Watras and Hanson 2023 calculated
-                      max_depth_m = 7.9, # Watras and Hanson 2023
+                      area_ha = data$waterbody_area_ha[which(data$waterbody_name == lakename)],
+                      mean_depth_m = data$avg_depth_m[which(data$waterbody_name == lakename)],
+                      max_depth_m = data$max_depth_m[which(data$waterbody_name == lakename)],
                       residence_time_yr = 6.4, # Watras and Hanson 2023 
                       known_manipulations = NA)
 
