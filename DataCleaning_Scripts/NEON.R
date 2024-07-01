@@ -26,7 +26,7 @@ data <- data_full[["dep_secchi"]]
 # Make max depth the secchi depth and add flag for bottom visible
 data <- data %>% mutate(secchiDepth = case_when(is.na(secchiMeanDepth) & clearToBottom == "Y" ~ maxDepth,
                                                 is.na(secchiMeanDepth) == FALSE ~ secchiMeanDepth),
-                        secchiBottomFlag = case_when(is.na(secchiMeanDepth) & clearToBottom == "Y" ~ "Z"))
+                        secchiBottomFlag = case_when(is.na(secchiMeanDepth) & clearToBottom == "Y" ~ "51"))
 
 data_a <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
                      "datetime" = strptime(data$date, format = '%Y-%m-%d %H:%M:%S'),
@@ -35,7 +35,7 @@ data_a <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
                      "variable" = rep("secchi", nrow(data)),
                      "unit" = rep("M", nrow(data)),
                      "observation" = data$secchiDepth,
-                     "flag" = data$dataQF)
+                     "flag" = data$secchiBottomFlag) # dataQF is empty. Bottom is the only flag
 
 data_a <- data_a[is.na(data_a$observation) == FALSE,]
 NEON_Lakes <- rbind(NEON_Lakes, data_a)
