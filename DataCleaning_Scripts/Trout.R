@@ -95,3 +95,4 @@ Trout$flag <- replace(Trout$flag, Trout$flag == "C", 27)
 Trout$flag <- replace(Trout$flag, Trout$flag == "E", 28)
 Trout$flag <- replace(Trout$flag, Trout$flag == "F", 29)
 Trout$flag <- replace(Trout$flag, Trout$flag == "G", 30)
+Trout$flag <- replace(Trout$flag, Trout$flag == "`", NA) # Erroneously added flag in source data

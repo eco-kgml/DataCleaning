@@ -138,7 +138,7 @@ data_tn <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                        "depth" = data$depth,
                        "variable" = rep("tn", nrow(data)),
                        "unit" = rep("MicroGM-PER-L", nrow(data)),
-                       "observation" = as.numeric(data$TN) * (1/0.071394), # convert micromoles to micrograms
+                       "observation" = as.numeric(data$TN) * 14.0067, # convert micromoles to micrograms
                        "flag" = rep(NA, nrow(data))) %>%
   drop_na(observation)
 data_tp <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
@@ -147,7 +147,7 @@ data_tp <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                       "depth" = data$depth,
                       "variable" = rep("tp", nrow(data)),
                       "unit" = rep("MicroGM-PER-L", nrow(data)),
-                      "observation" = as.numeric(data$TP) * (1/0.032285), # convert micromoles to micrograms
+                      "observation" = as.numeric(data$TP) * 30.97, # convert micromoles to micrograms
                       "flag" = rep(NA, nrow(data))) %>%
   drop_na(observation)
 data_doc <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
@@ -156,7 +156,7 @@ data_doc <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                       "depth" = data$depth,
                       "variable" = rep("doc", nrow(data)),
                       "unit" = rep("MilliGM-PER-L", nrow(data)),
-                      "observation" = as.numeric(data$DOC), # convert micromoles to micrograms
+                      "observation" = as.numeric(data$DOC),
                       "flag" = rep(NA, nrow(data))) %>%
   drop_na(observation)
 data_poc <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
@@ -165,7 +165,7 @@ data_poc <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                        "depth" = data$depth,
                        "variable" = rep("poc", nrow(data)),
                        "unit" = rep("MilliGM-PER-L", nrow(data)),
-                       "observation" = as.numeric(data$POC), # convert micromoles to micrograms
+                       "observation" = as.numeric(data$POC),
                        "flag" = rep(NA, nrow(data))) %>%
   drop_na(observation)
 

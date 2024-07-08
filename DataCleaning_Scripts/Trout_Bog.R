@@ -146,4 +146,4 @@ Trout_Bog$flag <- replace(Trout_Bog$flag, Trout_Bog$flag == "C", 27)
 Trout_Bog$flag <- replace(Trout_Bog$flag, Trout_Bog$flag == "E", 28)
 Trout_Bog$flag <- replace(Trout_Bog$flag, Trout_Bog$flag == "F", 29)
 Trout_Bog$flag <- replace(Trout_Bog$flag, Trout_Bog$flag == "G", 30)
-Trout_Bog$flag <- replace(Trout_Bog$flag, Trout_Bog$flag == "\\", NA)
+Trout_Bog$flag <- replace(Trout_Bog$flag, Trout_Bog$flag == "\\", NA) #Erroneously added flag in source data
