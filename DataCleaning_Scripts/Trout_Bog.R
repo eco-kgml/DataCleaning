@@ -137,7 +137,7 @@ data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
 Trout_Bog <- rbind(Trout_Bog,data_a)
 rm(data_a)
 
-Trout_Bog <- Trout_Bog %>% filter(flag != "D") # D indicates a negative temperature value that is erroneous.
+Trout_Bog <- Trout_Bog %>% filter(flag != "D" | is.na(flag) == TRUE) # D indicates a negative temperature value that is erroneous.
 
 Trout_Bog$flag <- replace(Trout_Bog$flag, Trout_Bog$flag == "H", 8)
 Trout_Bog$flag <- replace(Trout_Bog$flag, Trout_Bog$flag == "J", 25)
