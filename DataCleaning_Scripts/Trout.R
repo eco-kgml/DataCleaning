@@ -48,7 +48,7 @@ data_b <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "variable" = rep("par", nrow(data)),
                      "unit" = rep("MicroMOL-PER-M2-SEC", nrow(data)),
                      "observation" = data$par,
-                     "flag" = data$flag_do_raw) %>%
+                     "flag" = data$flag_par) %>%
   drop_na(observation)
 
 Trout <- rbind(Trout, data_b)
@@ -95,3 +95,4 @@ Trout$flag <- replace(Trout$flag, Trout$flag == "C", 27)
 Trout$flag <- replace(Trout$flag, Trout$flag == "E", 28)
 Trout$flag <- replace(Trout$flag, Trout$flag == "F", 29)
 Trout$flag <- replace(Trout$flag, Trout$flag == "G", 30)
+Trout$flag <- replace(Trout$flag, Trout$flag == "`", NA) # Erroneously added flag in source data

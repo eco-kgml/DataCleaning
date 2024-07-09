@@ -42,7 +42,7 @@ Trout_Bog <- rbind(Trout_Bog,data_a)
 rm(data_a)
 
 # Filling in missing depth values (prior to 2014 the depth is unknown but near the surface)
-Trout_Bog$flag <- replace(Trout_Bog$flag, is.na(Trout_Bog$depth) & is.na(Trout_Bog$flag), 51)
+Trout_Bog$flag <- replace(Trout_Bog$flag, is.na(Trout_Bog$depth) & is.na(Trout_Bog$flag), 52)
 Trout_Bog$depth <- replace(Trout_Bog$depth, is.na(Trout_Bog$depth), 0.5)
 
 raw <- read_data_entity(packageId = packageId, entityId = res$entityId[6])
@@ -137,6 +137,7 @@ data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
 Trout_Bog <- rbind(Trout_Bog,data_a)
 rm(data_a)
 
+Trout_Bog <- Trout_Bog %>% filter(flag != "D" | is.na(flag) == TRUE) # D indicates a negative temperature value that is erroneous.
 
 Trout_Bog$flag <- replace(Trout_Bog$flag, Trout_Bog$flag == "H", 8)
 Trout_Bog$flag <- replace(Trout_Bog$flag, Trout_Bog$flag == "J", 25)
@@ -145,3 +146,4 @@ Trout_Bog$flag <- replace(Trout_Bog$flag, Trout_Bog$flag == "C", 27)
 Trout_Bog$flag <- replace(Trout_Bog$flag, Trout_Bog$flag == "E", 28)
 Trout_Bog$flag <- replace(Trout_Bog$flag, Trout_Bog$flag == "F", 29)
 Trout_Bog$flag <- replace(Trout_Bog$flag, Trout_Bog$flag == "G", 30)
+Trout_Bog$flag <- replace(Trout_Bog$flag, Trout_Bog$flag == "\\", NA) #Erroneously added flag in source data

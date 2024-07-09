@@ -30,7 +30,7 @@ data_a <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
                      "variable" = rep("no3", nrow(data)),
                      "unit" = rep("MicroGM-PER-L", nrow(data)),
                      "observation" = data$surfWaterNitrateMean * (1/0.016128), #conversion from umol to ug
-                     "flag" = NA)
+                     "flag" = data$finalQF)
 
 data_a <- data_a[is.na(data_a$observation) == FALSE,]
 NEON_Lakes <- rbind(NEON_Lakes, data_a)

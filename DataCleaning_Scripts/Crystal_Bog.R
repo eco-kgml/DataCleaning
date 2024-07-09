@@ -41,7 +41,7 @@ Crystal_Bog <- rbind(Crystal_Bog,data_a)
 rm(data_a)
 
 # Filling in missing depth values (prior to 2014 the depth is unknown but near the surface)
-Crystal_Bog$flag <- replace(Crystal_Bog$flag, is.na(Crystal_Bog$depth) & is.na(Crystal_Bog$flag), 51)
+Crystal_Bog$flag <- replace(Crystal_Bog$flag, is.na(Crystal_Bog$depth) & is.na(Crystal_Bog$flag), 52)
 Crystal_Bog$depth <- replace(Crystal_Bog$depth, is.na(Crystal_Bog$depth), 0.5)
 
 raw <- read_data_entity(packageId = packageId, entityId = res$entityId[6])
