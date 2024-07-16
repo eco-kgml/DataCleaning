@@ -1,5 +1,5 @@
 #Read in Sparkling Lake data from EDI
-#Author: Adi Tewari
+#Author: Adi Tewari & Bennett McAfee
 
 library(EDIutils)
 library(tidyverse)
@@ -76,13 +76,14 @@ data_a<- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
   drop_na(observation)
 
 data_b <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
-                     "datetime" = ymd(data$datetime),
+                     "datetime" = data$datetime,
                      "lake_id" = rep("SP",nrow(data)),
                      "depth" = rep(1,nrow(data)),
                      "variable" = rep("do", nrow(data)),
                      "unit" = rep("MilliGM-PER-L", nrow(data)),
                      "observation" = data$do_raw,
-                     "flag" = data$flag_do_raw) %>% drop_na(observation)
+                     "flag" = data$flag_do_raw) %>% 
+  drop_na(observation)
 
 Sparkling <- rbind(Sparkling, data_a)
 Sparkling <- rbind(Sparkling, data_b)

@@ -1,5 +1,5 @@
 #Read in Trout Lake data from EDI
-#Author: Adi Tewari
+#Author: Adi Tewari & Bennett McAfee
 
 library(EDIutils)
 library(tidyverse)
