@@ -1,5 +1,8 @@
-#Control the collection of data from external sources
-#Author: Bennett McAfee
+####################################################################################
+#### Data Controller ###############################################################
+#### Calls the data harmonization scripts and converts tables to Parquet format ####
+#### Author: Bennett McAfee ########################################################
+####################################################################################
 
 start_time <- Sys.time()
 
@@ -12,7 +15,9 @@ filepath <- paste0(getwd(), "/DataCleaning_Scripts/data")
 
 provenance <- c()
 
-# Mendota
+################################
+#### Mendota High-Frequency ####
+################################
 
 ## Mendota Chemistry and Meteorology
 
@@ -39,7 +44,11 @@ rm(data, res, raw, Mendota)
 gc()
 file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
 
-## NTL_HF_Ice
+###############################
+#### NTL-LTER General Data ####
+###############################
+
+## NTL HF Under-Ice data
 
 print(paste("Gathering NTL-LTER high frequency under-ice data at", Sys.time()))
 source("DataCleaning_Scripts/NTL_HF_Ice.R")
@@ -57,7 +66,9 @@ rm(data, res, raw, NTL)
 gc()
 file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
 
-# Trout
+###################################
+#### Trout Lake High Frequency ####
+###################################
 
 print(paste("Gathering Trout Lake high frequency data (1/3) at", Sys.time()))
 source("DataCleaning_Scripts/Trout.R")
@@ -80,7 +91,9 @@ rm(data, res, raw, Trout)
 gc()
 file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
 
-# Sparkling
+#######################################
+#### Sparkling Lake High Frequency ####
+#######################################
 
 print(paste("Gathering Sparkling Lake high frequency data (1/3) at", Sys.time()))
 source("DataCleaning_Scripts/Sparkling.R")
@@ -103,7 +116,9 @@ rm(data, res, raw, Sparkling)
 gc()
 file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
 
-# Trout Bog
+##################################
+#### Trout Bog High Frequency ####
+##################################
 
 print(paste("Gathering Trout Bog high frequency data at", Sys.time()))
 source("DataCleaning_Scripts/Trout_Bog.R")
@@ -112,7 +127,9 @@ rm(data, res, raw, Trout_Bog)
 gc()
 file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
 
-# Crystal Bog
+####################################
+#### Crystal Bog High Frequency ####
+####################################
 
 print(paste("Gathering Crystal Bog high frequency data at", Sys.time()))
 source("DataCleaning_Scripts/Crystal_Bog.R")
@@ -121,7 +138,9 @@ rm(data, res, raw, Crystal_Bog)
 gc()
 file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
 
-# Western Virginia Water Authority
+###############################################
+#### Western Virginia Water Authority Data ####
+###############################################
 
 print(paste("Gathering WVWA data at", Sys.time()))
 source("DataCleaning_Scripts/WVWA.R")
@@ -131,7 +150,11 @@ rm(WVWA_LF, WVWA_HF)
 gc()
 file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
 
-# NWT Low Frequency
+###############################
+#### Niwot Ridge LTER Data ####
+###############################
+
+## NWT Low Frequency
 
 print(paste("Gathering NWT-LTER Low frequency data at", Sys.time()))
 source("DataCleaning_Scripts/NWT.R")
@@ -140,7 +163,7 @@ rm(data, res, raw, NWT)
 gc()
 file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
 
-# NWT High Frequency
+## NWT High Frequency
 
 print(paste("Gathering NWT-LTER high frequency data at", Sys.time()))
 source("DataCleaning_Scripts/NWT_HF.R")
@@ -149,7 +172,11 @@ rm(data, res, raw, NWT)
 gc()
 file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
 
-# NEON Low Frequency
+###################
+#### NEON Data ####
+###################
+
+## NEON Low Frequency
 
 print(paste("Gathering NEON low frequency data at", Sys.time()))
 source("DataCleaning_Scripts/NEON.R")
@@ -157,7 +184,7 @@ write_parquet(x = NEON_Lakes, sink = paste0(filepath, "/LowFrequency", "/NEON_LF
 rm(NEON_Lakes)
 gc()
 
-# NEON High Frequency
+## NEON High Frequency
 
 print(paste("Gathering NEON high frequency data at", Sys.time()))
 source("DataCleaning_Scripts/NEON_HF.R")
@@ -165,7 +192,7 @@ write_dataset(NEON_Lakes, paste0(filepath, "/HighFrequency"), basename_template 
 rm(NEON_Lakes)
 gc()
 
-# NEON very High Frequency
+## NEON very High Frequency
 
 print(paste("Gathering NEON very high frequency data at", Sys.time()))
 source("DataCleaning_Scripts/NEON_HF_B.R")
@@ -178,12 +205,17 @@ write_dataset(NEON_Lakes, paste0(filepath, "/HighFrequency"), basename_template 
 rm(NEON_Lakes)
 gc()
 
-# Provenace
+#################
+#### Wrap-Up ####
+#################
+
+## Provenace tracking
+
 provenance <- unique(provenance)
 
 write.csv(provenance, file = paste0(filepath, "/provenance.csv"), row.names = FALSE)
 
-# Confirming Proper Data Collection
+## Confirming Proper Data Collection
 end_time <- Sys.time()
 time_taken <- difftime(end_time, start_time)
 

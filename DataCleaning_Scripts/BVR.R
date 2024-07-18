@@ -1,7 +1,7 @@
 ##sorting the BVR data by depth as opposed to position
 #by A. Breef-Pilz 10 FEB 21
 #Edited 16 Jan 23 by ABP
-#Modified by B. McAfee 04 APR 2024 for use in WaterQualiTVDB
+#Modified by B. McAfee 04 APR 2024 for use in LakeBeD-US
 
 # Since the water level varies in BVR this script will at first apply a depth to each reading.
 # You can stop there or then put the be sorted into columns by depth. 
