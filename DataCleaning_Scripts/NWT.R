@@ -20,65 +20,73 @@ res <- read_data_entity_names(packageId = packageId)
 raw <- read_data_entity(packageId = packageId, entityId = res$entityId[1])
 data <- readr::read_csv(file = raw, show_col_types = FALSE)
 
+data <- data %>% filter(location == "LAKE")
 data$depth[data$depth == "below_ice" | data$depth == "NaN"] <- NA
+data$dep_flag <- rep(NA, nrow(data))
+data$dep_flag <- replace(data$dep_flag, data$time == "NaN", "32")
+data <- data %>% mutate(true_flag = case_when(flag == "NaN" & is.na(dep_flag) == FALSE ~ dep_flag,
+                                               flag != "NaN" & is.na(dep_flag) == TRUE ~ flag,
+                                               flag != "NaN" & is.na(dep_flag) == FALSE ~ "46"))
+data$time <- replace(data$time, data$time == "NaN", "12:00:00")
+data$datetime <- as_datetime(paste(data$date, data$time))
 
 if (exists("provenance")){
   provenance <- append(provenance, packageId)
 }
 
 data_chla <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
-                     "datetime" = ymd(data$date),
+                     "datetime" = data$datetime,
                      "lake_id" = data$local_site,
                      "depth" = data$depth,
                      "variable" = rep("chla", nrow(data)),
                      "unit" = rep("MicroGM-PER-L", nrow(data)),
                      "observation" = data$chl_a,
-                     "flag" = data$flag) %>%
+                     "flag" = data$true_flag) %>%
   drop_na(observation)
 data_temp <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
-                        "datetime" = ymd(data$date),
+                        "datetime" = data$datetime,
                         "lake_id" = data$local_site,
                         "depth" = data$depth,
                         "variable" = rep("temp", nrow(data)),
                         "unit" = rep("DEG_C", nrow(data)),
                         "observation" = data$temp,
-                        "flag" = data$flag) %>%
+                        "flag" = data$true_flag) %>%
   drop_na(observation)
 data_do <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
-                        "datetime" = ymd(data$date),
+                        "datetime" = data$datetime,
                         "lake_id" = data$local_site,
                         "depth" = data$depth,
                         "variable" = rep("do", nrow(data)),
                         "unit" = rep("MilliGM-PER-L", nrow(data)),
                         "observation" = data$DO,
-                        "flag" = data$flag) %>%
+                        "flag" = data$true_flag) %>%
   drop_na(observation)
 data_nitrate <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
-                        "datetime" = ymd(data$date),
+                        "datetime" = data$datetime,
                         "lake_id" = data$local_site,
                         "depth" = data$depth,
                         "variable" = rep("no3no2", nrow(data)),
                         "unit" = rep("MicroGM-PER-L", nrow(data)),
                         "observation" = data$nitrate * 1000,
-                        "flag" = data$flag) %>%
+                        "flag" = data$true_flag) %>%
   drop_na(observation)
 data_secchi <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
-                        "datetime" = ymd(data$date),
+                        "datetime" = data$datetime,
                         "lake_id" = data$local_site,
                         "depth" = NA,
                         "variable" = rep("secchi", nrow(data)),
                         "unit" = rep("M", nrow(data)),
                         "observation" = data$secchi,
-                        "flag" = data$flag) %>%
+                        "flag" = data$true_flag) %>%
   drop_na(observation)
 data_par <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
-                          "datetime" = ymd(data$date),
+                          "datetime" = data$datetime,
                           "lake_id" = data$local_site,
                           "depth" = data$depth,
                           "variable" = rep("par", nrow(data)),
                           "unit" = rep("MicroMOL-PER-M2-SEC", nrow(data)),
                           "observation" = data$PAR,
-                          "flag" = data$flag) %>%
+                          "flag" = data$true_flag) %>%
   drop_na(observation)
 
 NWT <- rbind(NWT, data_chla) %>% 
@@ -114,59 +122,64 @@ data[data == "u"] <- "0"
 data[data == "NaN"] <- NA
 data$date <- as.Date(data$date)
 
+data <- data %>% mutate(time_flag = case_when(time == "DNS" ~ "32"),
+                        time_value = case_when(time != "DNS" ~ paste0(substr(as.character(time), 1, 2), ":", substr(as.character(time), 3, 4), ":00"),
+                                               time == "DNS" ~ "12:00:00"))
+data$datetime <- as_datetime(paste(data$date, data$time_value))
+
 data_nh4 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
-                       "datetime" = ymd(data$date),
+                       "datetime" = data$datetime,
                        "lake_id" = data$local_site,
                        "depth" = data$depth,
                        "variable" = rep("nh4", nrow(data)),
                        "unit" = rep("MicroGM-PER-L", nrow(data)),
                        "observation" = as.numeric(data$`NH4+`) * 18.04, # convert microequivalents to micrograms
-                       "flag" = rep(NA, nrow(data))) %>%
+                       "flag" = data$time_flag) %>%
   drop_na(observation)
 data_no3 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
-                       "datetime" = ymd(data$date),
+                       "datetime" = data$datetime,
                        "lake_id" = data$local_site,
                        "depth" = data$depth,
                        "variable" = rep("no3", nrow(data)),
                        "unit" = rep("MicroGM-PER-L", nrow(data)),
                        "observation" = as.numeric(data$`NO3-`) * 62, # convert microequivalents to micrograms
-                       "flag" = rep(NA, nrow(data))) %>%
+                       "flag" = data$time_flag) %>%
   drop_na(observation)
 data_tn <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
-                       "datetime" = ymd(data$date),
+                       "datetime" = data$datetime,
                        "lake_id" = data$local_site,
                        "depth" = data$depth,
                        "variable" = rep("tn", nrow(data)),
                        "unit" = rep("MicroGM-PER-L", nrow(data)),
                        "observation" = as.numeric(data$TN) * 14.0067, # convert micromoles to micrograms
-                       "flag" = rep(NA, nrow(data))) %>%
+                       "flag" = data$time_flag) %>%
   drop_na(observation)
 data_tp <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
-                      "datetime" = ymd(data$date),
+                      "datetime" = data$datetime,
                       "lake_id" = data$local_site,
                       "depth" = data$depth,
                       "variable" = rep("tp", nrow(data)),
                       "unit" = rep("MicroGM-PER-L", nrow(data)),
                       "observation" = as.numeric(data$TP) * 30.97, # convert micromoles to micrograms
-                      "flag" = rep(NA, nrow(data))) %>%
+                      "flag" = data$time_flag) %>%
   drop_na(observation)
 data_doc <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
-                      "datetime" = ymd(data$date),
+                      "datetime" = data$datetime,
                       "lake_id" = data$local_site,
                       "depth" = data$depth,
                       "variable" = rep("doc", nrow(data)),
                       "unit" = rep("MilliGM-PER-L", nrow(data)),
                       "observation" = as.numeric(data$DOC),
-                      "flag" = rep(NA, nrow(data))) %>%
+                      "flag" = data$time_flag) %>%
   drop_na(observation)
 data_poc <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
-                       "datetime" = ymd(data$date),
+                       "datetime" = data$datetime,
                        "lake_id" = data$local_site,
                        "depth" = data$depth,
                        "variable" = rep("poc", nrow(data)),
                        "unit" = rep("MilliGM-PER-L", nrow(data)),
                        "observation" = as.numeric(data$POC),
-                       "flag" = rep(NA, nrow(data))) %>%
+                       "flag" = data$time_flag) %>%
   drop_na(observation)
 
 NWT <- rbind(NWT, data_nh4) %>% 
