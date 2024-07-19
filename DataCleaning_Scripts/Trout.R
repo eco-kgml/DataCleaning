@@ -28,8 +28,7 @@ if (exists("provenance")){
   provenance <- append(provenance, packageId)
 }
 
-data$datetime <- paste(data$sampledate, data$sampletime)
-data$datetime <- strptime(data$datetime, format = "%Y-%m-%d %H:%M:%S")
+data$datetime <- as_datetime(paste(data$sampledate, data$sampletime))
 
 data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = data$datetime,
@@ -77,8 +76,7 @@ if (exists("provenance")){
   provenance <- append(provenance, packageId)
 }
 
-data$datetime <- paste(data$sampledate, data$sampletime)
-data$datetime <- strptime(data$datetime, format = "%Y-%m-%d %H:%M:%S")
+data$datetime <- as_datetime(paste(data$sampledate, data$sampletime))
 
 data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                      "datetime" = data$datetime,
