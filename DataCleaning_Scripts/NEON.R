@@ -6,8 +6,6 @@ library(tidyverse)
 
 sites <- c("SUGG", "BARC", "CRAM", "LIRO", "TOOK", "PRLA", "PRPO")
 
-# view(data_full[[length(data_full)]])
-
 NEON_Lakes <- data.frame(matrix(ncol = 8, nrow = 0))
 colnames(NEON_Lakes) <- c("source", "datetime", "lake_id", "depth", "varbiable", "unit", "observation", "flag")
 
@@ -138,32 +136,33 @@ if (exists("provenance")){
 
 data_a <- data_full[["alg_algaeExternalLabDataPerSample"]] %>% filter(grepl('buoy', namedLocation))
 data_b <- data_full[["alg_fieldData"]] %>% filter(grepl('buoy', namedLocation))
+data_c <- data_full[["alg_domainLabChemistry"]] %>% filter(grepl('buoy', namedLocation))
 
-names(data_b)[names(data_b) == 'parentSampleID'] <- 'sampleID'
+#names(data_b)[names(data_b) == 'parentSampleID'] <- 'sampleID'
 
-data <- merge(data_b, data_a, by = "sampleID", all = TRUE)
+data <- merge(data_b, data_c, by = "parentSampleID", all = TRUE)
+data <- merge(data, data_a, by = "sampleID", all = TRUE)
 
-# data$meandepth <- rowMeans(data[,c("phytoDepth1", "phytoDepth2", "phytoDepth3")], na.rm=TRUE)
-data$no_depth <- rowSums(is.na(data[,c("phytoDepth1", "phytoDepth2", "phytoDepth3")]))
+data <- data %>% filter(analyte == "chlorophyll a")
 
-# Assign -99 depth to integrated samples.
-data <- data %>% mutate(realdepth = case_when(no_depth < 2 ~ -99,
-                                     no_depth == 2 ~ phytoDepth1)) %>%
-  filter(analyte == "chlorophyll a") %>%
-  select(sampleID, collectDate.x, collectDate.y, siteID.x, siteID.y, phytoDepth1, phytoDepth2, phytoDepth3, realdepth, analyte, analyteConcentration, externalLabDataQF)
+data <- data %>% mutate(realdepth = case_when(is.na(phytoDepth2) == TRUE & is.na(phytoDepth3) == TRUE ~ phytoDepth1,
+                                              phytoDepth1 == phytoDepth2 & is.na(phytoDepth3) == TRUE ~ phytoDepth1,
+                                              phytoDepth1 == phytoDepth2 & phytoDepth2 == phytoDepth3 ~ phytoDepth1,
+                                              is.na(phytoDepth2) == FALSE & phytoDepth1 != phytoDepth2 ~ -99,
+                                              is.na(phytoDepth3) == FALSE & phytoDepth1 != phytoDepth3 ~ -99))
 
 data$externalLabDataQF <- replace(data$externalLabDataQF, data$externalLabDataQF == "legacyData|Did not meet quality audit requirements for analysis audit" | data$externalLabDataQF == "legacyData|Did not meet quality audit requirements for analysis audit|acidTreatmentSOPNotFollowed", 1)
 data$externalLabDataQF <- replace(data$externalLabDataQF, data$externalLabDataQF == "legacyData", 1)
 
-data_c <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
-                     "datetime" = data$collectDate.y,
-                     "lake_id" = data$siteID.y,
+data_d <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
+                     "datetime" = data$collectDate.x,
+                     "lake_id" = data$siteID.x,
                      "depth" = data$realdepth,
                      "variable" = rep("chla", nrow(data)),
                      "unit" = rep("MicroGM-PER-L", nrow(data)),
                      "observation" = data$analyteConcentration,
-                     "flag" = data$externalLabDataQF)
-data_c <- data_c[is.na(data_c$observation) == FALSE,]
+                     "flag" = data$externalLabDataQF) %>%
+  drop_na(observation)
 
-NEON_Lakes <- rbind(NEON_Lakes, data_c)
-rm(data, data_a, data_b, data_c, data_full, packageID)
+NEON_Lakes <- rbind(NEON_Lakes, data_d)
+rm(data, data_a, data_b, data_c, data_d, data_full, packageID)

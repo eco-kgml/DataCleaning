@@ -36,7 +36,8 @@ for (i in 3:10){
                        "variable" = rep("temp", nrow(data)),
                        "unit" = rep("DEG_C", nrow(data)),
                        "observation" = data$wtemp,
-                       "flag" = data$flag_wtemp)
+                       "flag" = data$flag_wtemp) %>%
+    drop_na(observation)
   Mendota <- rbind(Mendota, data_a)
   rm(data_a)
   gc()

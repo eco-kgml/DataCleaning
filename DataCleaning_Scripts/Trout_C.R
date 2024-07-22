@@ -37,7 +37,8 @@ for (i in 10:last_year_data_index){
                        "variable" = rep("temp", nrow(data)),
                        "unit" = rep("DEG_C", nrow(data)),
                        "observation" = data$wtemp,
-                       "flag" = data$flag_wtemp)
+                       "flag" = data$flag_wtemp) %>%
+    drop_na(observation)
   Trout <- rbind(Trout, data_a)
   rm(data_a)
   gc()
