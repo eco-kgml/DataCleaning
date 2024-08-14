@@ -121,9 +121,9 @@ GL4_info <- data.frame(lake_id = "GL4",
                        residence_time_yr = 21.4 / 365, # Flanagan et al. 2008 (https://doi.org/10.1657/1938.4246-41.2.191)
                        known_manipulations = NA)
 
-##############
-#### WVWA ####
-##############
+###################################
+#### Virginia Reservoirs LTREB ####
+###################################
 
 # Bathymetry: Carey et al. 2022 (https://doi.org/10.6073/pasta/352735344150f7e77d2bc18b69a22412)
 
@@ -140,7 +140,7 @@ FCR_mean_depth <- (data_filtered$Volume_below_L[which(data_filtered$Depth_m == 0
 
 FCR_info <- data.frame(lake_id = "FCR",
                        lake_name = "Falling Creek Reservoir",
-                       institution = "WVWA",
+                       institution = "Virginia Reservoirs LTREB",
                        latitude = 37.30333, #converted from Upadhyay et al. 2013 (https://doi.org/10.1016/j.ecoleng.2013.09.032)
                        longitude = -79.8375, #converted from Upadhyay et al. 2013
                        elevation_m = 507.61, # USGS National Map
@@ -158,7 +158,7 @@ BVR_mean_depth <- (data_filtered$Volume_below_L[which(data_filtered$Depth_m == 0
 
 BVR_info <- data.frame(lake_id = "BVR",
                        lake_name = "Beaverdam Reservoir",
-                       institution = "WVWA",
+                       institution = "Virginia Reservoirs LTREB",
                        latitude = 37.313, #Doubek et al. 2018 (https://doi.org/10.1002/ecs2.2332)
                        longitude = -79.816, #Doubek et al. 2018
                        elevation_m = 584.3, # USGS National Map

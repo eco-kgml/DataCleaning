@@ -52,7 +52,7 @@ file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
 
 print(paste("Gathering NTL-LTER high frequency under-ice data at", Sys.time()))
 source("DataCleaning_Scripts/NTL_HF_Ice.R")
-write_parquet(x = NTL, sink = paste0(filepath, "/HighFrequency", "/Mendota_B.parquet"))
+write_parquet(x = NTL, sink = paste0(filepath, "/HighFrequency", "/NTL_HF.parquet"))
 rm(data, res, raw, NTL)
 gc()
 file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
@@ -138,11 +138,11 @@ rm(data, res, raw, Crystal_Bog)
 gc()
 file.remove(list.files(tempdir(), full.names = TRUE, pattern = "^vroom"))
 
-###############################################
-#### Western Virginia Water Authority Data ####
-###############################################
+###################################
+#### Virginia Reservoirs LTREB ####
+###################################
 
-print(paste("Gathering WVWA data at", Sys.time()))
+print(paste("Gathering Virginia Reservoirs LTREB data at", Sys.time()))
 source("DataCleaning_Scripts/WVWA.R")
 write_parquet(x = WVWA_HF, sink = paste0(filepath, "/HighFrequency", "/WVWA_HF.parquet"))
 write_parquet(x = WVWA_LF, sink = paste0(filepath, "/LowFrequency", "/WVWA_LF.parquet"))
