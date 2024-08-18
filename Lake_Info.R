@@ -148,7 +148,7 @@ FCR_info <- data.frame(lake_id = "FCR",
                        mean_depth_m = FCR_mean_depth,
                        max_depth_m = FCR_max_depth,
                        residence_time_yr = 0.68, #Gerling et al. 2014 (https://doi.org/10.1016/j.watres.2014.09.002)
-                       known_manipulations = NA)
+                       known_manipulations = "Managed reservoir. Frequent water level fluctuations.")
 
 lake <- "BVR"
 data_filtered <- data %>% filter(Reservoir == lake)
@@ -166,7 +166,7 @@ BVR_info <- data.frame(lake_id = "BVR",
                        mean_depth_m = BVR_mean_depth,
                        max_depth_m = BVR_max_depth,
                        residence_time_yr = 0.9, #converted from Doubek et al. 2018
-                       known_manipulations = NA)
+                       known_manipulations = "Managed reservoir. Frequent water level fluctuations.")
 
 ###################
 #### NTL Lakes ####

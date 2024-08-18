@@ -2,11 +2,11 @@
 "AL","Allequash Lake","NTL-LTER",46.038,-89.621,494.03,164.2,2.9,8,0.5,NA
 "BARC","Barco Lake","NEON",29.675982,-82.008414,26.98,12,2.14073333333333,6,3.3,NA
 "BM","Big Muskellunge Lake","NTL-LTER",46.021067,-89.611783,499.32,375.7,7.5,21.3,8,NA
-"BVR","Beaverdam Reservoir","Virginia Reservoirs LTREB",37.313,-79.816,584.3,39.397,3.44478164327233,14,0.9,NA
+"BVR","Beaverdam Reservoir","Virginia Reservoirs LTREB",37.313,-79.816,584.3,39.397,3.44478164327233,14,0.9,"Managed reservoir. Frequent water level fluctuations."
 "CB","Crystal Bog","NTL-LTER",46.007583,-89.606183,501.49,0.6,1.7,2.5,2.6,NA
 "CR","Crystal Lake","NTL-LTER",46.00275,-89.612233,500.47,37.5,11.4,20.4,12.7,"Thermal manipulation [2012-2013], Invasive smelt removal [2002-2009], Cisco introduction [2020-present]"
 "CRAM","Crampton Lake","NEON",46.209675,-89.473688,510.55,26,3.42205384615385,19,4.9,NA
-"FCR","Falling Creek Reservoir","Virginia Reservoirs LTREB",37.30333,-79.8375,507.61,12.1371,2.54456477247448,9.3,0.68,NA
+"FCR","Falling Creek Reservoir","Virginia Reservoirs LTREB",37.30333,-79.8375,507.61,12.1371,2.54456477247448,9.3,0.68,"Managed reservoir. Frequent water level fluctuations."
 "FI","Fish Lake","NTL-LTER",43.28733,-89.65173,262.05,80.4,6.6,18.9,NA,NA
 "GL4","Green Lake 4","NWT-LTER",40.05545,-105.62091,3560.76,5.3,4.1,13,0.0586301369863014,NA
 "LIRO","Little Rock Lake","NEON",45.998269,-89.704767,495.18,19,2.45661578947368,10,3.4,NA
