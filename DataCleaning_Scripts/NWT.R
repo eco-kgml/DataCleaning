@@ -93,9 +93,9 @@ NWT <- rbind(NWT, data_chla) %>%
   rbind(data_temp) %>%
   rbind(data_do) %>%
   rbind(data_nitrate) %>%
-  rbind(data_secchi) %>%
   rbind(data_par)%>%
-  drop_na(depth)
+  drop_na(depth) %>%
+  rbind(data_secchi)
 rm(data_chla, data_temp, data_do, data_nitrate, data_secchi, data_par)
 
 # Mcknight, D., P. Johnson, K. Loria, Niwot Ridge LTER, and S. Dykema. 2021. Stream and lake water 
