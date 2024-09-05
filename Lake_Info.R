@@ -21,7 +21,7 @@ output_df <- data.frame(lake_id = character(),
 ####################
 
 BARC_info <- data.frame(lake_id = "BARC",
-                       lake_name = "Barco Lake",
+                       lake_name = "Lake Barco",
                        institution = "NEON",
                        latitude = 29.675982, # Thomas et al. 2023 (https://doi.org/10.1002/fee.2623)
                        longitude = -82.008414, # Thomas et al. 2023
@@ -33,7 +33,7 @@ BARC_info <- data.frame(lake_id = "BARC",
                        known_manipulations = NA)
 
 SUGG_info <- data.frame(lake_id = "SUGG",
-                        lake_name = "Suggs Lake",
+                        lake_name = "Lake Suggs",
                         institution = "NEON",
                         latitude = 29.68778, # Thomas et al. 2023
                         longitude = -82.017745, # Thomas et al. 2023
