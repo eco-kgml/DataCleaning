@@ -95,10 +95,10 @@ data <- data %>%
                                       analyte == "DOC" ~ "doc"),
          analyte_new_conc = case_when(analyte == "TP" ~ analyteConcentration*1000,
                                       analyte == "TN" ~ analyteConcentration*1000,
-                                      analyte == "NO3+NO2 - N" ~ analyteConcentration*1000,
-                                      analyte == "NH4 - N" ~ analyteConcentration*1000,
+                                      analyte == "NO3+NO2 - N" ~ analyteConcentration*1000*(0.5*3.28443+0.5*4.2664)/(0.5+0.5), #*1000 for mg/L to ug/L conversion, Additional parts of the formula are a weighted average of the conversion factors for NO3 and NO2 ions to molecular weight. An equal ratio of NO3 to NO2 is assumed. 
+                                      analyte == "NH4 - N" ~ analyteConcentration*1000*1.28786, #*1000 for mg/L to ug/L conversion, *1.28786 for NH4-N to NH4 conversion
                                       analyte == "DIC" ~ analyteConcentration,
-                                      analyte == "NO2 - N" ~ analyteConcentration*1000,
+                                      analyte == "NO2 - N" ~ analyteConcentration*1000*3.28443, #*1000 for mg/L to ug/L conversion, *3.28443 for NO2-N to NO2 conversion
                                       analyte == "DOC" ~ analyteConcentration,
                                       belowDetectionQF == "ND" ~ 0),
          analyte_new_unit = case_when(analyte == "TP" ~ "MicroGM-PER-L",
@@ -111,6 +111,8 @@ data <- data %>%
   unite(col = "new_flag", c("belowDetectionQF", "remarks", "shipmentWarmQF", "sampleCondition"), sep = "|")
 data$new_flag <- replace(data$new_flag, data$new_flag == "NA|NA|0|GOOD" | data$new_flag == "NA|NA|0|OK", NA)
 data$new_flag <- replace(data$new_flag, is.na(data$new_flag) == FALSE, 1)
+data$new_flag <- replace(data$new_flag, is.na(data$new_flag) == FALSE & data$analyte_new_name == "no3no2", 46)
+data$new_flag <- replace(data$new_flag, is.na(data$new_flag) == TRUE & data$analyte_new_name == "no3no2", 53)
 
 data_a <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
                      "datetime" = data$collectDate,

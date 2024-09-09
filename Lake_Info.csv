@@ -1,6 +1,6 @@
 "lake_id","lake_name","institution","latitude","longitude","elevation_m","area_ha","mean_depth_m","max_depth_m","residence_time_yr","known_manipulations"
 "AL","Allequash Lake","NTL-LTER",46.038,-89.621,494.03,164.2,2.9,8,0.5,NA
-"BARC","Barco Lake","NEON",29.675982,-82.008414,26.98,12,2.14073333333333,6,3.3,NA
+"BARC","Lake Barco","NEON",29.675982,-82.008414,26.98,12,2.14073333333333,6,3.3,NA
 "BM","Big Muskellunge Lake","NTL-LTER",46.021067,-89.611783,499.32,375.7,7.5,21.3,8,NA
 "BVR","Beaverdam Reservoir","Virginia Reservoirs LTREB",37.313,-79.816,584.3,39.397,3.44478164327233,14,0.9,"Managed reservoir. Frequent water level fluctuations."
 "CB","Crystal Bog","NTL-LTER",46.007583,-89.606183,501.49,0.6,1.7,2.5,2.6,NA
@@ -15,7 +15,7 @@
 "PRLA","Prairie Lake","NEON",47.15909,-99.11388,562.77,23,1.69316956521739,4,3.8,NA
 "PRPO","Prairie Pothole","NEON",47.129839,-99.253147,586.87,11,1.44109090909091,4,3.2,NA
 "SP","Sparkling Lake","NTL-LTER",46.007733,-89.701183,494.16,63.7,10.9,20,10.4,"Invasive crayfish removal [2001-2008], Invasive smelt removal [2002-2009], Cisco introduction [2020-present]"
-"SUGG","Suggs Lake","NEON",29.68778,-82.017745,28.68,31,1.33985806451613,3,1.6,NA
+"SUGG","Lake Suggs","NEON",29.68778,-82.017745,28.68,31,1.33985806451613,3,1.6,NA
 "TB","Trout Bog","NTL-LTER",46.04125,-89.686283,493.5,1,5.6,7.9,6.4,NA
 "TOOK","Toolik Lake","NEON",68.630692,-149.61064,715.3,148,8.5,25,1,NA
 "TR","Trout Lake","NTL-LTER",46.029267,-89.665017,491.71,1583,14.6,35.7,4.5,NA
