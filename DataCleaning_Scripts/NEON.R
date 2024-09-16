@@ -111,8 +111,6 @@ data <- data %>%
   unite(col = "new_flag", c("belowDetectionQF", "remarks", "shipmentWarmQF", "sampleCondition"), sep = "|")
 data$new_flag <- replace(data$new_flag, data$new_flag == "NA|NA|0|GOOD" | data$new_flag == "NA|NA|0|OK", NA)
 data$new_flag <- replace(data$new_flag, is.na(data$new_flag) == FALSE, 1)
-data$new_flag <- replace(data$new_flag, is.na(data$new_flag) == FALSE & data$analyte_new_name == "no3no2", 46)
-data$new_flag <- replace(data$new_flag, is.na(data$new_flag) == TRUE & data$analyte_new_name == "no3no2", 53)
 
 data_a <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
                      "datetime" = data$collectDate,
@@ -168,3 +166,27 @@ data_d <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
 
 NEON_Lakes <- rbind(NEON_Lakes, data_d)
 rm(data, data_a, data_b, data_c, data_d, data_full, packageID)
+
+# Discharge field collection
+packageID = "DP1.20048.001"
+data_full <- loadByProduct(dpID=packageID, site=sites,
+                           package="basic", 
+                           check.size = F)
+
+if (exists("provenance")){
+  provenance <- append(provenance, packageID)
+}
+
+data <- data_full[["dsc_fieldData"]] %>% filter(grepl('inflow', namedLocation))
+data_a <- data.frame("source" = rep(paste("NEON", packageID), nrow(data)),
+                     "datetime" = data$collectDate,
+                     "lake_id" = data$siteID,
+                     "depth" = NA,
+                     "variable" = rep("inflow", nrow(data)),
+                     "unit" = rep("M3-PER-SEC", nrow(data)),
+                     "observation" = data$finalDischarge / 1000, #convert liters per second to cubic meters per second
+                     "flag" = data$dataQF) %>%
+  drop_na(observation)
+
+NEON_Lakes <- rbind(NEON_Lakes, data_a)
+rm(data, data_a, data_full, packageID)

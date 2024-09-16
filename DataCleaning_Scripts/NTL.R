@@ -238,7 +238,7 @@ data_no3no2_2 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                             "observation" = data$no3no2_sloh * 1000, # *1000 converts mg/L to ug/L
                             "flag" = data$flagno3no2_sloh)%>% 
   drop_na(observation)
-data_no2 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
+data_no2 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)), #NO2 is reported as NO2-N according to personal correspndance with Emily Stanley of the NTL-LTER
                        "datetime" = as_datetime(paste(data$sampledate, "12:00:00")),
                        "lake_id" = data$lakeid,
                        "depth" = data$depth,

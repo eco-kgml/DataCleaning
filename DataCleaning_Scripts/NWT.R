@@ -134,7 +134,7 @@ data_nh4 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                        "depth" = data$depth,
                        "variable" = rep("nh4", nrow(data)),
                        "unit" = rep("MicroGM-PER-L", nrow(data)),
-                       "observation" = as.numeric(data$`NH4+`) * 18.04, # convert microequivalents to micrograms
+                       "observation" = as.numeric(data$`NH4+`) * 18.04 / 1.28786, # convert microequivalents NH4+ to micrograms, then NH4+ to NH4-N
                        "flag" = data$time_flag) %>%
   drop_na(observation)
 data_no3 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
@@ -143,7 +143,7 @@ data_no3 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                        "depth" = data$depth,
                        "variable" = rep("no3", nrow(data)),
                        "unit" = rep("MicroGM-PER-L", nrow(data)),
-                       "observation" = as.numeric(data$`NO3-`) * 62, # convert microequivalents to micrograms
+                       "observation" = as.numeric(data$`NO3-`) * 62 / 4.42664, # convert microequivalents NO3+ to micrograms, then NO3+ to NO3-N
                        "flag" = data$time_flag) %>%
   drop_na(observation)
 data_tn <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
@@ -200,6 +200,4 @@ NWT$flag <- replace(NWT$flag, NWT$flag == "duplicate", 44)
 
 NWT$flag <- replace(NWT$flag, grepl("<", NWT$observation), 19)
 NWT$observation <- replace(NWT$observation, grepl("<", NWT$observation), 0)
-
-
 
