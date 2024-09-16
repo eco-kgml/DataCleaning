@@ -95,10 +95,10 @@ data <- data %>%
                                       analyte == "DOC" ~ "doc"),
          analyte_new_conc = case_when(analyte == "TP" ~ analyteConcentration*1000,
                                       analyte == "TN" ~ analyteConcentration*1000,
-                                      analyte == "NO3+NO2 - N" ~ analyteConcentration*1000*(0.5*3.28443+0.5*4.2664)/(0.5+0.5), #*1000 for mg/L to ug/L conversion, Additional parts of the formula are a weighted average of the conversion factors for NO3 and NO2 ions to molecular weight. An equal ratio of NO3 to NO2 is assumed. 
-                                      analyte == "NH4 - N" ~ analyteConcentration*1000*1.28786, #*1000 for mg/L to ug/L conversion, *1.28786 for NH4-N to NH4 conversion
+                                      analyte == "NO3+NO2 - N" ~ analyteConcentration*1000, 
+                                      analyte == "NH4 - N" ~ analyteConcentration*1000,
                                       analyte == "DIC" ~ analyteConcentration,
-                                      analyte == "NO2 - N" ~ analyteConcentration*1000*3.28443, #*1000 for mg/L to ug/L conversion, *3.28443 for NO2-N to NO2 conversion
+                                      analyte == "NO2 - N" ~ analyteConcentration*1000,
                                       analyte == "DOC" ~ analyteConcentration,
                                       belowDetectionQF == "ND" ~ 0),
          analyte_new_unit = case_when(analyte == "TP" ~ "MicroGM-PER-L",
