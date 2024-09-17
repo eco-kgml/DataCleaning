@@ -148,7 +148,7 @@ FCR_info <- data.frame(lake_id = "FCR",
                        mean_depth_m = FCR_mean_depth,
                        max_depth_m = FCR_max_depth,
                        residence_time_yr = 0.68, #Gerling et al. 2014 (https://doi.org/10.1016/j.watres.2014.09.002)
-                       known_manipulations = "Managed reservoir. Frequent water level fluctuations.")
+                       known_manipulations = "Managed reservoir. Frequent water level fluctuations and operation of hypolimnetic oxygenation and pulsed epilimnetic mixing engineering systems.")
 
 lake <- "BVR"
 data_filtered <- data %>% filter(Reservoir == lake)

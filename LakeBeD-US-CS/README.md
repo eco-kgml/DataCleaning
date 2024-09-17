@@ -1,9 +1,27 @@
-# **LakeBeD-US: Computer Science Edition**
+---
+license: cc-by-4.0
+language:
+- en
+tags:
+- ecology
+- limnology
+size_categories:
+- 100M<n<1B
+pretty_name: 'LakeBeD-US: Computer Science Edition'
+---
 
-LakeBeD-US Computer Science Edition is an extension of the LakeBeD-US (a.k.a. 
-LakeBeD-US: Ecology Edition) dataset, originally created by Bennett McAfee at 
-the University of Wisconsin-Madison, that is targeted to members of the machine 
-learning community for use in lake ecology prediction tasks.
+# Dataset Summary
+LakeBeD-US: Computer Science Edition is a harmonized lake water quality dataset that includes 17 water quality parameters from 21 lakes in the United States of America that are monitored by 
+long-term ecological research institutions including the [North Temperate Lakes Long-Term Ecological Research program](https://lter.limnology.wisc.edu/), 
+the [Carey Lab](https://carey.biol.vt.edu/) at Virginia Tech as part of the [Virginia Reservoirs Long-Term Research in Environmental Biology (LTREB)](https://www.ltreb-reservoirs.org/) 
+site in collaboration with the [Western Virginia Water Authority](https://www.westernvawater.org/), [National Ecological Observatory Network](https://www.neonscience.org/), 
+and [Niwot Ridge Long-Term Ecological Research program](https://nwt.lternet.edu/).
+
+LakeBeD-US: Computer Science Edition is derived from LakeBeD-US: Ecology Edition, published in the Environmental Data Initiative repository. This Computer Science Edition is targeted towards members of the machine learning community for use in lake water quality and ecology prediction tasks. This dataset contains numerous missing values.
+
+The citation for LakeBeD-US: Ecology Edition:
+
+McAfee, B.J., M.E. Lofton, A. Breef-Pilz, K.J. Goodman, R.T. Hensley, K.K. Hoffman, D.W. Howard, A.S. Lewis, D.M. McKnight, I.A. Oleksy, H.L. Wander, C.C. Carey, A. Karpatne, and P.C. Hanson. 2024. LakeBeD-US: Ecology Edition - a benchmark dataset of lake water quality time series and vertical profiles ver 1. Environmental Data Initiative. INSERT DOI URL HERE
 
 ## **Difference Between LakeBeD-US Editions**
 
@@ -108,4 +126,18 @@ into a directory and use the following command
 
 ```bash
 $ python3 preprocess.py [LAKEBED-US DIRECTORY]/
+```
+
+## Citation
+When using this data, please use the following Bibtex citation, and include the DOI for the version used:
+
+```bibtex
+@misc{lakebed-us-cs_2024,
+	title = {{LakeBeD}-{US}: {Computer} {Science} {Edition} - a benchmark dataset for lake water quality time series and vertical profiles},
+	url = {https://huggingface.co/datasets/bmcafee/LakeBeD-US_Computer_Science_Edition},
+	language = {en},
+	publisher = {Hugging Face},
+	author = {McAfee, Bennett J. and Pradhan, Aanish and Neog, Abhilash and Fatemi, Sepideh and Lofton, Mary E. and Carey, Cayelan C. and Karpatne, Anuj and Hanson, Paul C.},
+	year = {2024},
+}
 ```
