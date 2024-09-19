@@ -327,7 +327,7 @@ When using this data, please use the following Bibtex citation, and include the 
 	url = {https://huggingface.co/datasets/bmcafee/LakeBeD-US_Computer_Science_Edition},
 	language = {en},
 	publisher = {Hugging Face},
-	author = {McAfee, Bennett J. and Pradhan, Aanish and Neog, Abhilash and Fatemi, Sepideh and Lofton, Mary E. and Carey, Cayelan C. and Karpatne, Anuj and Hanson, Paul C.},
+	author = {Pradhan, Aanish and McAfee, Bennett J. and Neog, Abhilash and Fatemi, Sepideh and Lofton, Mary E. and Carey, Cayelan C. and Karpatne, Anuj and Hanson, Paul C.},
 	year = {2024},
 }
 ```
