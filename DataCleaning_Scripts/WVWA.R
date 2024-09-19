@@ -302,8 +302,9 @@ chem1 <- chem %>%
                            ifelse(variable == "TN","tn",
                                   ifelse(variable == "SRP","drp",
                                          ifelse(variable == "NO3NO2","no3no2",
-                                                ifelse(variable == "DIC","dic","doc_mgl")))))) %>%
-  mutate(unit = ifelse(variable %in% c("tp","tn","drp","no3"),"MicroGM-PER-L","MilliGM-PER-L")) %>%
+                                                ifelse(variable == "NH4","nh4",
+                                                      ifelse(variable == "DIC","dic","doc_mgl"))))))) %>%
+  mutate(unit = ifelse(variable %in% c("tp","tn","drp","no3no2", "nh4"),"MicroGM-PER-L","MilliGM-PER-L")) %>%
   rename(observation = value) %>%
   filter(!grepl("Flag",name)) %>%
   select(datetime, lake_id, depth, variable, unit, observation, name)
@@ -321,8 +322,9 @@ chem2 <- chem %>%
                            ifelse(variable == "TN","tn",
                                   ifelse(variable == "SRP","drp",
                                          ifelse(variable == "NO3NO2","no3no2",
-                                                ifelse(variable == "DIC","dic","doc_mgl")))))) %>%
-  mutate(unit = ifelse(variable %in% c("tp","tn","drp","no3"),"MicroGM-PER-L","MilliGM-PER-L")) %>%
+                                                ifelse(variable == "NH4","nh4",
+                                                    ifelse(variable == "DIC","dic","doc_mgl"))))))) %>%
+  mutate(unit = ifelse(variable %in% c("tp","tn","drp","no3", "nh4"),"MicroGM-PER-L","MilliGM-PER-L")) %>%
   rename(flag = value) %>%
   filter(grepl("Flag",name)) %>%
   mutate(name = gsub("Flag_","",name)) %>%
@@ -340,6 +342,10 @@ chem3 <- bind_cols(chem1, chem2$flag) %>%
   select(-name) %>%
   mutate(depth = as.double(depth), source = paste("EDI", packageId_chemistry))%>%
   select(source, datetime, lake_id, depth, variable, unit, observation, flag)
+
+chem3$observation[chem3$variable == "no3no2"] <- chem3$observation[chem3$variable == "no3no2"] / 4.42664 #FCR and BVR have incredibly low no2 concentrations, meaning using the molar mass of no3 to convert from no3no2 to no3no2-n is more accurate.
+chem3$observation[chem3$variable == "nh4"] <- chem3$observation[chem3$variable == "nh4"] / 1.28786
+
 head(chem3)
 
 chem3$flag <- replace(chem3$flag, nchar(chem3$flag) >= 2, 46)

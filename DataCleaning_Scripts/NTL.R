@@ -73,8 +73,6 @@ data_a <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
 
 NTL <- rbind(NTL, data_a)
 rm(data_a)
-rm(data1)
-rm(data2)
 
 # Magnuson, J.J., S.R. Carpenter, and E.H. Stanley. 2023. North Temperate Lakes LTER: 
 # Chlorophyll - Trout Lake Area 1981 - current ver 32. Environmental Data Initiative. 
@@ -198,8 +196,8 @@ data_drp <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                        "lake_id" = data$lakeid,
                        "depth" = data$depth,
                        "variable" = rep("drp", nrow(data)),
-                       "unit" = rep("MilliGM-PER-L", nrow(data)),
-                       "observation" = data$drp_sloh,
+                       "unit" = rep("MicroGM-PER-L", nrow(data)),
+                       "observation" = data$drp_sloh * 1000,
                        "flag" = data$flagdrp_sloh)%>% 
   drop_na(observation)
 data_tn1 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
