@@ -12,19 +12,18 @@ pretty_name: 'LakeBeD-US: Computer Science Edition'
 
 # Dataset Summary
 LakeBeD-US: Computer Science Edition is a harmonized lake water quality dataset that includes 17 water quality parameters from 21 lakes in the United States of America that are monitored by 
-long-term ecological research institutions including the [North Temperate Lakes Long-Term Ecological Research program](https://lter.limnology.wisc.edu/), 
+long-term ecological research institutions including the [North Temperate Lakes Long-Term Ecological Research program (NTL-LTER)](https://lter.limnology.wisc.edu/), [National Ecological Observatory Network (NEON)](https://www.neonscience.org/), [Niwot Ridge Long-Term Ecological Research program (NWT-LTER)](https://nwt.lternet.edu/), and
 the [Carey Lab](https://carey.biol.vt.edu/) at Virginia Tech as part of the [Virginia Reservoirs Long-Term Research in Environmental Biology (LTREB)](https://www.ltreb-reservoirs.org/) 
-site in collaboration with the [Western Virginia Water Authority](https://www.westernvawater.org/), [National Ecological Observatory Network](https://www.neonscience.org/), 
-and [Niwot Ridge Long-Term Ecological Research program](https://nwt.lternet.edu/).
+site in collaboration with the [Western Virginia Water Authority](https://www.westernvawater.org/).
 
 LakeBeD-US: Computer Science Edition is derived from LakeBeD-US: Ecology Edition, published in the Environmental Data Initiative repository. This Computer Science Edition is targeted towards members of the machine learning community for use in lake water quality and ecology prediction tasks. This dataset contains numerous missing values.
 
-The citation for LakeBeD-US: Ecology Edition:
+For more information about LakeBeD-US: Ecology Edition, please see the following:
 
-McAfee, B.J., M.E. Lofton, A. Breef-Pilz, K.J. Goodman, R.T. Hensley, K.K. Hoffman, D.W. Howard, A.S. Lewis, D.M. McKnight, I.A. Oleksy, H.L. Wander, C.C. Carey, A. Karpatne, and P.C. Hanson. 2024. LakeBeD-US: Ecology Edition - a benchmark dataset of lake water quality time series and vertical profiles ver 1. Environmental Data Initiative. INSERT DOI URL HERE
+McAfee, B.J., M.E. Lofton, A. Breef-Pilz, K.J. Goodman, R.T. Hensley, K.K. Hoffman, D.W. Howard, A.S.L. Lewis, D.M. McKnight, I.A. Oleksy, H.L. Wander, C.C. Carey, A. Karpatne, and P.C. Hanson. 2024. LakeBeD-US: Ecology Edition - a benchmark dataset of lake water quality time series and vertical profiles ver 1. Environmental Data Initiative. INSERT DOI URL HERE
 
 <details>
-  <summary>Click here for a full list of data sources</summary>
+  <summary>Click here for a full list of data sources used to build LakeBeD-US</summary>
 
 Sources of observational data:
 
@@ -92,8 +91,6 @@ Sources of static lake attributes in Lake_Info.csv:
 - S. Upadhyay, K. A. Bierlein, J. C. Little, M. D. Burch, K. P. Elam, and J. D. Brookes, “Mixing potential of a surface-mounted solar-powered water mixer (SWM) for controlling cyanobacterial blooms,” Ecological Engineering, vol. 61, pp. 245–250, Dec. 2013, doi: [10.1016/j.ecoleng.2013.09.032](http://doi.org/10.1016/j.ecoleng.2013.09.032).
 - C. J. Watras and P. C. Hanson, “Ecohydrology of two northern Wisconsin bogs,” Ecohydrology, vol. 16, no. 8, p. e2591, 2023, doi: [10.1002/eco.2591](http://doi.org/10.1002/eco.2591).
 - K. E. Webster, T. K. Kratz, C. J. Bowser, J. J. Magnuson, and W. J. Rose, “The influence of landscape position on lake chemical responses to drought in northern Wisconsin,” Limnology and Oceanography, vol. 41, no. 5, pp. 977–984, 1996, doi: [10.4319/lo.1996.41.5.0977](http://doi.org/10.4319/lo.1996.41.5.0977).
-
-
 </details>
 
 ## **Difference Between LakeBeD-US Editions**
@@ -102,7 +99,7 @@ The original LakeBeD-US dataset is structured in a "long" format. In this
 format, columns representing different variables are stored in one column as 
 multiple rows. This format makes the addition of new variables an easy process.
 
-![Depiction of a long format dataset](https://www.statology.org/wp-content/uploads/2021/12/wideLong3-1.png)
+<img src="https://www.statology.org/wp-content/uploads/2021/12/wideLong3-1.png" alt="Depiction of a long format dataset" width="400">
 
 However, machine learning tasks typically leverage a "wide" format.
 
@@ -110,9 +107,9 @@ LakeBeD-US: Computer Science Edition presents the original LakeBeD-US data in a
 tabular format where each column corresponds to a different variable and each 
 row to a distinct observation.
 
-![Depiction of a wide format dataset](https://www.statology.org/wp-content/uploads/2021/12/wideLong4.png)
+<img src="https://www.statology.org/wp-content/uploads/2021/12/wideLong4.png" alt="Depiction of a wide format dataset" width="400">
 
-## **LakeBeD-US: Computer Science Edition** Workflow
+## **LakeBeD-US: Computer Science Edition** Creation Workflow
 
 ### Process
 
@@ -192,7 +189,7 @@ LakeBeD-US: Ecology Edition into the Computer Science Edition.
 		format. We pivot on `datetime` and `flag` for one-dimensional variables 
 		and `datetime`, `depth`, and `flag` for two-dimensional variables.
 	
-### **Usage**
+### **Preprocessing Usage**
 
 To run the preprocessing scripts, simply unzip the original LakeBeD-US zip file 
 into a directory and use the following command
@@ -200,6 +197,128 @@ into a directory and use the following command
 ```bash
 $ python3 preprocess.py [LAKEBED-US DIRECTORY]/
 ```
+
+# Dataset Metadata and Usage
+
+## Folder and File Structure
+
+LakeBeD-US: Computer Science Edition is organized into multiple levels. At the top level, we seperate high-frequency and low-frequency data. High-frequency data are data that are collected by automated sensors, typically mounted to a buoy on the lake. Low-frequency data is collected manually. The temporal frequency of these data vary greatly, and should be considered before use.
+
+Within the `HighFrequency` and `LowFrequency` folders are folder dedicated to specific lakes. The 21 Lakes in LakeBeD-US are listed in the table below.
+| Folder Name | Lake Name               | Long-Term Monitoring Institution | Location                     |
+|-------------|-------------------------|----------------------------------|------------------------------|
+| AL          | Allequash Lake          | NTL-LTER                         | Vilas County, WI, USA        |
+| BARC        | Lake Barco              | NEON                             | Putman County, FL, USA       |
+| BM          | Big Muskellunge Lake    | NTL-LTER                         | Vilas County, WI, USA        |
+| BVR         | Beaverdam Reservoir     | Virginia Reservoirs LTREB        | Roanoke County, VA, USA      |
+| CB          | Crystal Bog             | NTL-LTER                         | Vilas County, WI, USA        |
+| CR          | Crystal Lake            | NTL-LTER                         | Vilas County, WI, USA        |
+| CRAM        | Crampton Lake           | NEON                             | Vilas County, WI, USA        |
+| FCR         | Falling Creek Reservoir | Virginia Reservoirs LTREB        | Roanoke County, VA, USA      |
+| FI          | Fish Lake               | NTL-LTER                         | Dane County, WI, USA         |
+| GL4         | Green Lake 4            | NWT-LTER                         | Boulder County, CO, USA      |
+| LIRO        | Little Rock Lake        | NEON                             | Vilas County, WI, USA        |
+| ME          | Lake Mendota            | NTL-LTER                         | Dane County, WI, USA         |
+| MO          | Lake Monona             | NTL-LTER                         | Dane County, WI, USA         |
+| PRLA        | Prairie Lake            | NEON                             | Stutsman County, ND          |
+| PRPO        | Prairie Pothole         | NEON                             | Stutsman County, ND          |
+| SP          | Sparkling Lake          | NTL-LTER                         | Vilas County, WI, USA        |
+| SUGG        | Lake Suggs              | NEON                             | Putman County, FL, USA       |
+| TB          | Trout Bog               | NTL-LTER                         | Vilas County, WI, USA        |
+| TOOK        | Toolik Lake             | NEON                             | North Slope Borough, AK, USA |
+| TR          | Trout Lake              | NTL-LTER                         | Vilas County, WI, USA        |
+| WI          | Lake Wingra             | NTL-LTER                         | Dane County, WI, USA         |
+
+For more information about these lakes, please refer to `Lake_Info.csv`.
+
+Within the folder for each lake, multiple files are present. Files ending with `*_1D.parquet` contain the information for 1-dimensional variables. 1D variables change over time within each lake, but do not measured across discrete depths. Files ending with `*_2D.parquet` contain 2D variables that vary across time and across depths within the lake. Each file contains columns pertaining to only the variables measured for that specific lake, and each column refers to a specific water quality variable. The possible columns are listed in the table below.
+| Column Name | Description/Water Quality Variable                  | Units                                  | Dimensionality |
+|-------------|-----------------------------------------------------|----------------------------------------|----------------|
+| datetime    | Time of the observation in the lake's local time    |                                        |                |
+| flag        | Quality flag for the observed value                 |                                        |                |
+| depth       | Depth of the observed value                         | Meters                                 |                |
+| chla_rfu    | Chlorophyll a                                       | Relative Flourenscence Units           | 2D             |
+| chla_ugl    | Chlorophyll a                                       | Micrograms per liter (µg/L)            | 2D             |
+| do          | Dissolved oxygen                                    | Milligrams per liter (mg/L)            | 2D             |
+| fdom        | Flourescent dissolved organic matter                | Relative Flourenscence Units           | 2D             |
+| temp        | Temperature                                         | Degrees Celcius                        | 2D             |
+| phyco       | Phycocyanin                                         | Relative Flourenscence Units           | 2D             |
+| tp          | Total phosphorus                                    | Micrograms per liter (µg/L)            | 2D             |
+| drp         | Dissolved reactive phosphorus                       | Micrograms per liter (µg/L)            | 2D             |
+| tn          | Total nitrogen                                      | Micrograms per liter (µg/L)            | 2D             |
+| no2         | Nitrite as nitrogen (NO<sub>2</sub>-N)              | Micrograms per liter (µg/L)            | 2D             |
+| no3         | Nitrate as nitrogen (NO<sub>3</sub>-N)              | Micrograms per liter (µg/L)            | 2D             |
+| no3no2      | Combined nitrite and nitrate as nitrogen (NO<sub>2</sub>+NO<sub>3</sub>-N) | Micrograms per liter (µg/L) | 2D |
+| nh4         | Ammonium and nitrogen (NH<sub>4</sub>-N)            | Micrograms per liter (µg/L)            | 2D             |
+| dic         | Dissolved inorganic carbon                          | Milligrams per liter (mg/L)            | 2D             |
+| doc         | Dissolved organic carbon                            | Milligrams per liter (mg/L)            | 2D             |
+| poc         | Particulate organic carbon                          | Milligrams per liter (mg/L)            | 2D             |
+| par         | Photosynthetically active radiation (light)         | Micromoles per square meter per second | 2D             |
+| secchi      | Secchi depth                                        | Meters                                 | 1D             |
+| inflow      | Surface water inflow into the lake                  | Cubic meters per second                | 1D             |
+
+A full list of the definitions for quality flags is listed in the table below. In summary, quality flags.
+
+<details>
+	<summary>A full list of the definitions for quality flags is listed if you click here. In summary, quality flags 0, 5, 10, 19, 23, 25,32, 43, 47, 51, and 52 are generally acceptable but any other quality flag should be used with caution or removed.</summary>
+	
+| Flag | Definition                                                                                             |
+|------|--------------------------------------------------------------------------------------------------------|
+| 0    | No flag                                                                                                |
+| 1    | Sample suspect                                                                                         |
+| 2    | Standard curve/reduction suspect                                                                       |
+| 3    | Sample not taken                                                                                       |
+| 4    | Sample lost                                                                                            |
+| 5    | Average of duplicate analyses                                                                          |
+| 6    | Duplicate analyses in error                                                                            |
+| 7    | Analysed late                                                                                          |
+| 8    | Outside of standard range                                                                              |
+| 9    | Outside of data entry constraints                                                                      |
+| 10   | Nonstandard methods                                                                                    |
+| 11   | Data suspect                                                                                           |
+| 12   | Data point and blind value differ by more than 15%                                                     |
+| 13   | More than four quality flags                                                                           |
+| 14   | Sample retested                                                                                        |
+| 15   | Value suspect but total pigment(chlorophyll + phaeophytin) value accurate                              |
+| 16   | TPM (total particulate matter) uncorrected for humidity change between filter weighing                 |
+| 17   | Quality control comments on SLOH (Wisconsin State Lab of Hygiene) lab sheet                            |
+| 18   | Value between LOD (limit of detection) and LOQ (limit of quantification)                               |
+| 19   | Value below detection limit; set to zero                                                               |
+| 20   | Sample contaminated; data not reported                                                                 |
+| 21   | Equipment malfunction produced bad value; value set to missing                                         |
+| 22   | Could not be computed; set to missing                                                                  |
+| 23   | negative value set to zero                                                                             |
+| 24   | Value below detection limit                                                                            |
+| 25   | Sensor was off during part of the averaged period                                                      |
+| 26   | Data logger off                                                                                        |
+| 27   | Sensor off                                                                                             |
+| 28   | Sensor malfunction                                                                                     |
+| 29   | Sensor calibration suspect                                                                             |
+| 30   | Sensor has suspected biofouling                                                                        |
+| 31   | Measurement removed (above water)                                                                      |
+| 32   | Date is accurate but time is inaccurate                                                                |
+| 33   | value corrected to account for artificial increase in pressure after sensor maintenance                |
+| 34   | value of NA due to extremely low flows that are not well captured by rectangular or v-notch weir       |
+| 35   | demonic intrusion                                                                                      |
+| 36   | value of NA due to leaking at weir                                                                     |
+| 37   | flow topping the v-notch weir                                                                          |
+| 38   | missing observation/not recorded                                                                       |
+| 39   | values removed because of maintenance                                                                  |
+| 40   | value down corrected due to low flows on the rectangular weir                                          |
+| 41   | value downcorrected due to flow overtopping the rectangular weir                                       |
+| 42   | sensor malfunction and demonic intrusion                                                               |
+| 43   | sample run using NPOC (non-purgeable organic carbon) method due to high inorganic carbon values        |
+| 44   | Duplicate check failed                                                                                 |
+| 45   | Pigment in extract below detection (<34 ug/L)                                                          |
+| 46   | More than two quality flags                                                                            |
+| 47   | Flagged with no explanation                                                                            |
+| 48   | Value corrected using a constant offset due to two thermistor   malfunctions in Fall 2020              |
+| 49   | negative or outlier value removed and set to NA, see Methods section for more detail on QAQC process   |
+| 50   | buoy sink event                                                                                        |
+| 51   | Secchi Depth hit bottom (calculated for NEON Lakes only)                                               |
+| 52   | unknown depth near surface. Labeled as 0.5m                                                            |
+	
+</details>
 
 ## Citation
 When using this data, please use the following Bibtex citation, and include the DOI for the version used:
@@ -214,3 +333,8 @@ When using this data, please use the following Bibtex citation, and include the 
 	year = {2024},
 }
 ```
+
+## Project Funding
+Funding to create the LakeBeD-US datasets was provided by the U.S. National Scince Foundation (grants no. DEB-2213549, DEB-2213550, DEB-2025982, DEB-2327030, EF-2318861, DBI-2223103).
+
+<img alt="USNSF_Logo_Lockup_hor_RGB_1200ppi.png" src="https://nsf.widen.net/content/oht0v7rx8o/png/USNSF_Logo_Lockup_hor_RGB_1200ppi.png?position=c&quality=80&x.portal_shortcode_generated=dnmqqhzz&x.collection_sharename=pyoiomsk&x.app=portals" width = 300>
