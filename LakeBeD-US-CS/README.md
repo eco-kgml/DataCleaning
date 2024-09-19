@@ -204,7 +204,7 @@ $ python3 preprocess.py [LAKEBED-US DIRECTORY]/
 
 LakeBeD-US: Computer Science Edition is organized into multiple levels. At the top level, we seperate high-frequency and low-frequency data. High-frequency data are data that are collected by automated sensors, typically mounted to a buoy on the lake. Low-frequency data is collected manually. The temporal frequency of these data vary greatly, and should be considered before use.
 
-Within the `HighFrequency` and `LowFrequency` folders are folder dedicated to specific lakes. The 21 Lakes in LakeBeD-US are listed in the table below.
+Within the `HighFrequency` and `LowFrequency` folders are folders dedicated to specific lakes. The 21 Lakes in LakeBeD-US are listed in the table below.
 | Folder Name | Lake Name               | Long-Term Monitoring Institution | Location                     |
 |-------------|-------------------------|----------------------------------|------------------------------|
 | AL          | Allequash Lake          | NTL-LTER                         | Vilas County, WI, USA        |
