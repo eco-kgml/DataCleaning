@@ -257,10 +257,8 @@ Within the folder for each lake, multiple files are present. Files ending with `
 | secchi      | Secchi depth                                        | Meters                                 | 1D             |
 | inflow      | Surface water inflow into the lake                  | Cubic meters per second                | 1D             |
 
-A full list of the definitions for quality flags is listed in the table below. In summary, quality flags.
-
 <details>
-	<summary>A full list of the definitions for quality flags is listed if you click here. In summary, quality flags 0, 5, 10, 19, 23, 25,32, 43, 47, 51, and 52 are generally acceptable but any other quality flag should be used with caution or removed.</summary>
+	<summary>A full list of the definitions for quality flags is listed if you click here. In summary, quality flags 0, 5, 10, 19, 23, 25, 32, 43, 47, 51, and 52 are generally acceptable but any other quality flag should be used with caution or removed.</summary>
 	
 | Flag | Definition                                                                                             |
 |------|--------------------------------------------------------------------------------------------------------|
@@ -335,6 +333,6 @@ When using this data, please use the following Bibtex citation, and include the 
 ```
 
 ## Project Funding
-Funding to create the LakeBeD-US datasets was provided by the U.S. National Scince Foundation (grants no. DEB-2213549, DEB-2213550, DEB-2025982, DEB-2327030, EF-2318861, DBI-2223103).
+Funding to create the LakeBeD-US datasets was provided by the U.S. National Science Foundation (grants no. DEB-2213549, DEB-2213550, DEB-2025982, DEB-2327030, EF-2318861, and DBI-2223103).
 
 <img alt="USNSF_Logo_Lockup_hor_RGB_1200ppi.png" src="https://nsf.widen.net/content/oht0v7rx8o/png/USNSF_Logo_Lockup_hor_RGB_1200ppi.png?position=c&quality=80&x.portal_shortcode_generated=dnmqqhzz&x.collection_sharename=pyoiomsk&x.app=portals" width = 300>
