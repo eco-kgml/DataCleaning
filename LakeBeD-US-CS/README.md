@@ -220,8 +220,8 @@ Within the `HighFrequency` and `LowFrequency` folders are folders dedicated to s
 | LIRO        | Little Rock Lake        | NEON                             | Vilas County, WI, USA        |
 | ME          | Lake Mendota            | NTL-LTER                         | Dane County, WI, USA         |
 | MO          | Lake Monona             | NTL-LTER                         | Dane County, WI, USA         |
-| PRLA        | Prairie Lake            | NEON                             | Stutsman County, ND          |
-| PRPO        | Prairie Pothole         | NEON                             | Stutsman County, ND          |
+| PRLA        | Prairie Lake            | NEON                             | Stutsman County, ND, USA     |
+| PRPO        | Prairie Pothole         | NEON                             | Stutsman County, ND, USA     |
 | SP          | Sparkling Lake          | NTL-LTER                         | Vilas County, WI, USA        |
 | SUGG        | Lake Suggs              | NEON                             | Putman County, FL, USA       |
 | TB          | Trout Bog               | NTL-LTER                         | Vilas County, WI, USA        |
