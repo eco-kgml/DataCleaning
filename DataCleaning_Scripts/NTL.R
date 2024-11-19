@@ -188,7 +188,7 @@ data_tp2 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                        "depth" = data$depth,
                        "variable" = rep("tp", nrow(data)),
                        "unit" = rep("MicroGM-PER-L", nrow(data)),
-                       "observation" = data$totpuf_sloh,
+                       "observation" = data$totpuf_sloh * 1000, # *1000 converts mg/L to ug/L
                        "flag" = data$flagtotpuf_sloh)%>% 
   drop_na(observation)
 data_drp <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
@@ -197,7 +197,7 @@ data_drp <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                        "depth" = data$depth,
                        "variable" = rep("drp", nrow(data)),
                        "unit" = rep("MicroGM-PER-L", nrow(data)),
-                       "observation" = data$drp_sloh * 1000,
+                       "observation" = data$drp_sloh * 1000, # *1000 converts mg/L to ug/L
                        "flag" = data$flagdrp_sloh)%>% 
   drop_na(observation)
 data_tn1 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
@@ -260,7 +260,7 @@ data_nh42 <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
                         "depth" = data$depth,
                         "variable" = rep("nh4", nrow(data)),
                         "unit" = rep("MicroGM-PER-L", nrow(data)),
-                        "observation" = data$nh4_sloh,
+                        "observation" = data$nh4_sloh * 1000,
                         "flag" = data$flagnh4_sloh)%>% 
   drop_na(observation)
 data_dic <- data.frame("source" = rep(paste("EDI", packageId), nrow(data)),
