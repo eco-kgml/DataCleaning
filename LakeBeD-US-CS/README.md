@@ -20,7 +20,8 @@ LakeBeD-US: Computer Science Edition is derived from LakeBeD-US: Ecology Edition
 
 For more information about LakeBeD-US: Ecology Edition, please see the following:
 
-McAfee, B.J., M.E. Lofton, A. Breef-Pilz, K.J. Goodman, R.T. Hensley, K.K. Hoffman, D.W. Howard, A.S.L. Lewis, D.M. McKnight, I.A. Oleksy, H.L. Wander, C.C. Carey, A. Karpatne, and P.C. Hanson. 2024. LakeBeD-US: Ecology Edition - a benchmark dataset of lake water quality time series and vertical profiles ver 1. Environmental Data Initiative. INSERT DOI URL HERE
+B. J. McAfee et al., “LakeBeD-US: Ecology Edition - a benchmark dataset of lake water quality time series and vertical profiles.” Environmental Data Initiative, Dec. 03, 2024. doi: [10.6073/pasta/c56a204a65483790f6277de4896d7140](https://doi.org/10.6073/pasta/c56a204a65483790f6277de4896d7140).
+
 
 <details>
   <summary>Click here for a full list of data sources used to build LakeBeD-US</summary>
